@@ -1,10 +1,10 @@
 // Copyright (c) 2019 The Dash Core developers
-// Copyright (c) 2019 The BitGreen Core developers
+// Copyright (c) 2019 The BitTestForLaterSoICanUseReplaceGreen Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_UNORDERED_LRU_CACHE_H
-#define BITGREEN_UNORDERED_LRU_CACHE_H
+#ifndef CSPN_UNORDERED_LRU_CACHE_H
+#define CSPN_UNORDERED_LRU_CACHE_H
 
 #include <unordered_map>
 
@@ -108,4 +108,4 @@ private:
     }
 };
 
-#endif // BITGREEN_UNORDERED_LRU_CACHE_H
+#endif // CSPN_UNORDERED_LRU_CACHE_H

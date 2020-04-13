@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_TEST_SCRIPTNUM10_H
-#define BITGREEN_TEST_SCRIPTNUM10_H
+#ifndef CSPN_TEST_SCRIPTNUM10_H
+#define CSPN_TEST_SCRIPTNUM10_H
 
 #include <limits>
 #include <stdexcept>
@@ -179,4 +179,4 @@ private:
 };
 
 
-#endif // BITGREEN_TEST_BIGNUM_H
+#endif // CSPN_TEST_BIGNUM_H

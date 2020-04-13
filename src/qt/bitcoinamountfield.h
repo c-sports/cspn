@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_QT_BITCOINAMOUNTFIELD_H
-#define BITGREEN_QT_BITCOINAMOUNTFIELD_H
+#ifndef CSPN_QT_BITCOINAMOUNTFIELD_H
+#define CSPN_QT_BITCOINAMOUNTFIELD_H
 
 #include <amount.h>
 
@@ -15,7 +15,7 @@ QT_BEGIN_NAMESPACE
 class QValueComboBox;
 QT_END_NAMESPACE
 
-/** Widget for entering bitgreen amounts.
+/** Widget for entering cspn amounts.
   */
 class BitcoinAmountField: public QWidget
 {
@@ -81,4 +81,4 @@ private Q_SLOTS:
 
 };
 
-#endif // BITGREEN_QT_BITCOINAMOUNTFIELD_H
+#endif // CSPN_QT_BITCOINAMOUNTFIELD_H

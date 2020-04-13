@@ -3,11 +3,11 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_COMPAT_H
-#define BITGREEN_COMPAT_H
+#ifndef CSPN_COMPAT_H
+#define CSPN_COMPAT_H
 
 #if defined(HAVE_CONFIG_H)
-#include <config/bitgreen-config.h>
+#include <config/cspn-config.h>
 #endif
 
 #ifdef WIN32
@@ -103,4 +103,4 @@ bool static inline IsSelectableSocket(const SOCKET& s) {
 #endif
 }
 
-#endif // BITGREEN_COMPAT_H
+#endif // CSPN_COMPAT_H

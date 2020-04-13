@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_SCRIPT_SIGN_H
-#define BITGREEN_SCRIPT_SIGN_H
+#ifndef CSPN_SCRIPT_SIGN_H
+#define CSPN_SCRIPT_SIGN_H
 
 #include <boost/optional.hpp>
 #include <hash.h>
@@ -169,4 +169,4 @@ bool IsSolvable(const SigningProvider& provider, const CScript& script);
 /** Check whether a scriptPubKey is known to be segwit. */
 bool IsSegWitOutput(const SigningProvider& provider, const CScript& script);
 
-#endif // BITGREEN_SCRIPT_SIGN_H
+#endif // CSPN_SCRIPT_SIGN_H

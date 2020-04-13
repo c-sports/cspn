@@ -1,10 +1,10 @@
 // Copyright (c) 2011-2014 The Bitcoin Core developers
-// Copyright (c) 2018-2019 The BitGreen Core developers
+// Copyright (c) 2018-2019 The BitTestForLaterSoICanUseReplaceGreen Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_QT_TRANSACTIONDESCDIALOG_H
-#define BITGREEN_QT_TRANSACTIONDESCDIALOG_H
+#ifndef CSPN_QT_TRANSACTIONDESCDIALOG_H
+#define CSPN_QT_TRANSACTIONDESCDIALOG_H
 
 #include <QDialog>
 
@@ -29,4 +29,4 @@ private:
     Ui::TransactionDescDialog *ui;
 };
 
-#endif // BITGREEN_QT_TRANSACTIONDESCDIALOG_H
+#endif // CSPN_QT_TRANSACTIONDESCDIALOG_H

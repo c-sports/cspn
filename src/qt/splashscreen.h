@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_QT_SPLASHSCREEN_H
-#define BITGREEN_QT_SPLASHSCREEN_H
+#ifndef CSPN_QT_SPLASHSCREEN_H
+#define CSPN_QT_SPLASHSCREEN_H
 
 #include <QWidget>
 
@@ -19,7 +19,7 @@ class Wallet;
 
 /** Class for the splashscreen with information of the running client.
  *
- * @note this is intentionally not a QSplashScreen. BitGreen Core initialization
+ * @note this is intentionally not a QSplashScreen. CSPN Core initialization
  * can take a long time, and in that case a progress window that cannot be
  * moved around and minimized has turned out to be frustrating to the user.
  */
@@ -66,4 +66,4 @@ private:
     std::list<std::unique_ptr<interfaces::Handler>> m_connected_wallet_handlers;
 };
 
-#endif // BITGREEN_QT_SPLASHSCREEN_H
+#endif // CSPN_QT_SPLASHSCREEN_H

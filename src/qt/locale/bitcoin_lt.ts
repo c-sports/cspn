@@ -66,8 +66,8 @@
         <translation>Gavimo adresai</translation>
     </message>
     <message>
-        <source>These are your BitGreen addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>Tai yra jūsų BitGreen adresai išeinantiems mokėjimams. Visada pasitikrinkite sumą ir gavėjo adresą prieš siunčiant lėšas. </translation>
+        <source>These are your CSPN addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <translation>Tai yra jūsų CSPN adresai išeinantiems mokėjimams. Visada pasitikrinkite sumą ir gavėjo adresą prieš siunčiant lėšas. </translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -322,8 +322,8 @@
         <translation>Blokai iš naujo indeksuojami...</translation>
     </message>
     <message>
-        <source>Send coins to a BitGreen address</source>
-        <translation>Siųsti monetas BitGreen adresui</translation>
+        <source>Send coins to a CSPN address</source>
+        <translation>Siųsti monetas CSPN adresui</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -366,12 +366,12 @@
         <translation>Užšifruoti privačius raktus, kurie priklauso jūsų piniginei</translation>
     </message>
     <message>
-        <source>Sign messages with your BitGreen addresses to prove you own them</source>
-        <translation>Pasirašydami žinutes su savo BitGreen adresais įrodysite jog esate jų savininkas </translation>
+        <source>Sign messages with your CSPN addresses to prove you own them</source>
+        <translation>Pasirašydami žinutes su savo CSPN adresais įrodysite jog esate jų savininkas </translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified BitGreen addresses</source>
-        <translation>Patikrinkite žinutę, jog įsitikintumėte, kad ją pasirašė nurodytas BitGreen adresas</translation>
+        <source>Verify messages to ensure they were signed with specified CSPN addresses</source>
+        <translation>Patikrinkite žinutę, jog įsitikintumėte, kad ją pasirašė nurodytas CSPN adresas</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -635,8 +635,8 @@
         <translation>Sveiki</translation>
     </message>
     <message>
-        <source>BitGreen</source>
-        <translation>BitGreen</translation>
+        <source>CSPN</source>
+        <translation>CSPN</translation>
     </message>
     <message>
         <source>The wallet will also be stored in this directory.</source>
@@ -691,8 +691,8 @@
         <translation>Piniginė</translation>
     </message>
     <message>
-        <source>Automatically open the BitGreen client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Automatiškai atidaryti BitGreen kliento prievadą maršrutizatoriuje. Tai veikia tik tada, kai jūsų maršrutizatorius palaiko UPnP ir ji įjungta.</translation>
+        <source>Automatically open the CSPN client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Automatiškai atidaryti CSPN kliento prievadą maršrutizatoriuje. Tai veikia tik tada, kai jūsų maršrutizatorius palaiko UPnP ir ji įjungta.</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
@@ -1181,7 +1181,7 @@
         <translation>Įveskite pranešimą, kurį norite pasirašyti čia</translation>
     </message>
     <message>
-        <source>Sign the message to prove you own this BitGreen address</source>
+        <source>Sign the message to prove you own this CSPN address</source>
         <translation>Registruotis žinute įrodymuii, kad turite šį adresą</translation>
     </message>
     <message>
@@ -1197,8 +1197,8 @@
         <translation>&amp;Patikrinti žinutę</translation>
     </message>
     <message>
-        <source>Verify the message to ensure it was signed with the specified BitGreen address</source>
-        <translation>Patikrinkite žinutę, jog įsitikintumėte, kad ją pasirašė nurodytas BitGreen adresas</translation>
+        <source>Verify the message to ensure it was signed with the specified CSPN address</source>
+        <translation>Patikrinkite žinutę, jog įsitikintumėte, kad ją pasirašė nurodytas CSPN adresas</translation>
     </message>
     <message>
         <source>Verify &amp;Message</source>
@@ -1291,7 +1291,7 @@
     <name>WalletView</name>
     </context>
 <context>
-    <name>bitgreen-core</name>
+    <name>cspn-core</name>
     <message>
         <source>Error opening block database</source>
         <translation>Klaida atveriant blokų duombazę</translation>

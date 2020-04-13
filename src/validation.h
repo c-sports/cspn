@@ -3,11 +3,11 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_VALIDATION_H
-#define BITGREEN_VALIDATION_H
+#ifndef CSPN_VALIDATION_H
+#define CSPN_VALIDATION_H
 
 #if defined(HAVE_CONFIG_H)
-#include <config/bitgreen-config.h>
+#include <config/cspn-config.h>
 #endif
 
 #include <amount.h>
@@ -726,4 +726,4 @@ bool GetBlockHash(uint256& hashRet, int nBlockHeight = -1);
 
 int ActiveProtocol();
 
-#endif // BITGREEN_VALIDATION_H
+#endif // CSPN_VALIDATION_H

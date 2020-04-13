@@ -1,10 +1,10 @@
 // Copyright (c) 2014-2019 The Dash Core developers
-// Copyright (c) 2019 The BitGreen Core developers
+// Copyright (c) 2019 The BitTestForLaterSoICanUseReplaceGreen Core developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef  BITGREEN_MASTERNODES_MASTERNODE_UTILS_H
-#define  BITGREEN_MASTERNODES_MASTERNODE_UTILS_H
+#ifndef  CSPN_MASTERNODES_MASTERNODE_UTILS_H
+#define  CSPN_MASTERNODES_MASTERNODE_UTILS_H
 
 #include <special/deterministicmns.h>
 
@@ -26,4 +26,4 @@ public:
     static void DoMaintenance(CConnman &connman);
 };
 
-#endif // BITGREEN_MASTERNODES_MASTERNODE_UTILS_H
+#endif // CSPN_MASTERNODES_MASTERNODE_UTILS_H

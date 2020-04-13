@@ -26,37 +26,37 @@ BITCOIN_INCLUDES += $(UNIVALUE_CFLAGS)
 
 BLS_LIBS=-lchiabls -lgmp
 
-LIBBITCOIN_SERVER=libbitgreen_server.a
-LIBBITCOIN_COMMON=libbitgreen_common.a
-LIBBITCOIN_CONSENSUS=libbitgreen_consensus.a
-LIBBITCOIN_CLI=libbitgreen_cli.a
-LIBBITCOIN_UTIL=libbitgreen_util.a
-LIBBITCOIN_CRYPTO_BASE=crypto/libbitgreen_crypto_base.a
-LIBBITCOINQT=qt/libbitgreenqt.a
+LIBBITCOIN_SERVER=libcspn_server.a
+LIBBITCOIN_COMMON=libcspn_common.a
+LIBBITCOIN_CONSENSUS=libcspn_consensus.a
+LIBBITCOIN_CLI=libcspn_cli.a
+LIBBITCOIN_UTIL=libcspn_util.a
+LIBBITCOIN_CRYPTO_BASE=crypto/libcspn_crypto_base.a
+LIBBITCOINQT=qt/libcspnqt.a
 LIBSECP256K1=secp256k1/libsecp256k1.la
 
 if ENABLE_ZMQ
-LIBBITCOIN_ZMQ=libbitgreen_zmq.a
+LIBBITCOIN_ZMQ=libcspn_zmq.a
 endif
 if BUILD_BITCOIN_LIBS
-LIBBITCOINCONSENSUS=libbitgreenconsensus.la
+LIBBITCOINCONSENSUS=libcspnconsensus.la
 endif
 if ENABLE_WALLET
-LIBBITCOIN_WALLET=libbitgreen_wallet.a
-LIBBITCOIN_WALLET_TOOL=libbitgreen_wallet_tool.a
+LIBBITCOIN_WALLET=libcspn_wallet.a
+LIBBITCOIN_WALLET_TOOL=libcspn_wallet_tool.a
 endif
 
 LIBBITCOIN_CRYPTO= $(LIBBITCOIN_CRYPTO_BASE)
 if ENABLE_SSE41
-LIBBITCOIN_CRYPTO_SSE41 = crypto/libbitgreen_crypto_sse41.a
+LIBBITCOIN_CRYPTO_SSE41 = crypto/libcspn_crypto_sse41.a
 LIBBITCOIN_CRYPTO += $(LIBBITCOIN_CRYPTO_SSE41)
 endif
 if ENABLE_AVX2
-LIBBITCOIN_CRYPTO_AVX2 = crypto/libbitgreen_crypto_avx2.a
+LIBBITCOIN_CRYPTO_AVX2 = crypto/libcspn_crypto_avx2.a
 LIBBITCOIN_CRYPTO += $(LIBBITCOIN_CRYPTO_AVX2)
 endif
 if ENABLE_SHANI
-LIBBITCOIN_CRYPTO_SHANI = crypto/libbitgreen_crypto_shani.a
+LIBBITCOIN_CRYPTO_SHANI = crypto/libcspn_crypto_shani.a
 LIBBITCOIN_CRYPTO += $(LIBBITCOIN_CRYPTO_SHANI)
 endif
 
@@ -84,23 +84,23 @@ TESTS =
 BENCHMARKS =
 
 if BUILD_BITCOIND
-  bin_PROGRAMS += bitgreend
+  bin_PROGRAMS += cspnd
 endif
 
 if BUILD_BITCOIN_CLI
-  bin_PROGRAMS += bitgreen-cli
+  bin_PROGRAMS += cspn-cli
 endif
 if BUILD_BITCOIN_TX
-  bin_PROGRAMS += bitgreen-tx
+  bin_PROGRAMS += cspn-tx
 endif
 if ENABLE_WALLET
 if BUILD_BITCOIN_WALLET
-  bin_PROGRAMS += bitgreen-wallet
+  bin_PROGRAMS += cspn-wallet
 endif
 endif
 
 .PHONY: FORCE check-symbols check-security
-# bitgreen core #
+# cspn core #
 BITCOIN_CORE_H = \
   addrdb.h \
   addrman.h \
@@ -298,15 +298,15 @@ obj/build.h: FORCE
 	@$(MKDIR_P) $(builddir)/obj
 	@$(top_srcdir)/share/genbuild.sh "$(abs_top_builddir)/src/obj/build.h" \
 	  "$(abs_top_srcdir)"
-libbitgreen_util_a-clientversion.$(OBJEXT): obj/build.h
+libcspn_util_a-clientversion.$(OBJEXT): obj/build.h
 
-# server: shared between bitgreend and bitgreen-qt
+# server: shared between cspnd and cspn-qt
 # Contains code accessing mempool and chain state that is meant to be separated
 # from wallet and gui code (see node/README.md). Shared code should go in
-# libbitgreen_common or libbitgreen_util libraries, instead.
-libbitgreen_server_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(MINIUPNPC_CPPFLAGS) $(EVENT_CFLAGS) $(EVENT_PTHREADS_CFLAGS)
-libbitgreen_server_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-libbitgreen_server_a_SOURCES = \
+# libcspn_common or libcspn_util libraries, instead.
+libcspn_server_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(MINIUPNPC_CPPFLAGS) $(EVENT_CFLAGS) $(EVENT_PTHREADS_CFLAGS)
+libcspn_server_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libcspn_server_a_SOURCES = \
   addrdb.cpp \
   addrman.cpp \
   banman.cpp \
@@ -397,16 +397,16 @@ libbitgreen_server_a_SOURCES = \
   $(BITCOIN_CORE_H)
 
 if ENABLE_WALLET
-libbitgreen_server_a_SOURCES += wallet/init.cpp
+libcspn_server_a_SOURCES += wallet/init.cpp
 endif
 if !ENABLE_WALLET
-libbitgreen_server_a_SOURCES += dummywallet.cpp
+libcspn_server_a_SOURCES += dummywallet.cpp
 endif
 
 if ENABLE_ZMQ
-libbitgreen_zmq_a_CPPFLAGS = $(BITCOIN_INCLUDES) $(ZMQ_CFLAGS)
-libbitgreen_zmq_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-libbitgreen_zmq_a_SOURCES = \
+libcspn_zmq_a_CPPFLAGS = $(BITCOIN_INCLUDES) $(ZMQ_CFLAGS)
+libcspn_zmq_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libcspn_zmq_a_SOURCES = \
   zmq/zmqabstractnotifier.cpp \
   zmq/zmqnotificationinterface.cpp \
   zmq/zmqpublishnotifier.cpp \
@@ -414,11 +414,11 @@ libbitgreen_zmq_a_SOURCES = \
 endif
 
 
-# wallet: shared between bitgreend and bitgreen-qt, but only linked
+# wallet: shared between cspnd and cspn-qt, but only linked
 # when wallet enabled
-libbitgreen_wallet_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-libbitgreen_wallet_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-libbitgreen_wallet_a_SOURCES = \
+libcspn_wallet_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+libcspn_wallet_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libcspn_wallet_a_SOURCES = \
   addrdb.cpp \
   addrman.cpp \
   banman.cpp \
@@ -530,22 +530,22 @@ libbitgreen_wallet_a_SOURCES = \
   $(BITCOIN_CORE_H)
 
 if ENABLE_WALLET
-libbitgreen_wallet_a_SOURCES += wallet/init.cpp
+libcspn_wallet_a_SOURCES += wallet/init.cpp
 endif
 if !ENABLE_WALLET
-libbitgreen_wallet_a_SOURCES += dummywallet.cpp
+libcspn_wallet_a_SOURCES += dummywallet.cpp
 endif
 
-libbitgreen_wallet_tool_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-libbitgreen_wallet_tool_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-libbitgreen_wallet_tool_a_SOURCES = \
+libcspn_wallet_tool_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+libcspn_wallet_tool_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libcspn_wallet_tool_a_SOURCES = \
   wallet/wallettool.cpp \
   $(BITCOIN_CORE_H)
 
 # crypto primitives library
-crypto_libbitgreen_crypto_base_a_CPPFLAGS = $(AM_CPPFLAGS)
-crypto_libbitgreen_crypto_base_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-crypto_libbitgreen_crypto_base_a_SOURCES = \
+crypto_libcspn_crypto_base_a_CPPFLAGS = $(AM_CPPFLAGS)
+crypto_libcspn_crypto_base_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+crypto_libcspn_crypto_base_a_SOURCES = \
   crypto/aes.cpp \
   crypto/aes.h \
   crypto/chacha_poly_aead.h \
@@ -573,31 +573,31 @@ crypto_libbitgreen_crypto_base_a_SOURCES = \
   crypto/siphash.h
 
 if USE_ASM
-crypto_libbitgreen_crypto_base_a_SOURCES += crypto/sha256_sse4.cpp
+crypto_libcspn_crypto_base_a_SOURCES += crypto/sha256_sse4.cpp
 endif
 
-crypto_libbitgreen_crypto_sse41_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-crypto_libbitgreen_crypto_sse41_a_CPPFLAGS = $(AM_CPPFLAGS)
-crypto_libbitgreen_crypto_sse41_a_CXXFLAGS += $(SSE41_CXXFLAGS)
-crypto_libbitgreen_crypto_sse41_a_CPPFLAGS += -DENABLE_SSE41
-crypto_libbitgreen_crypto_sse41_a_SOURCES = crypto/sha256_sse41.cpp
+crypto_libcspn_crypto_sse41_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+crypto_libcspn_crypto_sse41_a_CPPFLAGS = $(AM_CPPFLAGS)
+crypto_libcspn_crypto_sse41_a_CXXFLAGS += $(SSE41_CXXFLAGS)
+crypto_libcspn_crypto_sse41_a_CPPFLAGS += -DENABLE_SSE41
+crypto_libcspn_crypto_sse41_a_SOURCES = crypto/sha256_sse41.cpp
 
-crypto_libbitgreen_crypto_avx2_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-crypto_libbitgreen_crypto_avx2_a_CPPFLAGS = $(AM_CPPFLAGS)
-crypto_libbitgreen_crypto_avx2_a_CXXFLAGS += $(AVX2_CXXFLAGS)
-crypto_libbitgreen_crypto_avx2_a_CPPFLAGS += -DENABLE_AVX2
-crypto_libbitgreen_crypto_avx2_a_SOURCES = crypto/sha256_avx2.cpp
+crypto_libcspn_crypto_avx2_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+crypto_libcspn_crypto_avx2_a_CPPFLAGS = $(AM_CPPFLAGS)
+crypto_libcspn_crypto_avx2_a_CXXFLAGS += $(AVX2_CXXFLAGS)
+crypto_libcspn_crypto_avx2_a_CPPFLAGS += -DENABLE_AVX2
+crypto_libcspn_crypto_avx2_a_SOURCES = crypto/sha256_avx2.cpp
 
-crypto_libbitgreen_crypto_shani_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-crypto_libbitgreen_crypto_shani_a_CPPFLAGS = $(AM_CPPFLAGS)
-crypto_libbitgreen_crypto_shani_a_CXXFLAGS += $(SHANI_CXXFLAGS)
-crypto_libbitgreen_crypto_shani_a_CPPFLAGS += -DENABLE_SHANI
-crypto_libbitgreen_crypto_shani_a_SOURCES = crypto/sha256_shani.cpp
+crypto_libcspn_crypto_shani_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+crypto_libcspn_crypto_shani_a_CPPFLAGS = $(AM_CPPFLAGS)
+crypto_libcspn_crypto_shani_a_CXXFLAGS += $(SHANI_CXXFLAGS)
+crypto_libcspn_crypto_shani_a_CPPFLAGS += -DENABLE_SHANI
+crypto_libcspn_crypto_shani_a_SOURCES = crypto/sha256_shani.cpp
 
 # consensus: shared between all executables that validate any consensus rules.
-libbitgreen_consensus_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-libbitgreen_consensus_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-libbitgreen_consensus_a_SOURCES = \
+libcspn_consensus_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+libcspn_consensus_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libcspn_consensus_a_SOURCES = \
   amount.h \
   arith_uint256.cpp \
   arith_uint256.h \
@@ -617,7 +617,7 @@ libbitgreen_consensus_a_SOURCES = \
   primitives/transaction.h \
   pubkey.cpp \
   pubkey.h \
-  script/bitgreenconsensus.cpp \
+  script/cspnconsensus.cpp \
   script/interpreter.cpp \
   script/interpreter.h \
   script/script.cpp \
@@ -633,10 +633,10 @@ libbitgreen_consensus_a_SOURCES = \
   util/strencodings.h \
   version.h
 
-# common: shared between bitgreend, and bitgreen-qt and non-server tools
-libbitgreen_common_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-libbitgreen_common_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-libbitgreen_common_a_SOURCES = \
+# common: shared between cspnd, and cspn-qt and non-server tools
+libcspn_common_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+libcspn_common_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libcspn_common_a_SOURCES = \
   base58.cpp \
   bech32.cpp \
   bloom.cpp \
@@ -670,9 +670,9 @@ libbitgreen_common_a_SOURCES = \
 # util: shared between all executables.
 # This library *must* be included to make sure that the glibc
 # backward-compatibility objects and their sanity checks are linked.
-libbitgreen_util_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-libbitgreen_util_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-libbitgreen_util_a_SOURCES = \
+libcspn_util_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+libcspn_util_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libcspn_util_a_SOURCES = \
   bls/bls_batchverifier.h \
   bls/bls_ies.cpp \
   bls/bls_ies.h \
@@ -707,14 +707,14 @@ libbitgreen_util_a_SOURCES = \
   $(BITCOIN_CORE_H)
 
 if GLIBC_BACK_COMPAT
-libbitgreen_util_a_SOURCES += compat/glibc_compat.cpp
+libcspn_util_a_SOURCES += compat/glibc_compat.cpp
 AM_LDFLAGS += $(COMPAT_LDFLAGS)
 endif
 
-# cli: shared between bitgreen-cli and bitgreen-qt
-libbitgreen_cli_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-libbitgreen_cli_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-libbitgreen_cli_a_SOURCES = \
+# cli: shared between cspn-cli and cspn-qt
+libcspn_cli_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+libcspn_cli_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libcspn_cli_a_SOURCES = \
   bls/bls.cpp \
   bls/bls.h \
   rpc/client.cpp \
@@ -722,22 +722,22 @@ libbitgreen_cli_a_SOURCES = \
   uint256.h \
   $(BITCOIN_CORE_H)
 
-nodist_libbitgreen_util_a_SOURCES = $(srcdir)/obj/build.h
+nodist_libcspn_util_a_SOURCES = $(srcdir)/obj/build.h
 #
 
-# bitgreend binary #
-bitgreend_SOURCES = bitgreend.cpp
-bitgreend_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-bitgreend_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-bitgreend_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+# cspnd binary #
+cspnd_SOURCES = cspnd.cpp
+cspnd_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+cspnd_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+cspnd_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
-bitgreend_SOURCES += bitgreend-res.rc
+cspnd_SOURCES += cspnd-res.rc
 endif
 
 # Libraries below may be listed more than once to resolve circular dependencies (see
 # https://eli.thegreenplace.net/2013/07/09/library-order-in-static-linking#circular-dependency)
-bitgreend_LDADD = \
+cspnd_LDADD = \
   $(LIBBITCOIN_SERVER) \
   $(LIBBITCOIN_COMMON) \
   $(LIBUNIVALUE) \
@@ -751,38 +751,38 @@ bitgreend_LDADD = \
   $(LIBMEMENV) \
   $(LIBSECP256K1)
 
-bitgreend_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS) $(BLS_LIBS)
+cspnd_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS) $(BLS_LIBS)
 
-# bitgreen-cli binary #
-bitgreen_cli_SOURCES = bitgreen-cli.cpp
-bitgreen_cli_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(EVENT_CFLAGS)
-bitgreen_cli_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-bitgreen_cli_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+# cspn-cli binary #
+cspn_cli_SOURCES = cspn-cli.cpp
+cspn_cli_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(EVENT_CFLAGS)
+cspn_cli_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+cspn_cli_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
-bitgreen_cli_SOURCES += bitgreen-cli-res.rc
+cspn_cli_SOURCES += cspn-cli-res.rc
 endif
 
-bitgreen_cli_LDADD = \
+cspn_cli_LDADD = \
   $(LIBBITCOIN_CLI) \
   $(LIBUNIVALUE) \
   $(LIBBITCOIN_UTIL) \
   $(LIBBITCOIN_CRYPTO)
 
-bitgreen_cli_LDADD += $(BOOST_LIBS) $(CRYPTO_LIBS) $(EVENT_LIBS) $(BLS_LIBS)
+cspn_cli_LDADD += $(BOOST_LIBS) $(CRYPTO_LIBS) $(EVENT_LIBS) $(BLS_LIBS)
 #
 
-# bitgreen-tx binary #
-bitgreen_tx_SOURCES = bitgreen-tx.cpp
-bitgreen_tx_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-bitgreen_tx_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-bitgreen_tx_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+# cspn-tx binary #
+cspn_tx_SOURCES = cspn-tx.cpp
+cspn_tx_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+cspn_tx_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+cspn_tx_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
-bitgreen_tx_SOURCES += bitgreen-tx-res.rc
+cspn_tx_SOURCES += cspn-tx-res.rc
 endif
 
-bitgreen_tx_LDADD = \
+cspn_tx_LDADD = \
   $(LIBUNIVALUE) \
   $(LIBBITCOIN_COMMON) \
   $(LIBBITCOIN_UTIL) \
@@ -790,20 +790,20 @@ bitgreen_tx_LDADD = \
   $(LIBBITCOIN_CRYPTO) \
   $(LIBSECP256K1)
 
-bitgreen_tx_LDADD += $(BOOST_LIBS) $(CRYPTO_LIBS) $(BLS_LIBS)
+cspn_tx_LDADD += $(BOOST_LIBS) $(CRYPTO_LIBS) $(BLS_LIBS)
 #
 
-# bitgreen-wallet binary #
-bitgreen_wallet_SOURCES = bitgreen-wallet.cpp
-bitgreen_wallet_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-bitgreen_wallet_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-bitgreen_wallet_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+# cspn-wallet binary #
+cspn_wallet_SOURCES = cspn-wallet.cpp
+cspn_wallet_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+cspn_wallet_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+cspn_wallet_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
-bitgreen_wallet_SOURCES += bitgreen-wallet-res.rc
+cspn_wallet_SOURCES += cspn-wallet-res.rc
 endif
 
-bitgreen_wallet_LDADD = \
+cspn_wallet_LDADD = \
   $(LIBBITCOIN_WALLET_TOOL) \
   $(LIBBITCOIN_WALLET) \
   $(LIBBITCOIN_COMMON) \
@@ -817,22 +817,22 @@ bitgreen_wallet_LDADD = \
   $(LIBSECP256K1) \
   $(LIBUNIVALUE)
 
-bitgreen_wallet_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(CRYPTO_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(MINIUPNPC_LIBS) $(ZMQ_LIBS) $(BLS_LIBS)
+cspn_wallet_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(CRYPTO_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(MINIUPNPC_LIBS) $(ZMQ_LIBS) $(BLS_LIBS)
 #
 
-# bitgreenconsensus library #
+# cspnconsensus library #
 if BUILD_BITCOIN_LIBS
-include_HEADERS = script/bitgreenconsensus.h
-libbitgreenconsensus_la_SOURCES = support/cleanse.cpp $(crypto_libbitgreen_crypto_base_a_SOURCES) $(libbitgreen_consensus_a_SOURCES)
+include_HEADERS = script/cspnconsensus.h
+libcspnconsensus_la_SOURCES = support/cleanse.cpp $(crypto_libcspn_crypto_base_a_SOURCES) $(libcspn_consensus_a_SOURCES)
 
 if GLIBC_BACK_COMPAT
-  libbitgreenconsensus_la_SOURCES += compat/glibc_compat.cpp
+  libcspnconsensus_la_SOURCES += compat/glibc_compat.cpp
 endif
 
-libbitgreenconsensus_la_LDFLAGS = $(AM_LDFLAGS) -no-undefined $(RELDFLAGS)
-libbitgreenconsensus_la_LIBADD = $(LIBSECP256K1) $(BLS_LIBS)
-libbitgreenconsensus_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(builddir)/obj -I$(srcdir)/secp256k1/include -DBUILD_BITCOIN_INTERNAL
-libbitgreenconsensus_la_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libcspnconsensus_la_LDFLAGS = $(AM_LDFLAGS) -no-undefined $(RELDFLAGS)
+libcspnconsensus_la_LIBADD = $(LIBSECP256K1) $(BLS_LIBS)
+libcspnconsensus_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(builddir)/obj -I$(srcdir)/secp256k1/include -DBUILD_BITCOIN_INTERNAL
+libcspnconsensus_la_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 
 endif
 #
@@ -867,12 +867,12 @@ EXTRA_DIST = $(CTAES_DIST)
 EXTRA_DIST += $(IMMER_DIST)
 
 
-config/bitgreen-config.h: config/stamp-h1
+config/cspn-config.h: config/stamp-h1
 	@$(MAKE) -C $(top_builddir) $(subdir)/$(@)
-config/stamp-h1: $(top_srcdir)/$(subdir)/config/bitgreen-config.h.in $(top_builddir)/config.status
+config/stamp-h1: $(top_srcdir)/$(subdir)/config/cspn-config.h.in $(top_builddir)/config.status
 	$(AM_V_at)$(MAKE) -C $(top_builddir) $(subdir)/$(@)
-$(top_srcdir)/$(subdir)/config/bitgreen-config.h.in:  $(am__configure_deps)
-	$(AM_V_at)$(MAKE) -C $(top_srcdir) $(subdir)/config/bitgreen-config.h.in
+$(top_srcdir)/$(subdir)/config/cspn-config.h.in:  $(am__configure_deps)
+	$(AM_V_at)$(MAKE) -C $(top_srcdir) $(subdir)/config/cspn-config.h.in
 
 clean-local:
 	-$(MAKE) -C secp256k1 clean

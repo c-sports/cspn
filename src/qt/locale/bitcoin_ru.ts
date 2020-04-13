@@ -66,8 +66,8 @@
         <translation>Адреса получения</translation>
     </message>
     <message>
-        <source>These are your BitGreen addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>Это ваши адреса BitGreen для отправки платежей. Всегда проверяйте количество и адрес получателя перед отправкой перевода.</translation>
+        <source>These are your CSPN addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <translation>Это ваши адреса CSPN для отправки платежей. Всегда проверяйте количество и адрес получателя перед отправкой перевода.</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -503,7 +503,7 @@
     </message>
     </context>
 <context>
-    <name>bitgreen-core</name>
+    <name>cspn-core</name>
     <message>
         <source>Error initializing block database</source>
         <translation>Ошибка инициализации БД блоков</translation>

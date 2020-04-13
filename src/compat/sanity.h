@@ -2,10 +2,10 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_COMPAT_SANITY_H
-#define BITGREEN_COMPAT_SANITY_H
+#ifndef CSPN_COMPAT_SANITY_H
+#define CSPN_COMPAT_SANITY_H
 
 bool glibc_sanity_test();
 bool glibcxx_sanity_test();
 
-#endif // BITGREEN_COMPAT_SANITY_H
+#endif // CSPN_COMPAT_SANITY_H

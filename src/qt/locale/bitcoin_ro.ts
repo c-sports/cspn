@@ -62,8 +62,8 @@
         <translation>Adresele de primire</translation>
     </message>
     <message>
-        <source>These are your BitGreen addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>Acestea sunt adresele tale BitGreen pentru trimiterea plății. Verifică mereu suma și adresa de primire înainte de trimiterea monedelor.</translation>
+        <source>These are your CSPN addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <translation>Acestea sunt adresele tale CSPN pentru trimiterea plății. Verifică mereu suma și adresa de primire înainte de trimiterea monedelor.</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -290,8 +290,8 @@
         <translation>Click pentru a permite, din nou, activitate rețelei.</translation>
     </message>
     <message>
-        <source>Send coins to a BitGreen address</source>
-        <translation>Trimite monedele către o adresă BitGreen</translation>
+        <source>Send coins to a CSPN address</source>
+        <translation>Trimite monedele către o adresă CSPN</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -334,12 +334,12 @@
         <translation>Criptează cheile private care aparțin portofelului tău.</translation>
     </message>
     <message>
-        <source>Sign messages with your BitGreen addresses to prove you own them</source>
-        <translation>Semnează mesajele cu adresa ta de BitGreen pentru a face dovada că îți aparțin.</translation>
+        <source>Sign messages with your CSPN addresses to prove you own them</source>
+        <translation>Semnează mesajele cu adresa ta de CSPN pentru a face dovada că îți aparțin.</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified BitGreen addresses</source>
-        <translation>Verifică mesajele cu scopul de a asigura faptul că au fost semnate cu adresa de BitGreen specificată.</translation>
+        <source>Verify messages to ensure they were signed with specified CSPN addresses</source>
+        <translation>Verifică mesajele cu scopul de a asigura faptul că au fost semnate cu adresa de CSPN specificată.</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -354,8 +354,8 @@
         <translation>&amp;Ajutor</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and bitgreen: URIs)</source>
-        <translation>Cerere plată (generează coduri QR și bitgreen: URIs)</translation>
+        <source>Request payments (generates QR codes and cspn: URIs)</source>
+        <translation>Cerere plată (generează coduri QR și cspn: URIs)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -366,8 +366,8 @@
         <translation>Afișează lista adreselor de primire utilizate și etichetele.</translation>
     </message>
     <message>
-        <source>Open a bitgreen: URI or payment request</source>
-        <translation>Deschide un bitgreen: URI sau cerere de plată</translation>
+        <source>Open a cspn: URI or payment request</source>
+        <translation>Deschide un cspn: URI sau cerere de plată</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
@@ -603,8 +603,8 @@
         <translation>Alege un folder/director personalizat</translation>
     </message>
     <message>
-        <source>BitGreen</source>
-        <translation>BitGreen</translation>
+        <source>CSPN</source>
+        <translation>CSPN</translation>
     </message>
     <message>
         <source>At least %1 GB of data will be stored in this directory, and it will grow over time.</source>
@@ -637,8 +637,8 @@
         <translation>formular</translation>
     </message>
     <message>
-        <source>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the bitgreen network, as detailed below.</source>
-        <translation>Posibil ca tranzacțiile recente să nu fie vizibile, încă, astfel bilanțul portofelului tău poate fi incorect. Aceste informații vor fi corecte o dată ce portofelul tău a încheiat sincronizarea cu rețeaua bitgreen, conform descrierii de mai jos.</translation>
+        <source>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the cspn network, as detailed below.</source>
+        <translation>Posibil ca tranzacțiile recente să nu fie vizibile, încă, astfel bilanțul portofelului tău poate fi incorect. Aceste informații vor fi corecte o dată ce portofelul tău a încheiat sincronizarea cu rețeaua cspn, conform descrierii de mai jos.</translation>
     </message>
     <message>
         <source>Unknown...</source>
@@ -1259,7 +1259,7 @@
     </message>
     </context>
 <context>
-    <name>bitgreen-core</name>
+    <name>cspn-core</name>
     <message>
         <source>Upgrading UTXO database</source>
         <translation>Actualizarea bazei de date UTXO</translation>

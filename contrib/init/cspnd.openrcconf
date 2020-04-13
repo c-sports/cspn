@@ -1,0 +1,33 @@
+# /etc/conf.d/cspnd: config file for /etc/init.d/cspnd
+
+# Config file location
+#CSPND_CONFIGFILE="/etc/cspn/cspn.conf"
+
+# What directory to write pidfile to?  (created and owned by $CSPND_USER)
+#CSPND_PIDDIR="/var/run/cspnd"
+
+# What filename to give the pidfile
+#CSPND_PIDFILE="${CSPND_PIDDIR}/cspnd.pid"
+
+# Where to write cspnd data (be mindful that the blockchain is large)
+#CSPND_DATADIR="/var/lib/cspnd"
+
+# User and group to own cspnd process
+#CSPND_USER="cspn"
+#CSPND_GROUP="cspn"
+
+# Path to cspnd executable
+#CSPND_BIN="/usr/bin/cspnd"
+
+# Nice value to run cspnd under
+#CSPND_NICE=0
+
+# Additional options (avoid -conf and -datadir, use flags above)
+#CSPND_OPTS=""
+
+# The timeout in seconds OpenRC will wait for cspnd to terminate
+# after a SIGTERM has been raised.
+# Note that this will be mapped as argument to start-stop-daemon's
+# '--retry' option, which means you can specify a retry schedule
+# here. For more information see man 8 start-stop-daemon.
+CSPND_SIGTERM_TIMEOUT=60

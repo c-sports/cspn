@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_QT_CLIENTMODEL_H
-#define BITGREEN_QT_CLIENTMODEL_H
+#ifndef CSPN_QT_CLIENTMODEL_H
+#define CSPN_QT_CLIENTMODEL_H
 
 #include <special/deterministicmns.h>
 #include <sync.h>
@@ -43,7 +43,7 @@ enum NumConnections {
     CONNECTIONS_ALL  = (CONNECTIONS_IN | CONNECTIONS_OUT),
 };
 
-/** Model for BitGreen network client. */
+/** Model for CSPN network client. */
 class ClientModel : public QObject
 {
     Q_OBJECT
@@ -138,4 +138,4 @@ public Q_SLOTS:
     void updateBanlist();
 };
 
-#endif // BITGREEN_QT_CLIENTMODEL_H
+#endif // CSPN_QT_CLIENTMODEL_H

@@ -1,10 +1,10 @@
 // Copyright (c) 2018 The Dash Core developers
-// Copyright (c) 2019 The BitGreen Core developers
+// Copyright (c) 2019 The BitTestForLaterSoICanUseReplaceGreen Core developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_LLMQ_QUORUMS_BLOCKPROCESSOR_H
-#define BITGREEN_LLMQ_QUORUMS_BLOCKPROCESSOR_H
+#ifndef CSPN_LLMQ_QUORUMS_BLOCKPROCESSOR_H
+#define CSPN_LLMQ_QUORUMS_BLOCKPROCESSOR_H
 
 #include <llmq/quorums_commitment.h>
 #include <llmq/quorums_utils.h>
@@ -67,4 +67,4 @@ extern CQuorumBlockProcessor* quorumBlockProcessor;
 
 }
 
-#endif//BITGREEN_LLMQ_QUORUMS_BLOCKPROCESSOR_H
+#endif//CSPN_LLMQ_QUORUMS_BLOCKPROCESSOR_H

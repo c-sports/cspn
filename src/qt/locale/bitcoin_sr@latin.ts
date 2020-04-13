@@ -62,8 +62,8 @@
         <translation>Adresa na koju se prima</translation>
     </message>
     <message>
-        <source>These are your BitGreen addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>Ovo su Vaše BitGreen adrese na koju se vrše uplate. Uvek proverite iznos i prijemnu adresu pre slanja novčića.</translation>
+        <source>These are your CSPN addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <translation>Ovo su Vaše CSPN adrese na koju se vrše uplate. Uvek proverite iznos i prijemnu adresu pre slanja novčića.</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -314,8 +314,8 @@
         <translation>Ponovo obeležavam blokove na disku...</translation>
     </message>
     <message>
-        <source>Send coins to a BitGreen address</source>
-        <translation>Pošalji novčiće na BitGreen adresu</translation>
+        <source>Send coins to a CSPN address</source>
+        <translation>Pošalji novčiće na CSPN adresu</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -358,12 +358,12 @@
         <translation>Enkriptuj privatne ključeve novčanika</translation>
     </message>
     <message>
-        <source>Sign messages with your BitGreen addresses to prove you own them</source>
-        <translation>Potpišite poruke sa svojim BitGreen adresama da biste dokazali njihovo vlasništvo</translation>
+        <source>Sign messages with your CSPN addresses to prove you own them</source>
+        <translation>Potpišite poruke sa svojim CSPN adresama da biste dokazali njihovo vlasništvo</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified BitGreen addresses</source>
-        <translation>Proverite poruke da biste utvrdili sa kojim BitGreen adresama su potpisane</translation>
+        <source>Verify messages to ensure they were signed with specified CSPN addresses</source>
+        <translation>Proverite poruke da biste utvrdili sa kojim CSPN adresama su potpisane</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -382,8 +382,8 @@
         <translation>Alatke za tabove</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and bitgreen: URIs)</source>
-        <translation>Zatražite plaćanje (generiše QR kodove i bitgreen: URI-e)</translation>
+        <source>Request payments (generates QR codes and cspn: URIs)</source>
+        <translation>Zatražite plaćanje (generiše QR kodove i cspn: URI-e)</translation>
     </message>
     <message>
         <source>Error</source>
@@ -493,8 +493,8 @@
 <context>
     <name>Intro</name>
     <message>
-        <source>BitGreen</source>
-        <translation>BitGreen</translation>
+        <source>CSPN</source>
+        <translation>CSPN</translation>
     </message>
     <message>
         <source>Error</source>
@@ -669,7 +669,7 @@
     <name>WalletView</name>
     </context>
 <context>
-    <name>bitgreen-core</name>
+    <name>cspn-core</name>
     <message>
         <source>Insufficient funds</source>
         <translation>Nedovoljno sredstava</translation>

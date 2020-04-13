@@ -1,10 +1,10 @@
 // Copyright (c) 2018-2019 The Dash Core developers
-// Copyright (c) 2019 The BitGreen Core developers
+// Copyright (c) 2019 The BitTestForLaterSoICanUseReplaceGreen Core developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_LLMQ_QUORUMS_SIGNING_H
-#define BITGREEN_LLMQ_QUORUMS_SIGNING_H
+#ifndef CSPN_LLMQ_QUORUMS_SIGNING_H
+#define CSPN_LLMQ_QUORUMS_SIGNING_H
 
 #include <llmq/quorums.h>
 
@@ -189,4 +189,4 @@ extern CSigningManager* quorumSigningManager;
 
 }
 
-#endif //BITGREEN_LLMQ_QUORUMS_SIGNING_H
+#endif //CSPN_LLMQ_QUORUMS_SIGNING_H

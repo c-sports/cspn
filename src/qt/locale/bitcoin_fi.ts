@@ -66,8 +66,8 @@
         <translation>Vastaanotto-osoitteet</translation>
     </message>
     <message>
-        <source>These are your BitGreen addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>Nämä ovat BitGreen-osoitteesi maksujen lähettämistä varten. Tarkista aina määrä ja vastaanotto-osoite ennen kolikoiden lähettämistä.</translation>
+        <source>These are your CSPN addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <translation>Nämä ovat CSPN-osoitteesi maksujen lähettämistä varten. Tarkista aina määrä ja vastaanotto-osoite ennen kolikoiden lähettämistä.</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -330,8 +330,8 @@
         <translation>Välipalvelin on &lt;b&gt;käytössä&lt;/b&gt;: %1</translation>
     </message>
     <message>
-        <source>Send coins to a BitGreen address</source>
-        <translation>Lähetä kolikoita BitGreen-osoitteeseen</translation>
+        <source>Send coins to a CSPN address</source>
+        <translation>Lähetä kolikoita CSPN-osoitteeseen</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -367,19 +367,19 @@
     </message>
     <message>
         <source>Show or hide the main Window</source>
-        <translation>Näytä tai piilota BitGreen-ikkuna</translation>
+        <translation>Näytä tai piilota CSPN-ikkuna</translation>
     </message>
     <message>
         <source>Encrypt the private keys that belong to your wallet</source>
         <translation>Suojaa yksityiset avaimet, jotka kuuluvat lompakkoosi</translation>
     </message>
     <message>
-        <source>Sign messages with your BitGreen addresses to prove you own them</source>
-        <translation>Allekirjoita viestisi omalla BitGreen -osoitteellasi todistaaksesi, että omistat ne</translation>
+        <source>Sign messages with your CSPN addresses to prove you own them</source>
+        <translation>Allekirjoita viestisi omalla CSPN -osoitteellasi todistaaksesi, että omistat ne</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified BitGreen addresses</source>
-        <translation>Varmista, että viestisi on allekirjoitettu määritetyllä BitGreen -osoitteella</translation>
+        <source>Verify messages to ensure they were signed with specified CSPN addresses</source>
+        <translation>Varmista, että viestisi on allekirjoitettu määritetyllä CSPN -osoitteella</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -398,8 +398,8 @@
         <translation>Välilehtipalkki</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and bitgreen: URIs)</source>
-        <translation>Pyydä maksuja (Luo QR koodit ja bitgreen: URIt)</translation>
+        <source>Request payments (generates QR codes and cspn: URIs)</source>
+        <translation>Pyydä maksuja (Luo QR koodit ja cspn: URIt)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -410,16 +410,16 @@
         <translation>Näytä vastaanottamiseen käytettyjen osoitteiden ja nimien lista</translation>
     </message>
     <message>
-        <source>Open a bitgreen: URI or payment request</source>
-        <translation>Avaa bitgreen: URI tai maksupyyntö</translation>
+        <source>Open a cspn: URI or payment request</source>
+        <translation>Avaa cspn: URI tai maksupyyntö</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
         <translation>&amp;Komentorivin valinnat</translation>
     </message>
     <message numerus="yes">
-        <source>%n active connection(s) to BitGreen network</source>
-        <translation><numerusform>%n aktiivinen yhteys BitGreen-verkkoon</numerusform><numerusform>%n aktiivista yhteyttä BitGreen-verkkoon</numerusform></translation>
+        <source>%n active connection(s) to CSPN network</source>
+        <translation><numerusform>%n aktiivinen yhteys CSPN-verkkoon</numerusform><numerusform>%n aktiivista yhteyttä CSPN-verkkoon</numerusform></translation>
     </message>
     <message>
         <source>Indexing blocks on disk...</source>
@@ -462,8 +462,8 @@
         <translation>Rahansiirtohistoria on ajan tasalla</translation>
     </message>
     <message>
-        <source>Show the %1 help message to get a list with possible BitGreen command-line options</source>
-        <translation>Näytä %1 ohjeet saadaksesi listan mahdollisista BitGreenin komentorivivalinnoista</translation>
+        <source>Show the %1 help message to get a list with possible CSPN command-line options</source>
+        <translation>Näytä %1 ohjeet saadaksesi listan mahdollisista CSPNin komentorivivalinnoista</translation>
     </message>
     <message>
         <source>default wallet</source>
@@ -536,8 +536,8 @@
         <translation>Lompakko on &lt;b&gt;salattu&lt;/b&gt; ja tällä hetkellä &lt;b&gt;lukittuna&lt;/b&gt;</translation>
     </message>
     <message>
-        <source>A fatal error occurred. BitGreen can no longer continue safely and will quit.</source>
-        <translation>Peruuttamaton virhe on tapahtunut. BitGreen ei voi enää jatkaa turvallisesti ja sammutetaan.</translation>
+        <source>A fatal error occurred. CSPN can no longer continue safely and will quit.</source>
+        <translation>Peruuttamaton virhe on tapahtunut. CSPN ei voi enää jatkaa turvallisesti ja sammutetaan.</translation>
     </message>
 </context>
 <context>
@@ -726,8 +726,8 @@
         <translation>Muokkaa lähettävää osoitetta</translation>
     </message>
     <message>
-        <source>The entered address "%1" is not a valid BitGreen address.</source>
-        <translation>Antamasi osoite "%1" ei ole kelvollinen BitGreen-osoite.</translation>
+        <source>The entered address "%1" is not a valid CSPN address.</source>
+        <translation>Antamasi osoite "%1" ei ole kelvollinen CSPN-osoite.</translation>
     </message>
     <message>
         <source>Address "%1" already exists as a receiving address with label "%2" and so cannot be added as a sending address.</source>
@@ -829,8 +829,8 @@
         <translation>Määritä oma kansio:</translation>
     </message>
     <message>
-        <source>BitGreen</source>
-        <translation>BitGreen</translation>
+        <source>CSPN</source>
+        <translation>CSPN</translation>
     </message>
     <message>
         <source>At least %1 GB of data will be stored in this directory, and it will grow over time.</source>
@@ -841,8 +841,8 @@
         <translation>Noin %1 GB tietoa varastoidaan tähän hakemistoon.</translation>
     </message>
     <message>
-        <source>%1 will download and store a copy of the BitGreen block chain.</source>
-        <translation>%1 lataa ja tallentaa kopion BitGreenin lohkoketjusta.</translation>
+        <source>%1 will download and store a copy of the CSPN block chain.</source>
+        <translation>%1 lataa ja tallentaa kopion CSPNin lohkoketjusta.</translation>
     </message>
     <message>
         <source>The wallet will also be stored in this directory.</source>
@@ -875,12 +875,12 @@
         <translation>Lomake</translation>
     </message>
     <message>
-        <source>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the bitgreen network, as detailed below.</source>
-        <translation>Viimeiset tapahtumat eivät välttämättä vielä näy, joten lompakkosi saldo voi olla virheellinen. Tieto korjautuu, kunhan lompakkosi synkronointi bitgreen-verkon kanssa on päättynyt. Tiedot näkyvät alla.</translation>
+        <source>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the cspn network, as detailed below.</source>
+        <translation>Viimeiset tapahtumat eivät välttämättä vielä näy, joten lompakkosi saldo voi olla virheellinen. Tieto korjautuu, kunhan lompakkosi synkronointi cspn-verkon kanssa on päättynyt. Tiedot näkyvät alla.</translation>
     </message>
     <message>
-        <source>Attempting to spend bitgreens that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
-        <translation>Verkko ei tule hyväksymään sellaisten bitgreenien käyttämistä, jotka liittyvät vielä näkymättömissä oleviin siirtoihin.</translation>
+        <source>Attempting to spend cspns that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
+        <translation>Verkko ei tule hyväksymään sellaisten cspnien käyttämistä, jotka liittyvät vielä näkymättömissä oleviin siirtoihin.</translation>
     </message>
     <message>
         <source>Number of blocks left</source>
@@ -1049,8 +1049,8 @@
         <translation>&amp;Käytä varmistamattomia vaihtorahoja</translation>
     </message>
     <message>
-        <source>Automatically open the BitGreen client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Avaa BitGreen-asiakasohjelman portti reitittimellä automaattisesti. Tämä toimii vain, jos reitittimesi tukee UPnP:tä ja se on käytössä.</translation>
+        <source>Automatically open the CSPN client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Avaa CSPN-asiakasohjelman portti reitittimellä automaattisesti. Tämä toimii vain, jos reitittimesi tukee UPnP:tä ja se on käytössä.</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
@@ -1065,8 +1065,8 @@
         <translation>Hyväksy sisääntulevia yhteyksiä</translation>
     </message>
     <message>
-        <source>Connect to the BitGreen network through a SOCKS5 proxy.</source>
-        <translation>Yhdistä BitGreen-verkkoon SOCKS5-välityspalvelimen kautta.</translation>
+        <source>Connect to the CSPN network through a SOCKS5 proxy.</source>
+        <translation>Yhdistä CSPN-verkkoon SOCKS5-välityspalvelimen kautta.</translation>
     </message>
     <message>
         <source>&amp;Connect through SOCKS5 proxy (default proxy):</source>
@@ -1101,8 +1101,8 @@
         <translation>Tor</translation>
     </message>
     <message>
-        <source>Connect to the BitGreen network through a separate SOCKS5 proxy for Tor hidden services.</source>
-        <translation>Yhdistä BitGreen-verkkoon erillisen SOCKS5-välityspalvelimen kautta piilotettuja Tor-palveluja varten.</translation>
+        <source>Connect to the CSPN network through a separate SOCKS5 proxy for Tor hidden services.</source>
+        <translation>Yhdistä CSPN-verkkoon erillisen SOCKS5-välityspalvelimen kautta piilotettuja Tor-palveluja varten.</translation>
     </message>
     <message>
         <source>&amp;Window</source>
@@ -1134,11 +1134,11 @@
     </message>
     <message>
         <source>&amp;Unit to show amounts in:</source>
-        <translation>Yksikkö jona bitgreen-määrät näytetään</translation>
+        <translation>Yksikkö jona cspn-määrät näytetään</translation>
     </message>
     <message>
         <source>Choose the default subdivision unit to show in the interface and when sending coins.</source>
-        <translation>Valitse mitä yksikköä käytetään ensisijaisesti bitgreen-määrien näyttämiseen.</translation>
+        <translation>Valitse mitä yksikköä käytetään ensisijaisesti cspn-määrien näyttämiseen.</translation>
     </message>
     <message>
         <source>Whether to show coin control features or not.</source>
@@ -1208,8 +1208,8 @@
         <translation>Lomake</translation>
     </message>
     <message>
-        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the BitGreen network after a connection is established, but this process has not completed yet.</source>
-        <translation>Näytetyt tiedot eivät välttämättä ole ajantasalla. Lompakkosi synkronoituu BitGreen-verkon kanssa automaattisesti yhteyden muodostamisen jälkeen, mutta synkronointi on vielä meneillään.</translation>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the CSPN network after a connection is established, but this process has not completed yet.</source>
+        <translation>Näytetyt tiedot eivät välttämättä ole ajantasalla. Lompakkosi synkronoituu CSPN-verkon kanssa automaattisesti yhteyden muodostamisen jälkeen, mutta synkronointi on vielä meneillään.</translation>
     </message>
     <message>
         <source>Watch-only:</source>
@@ -1249,7 +1249,7 @@
     </message>
     <message>
         <source>Your current total balance</source>
-        <translation>Tililläsi tällä hetkellä olevien BitGreenien määrä</translation>
+        <translation>Tililläsi tällä hetkellä olevien CSPNien määrä</translation>
     </message>
     <message>
         <source>Your current balance in watch-only addresses</source>
@@ -1283,16 +1283,16 @@
         <translation>Maksupyyntövirhe</translation>
     </message>
     <message>
-        <source>Cannot start bitgreen: click-to-pay handler</source>
-        <translation>BitGreenia ei voi käynnistää: klikkaa-maksaaksesi -käsittelijän virhe</translation>
+        <source>Cannot start cspn: click-to-pay handler</source>
+        <translation>CSPNia ei voi käynnistää: klikkaa-maksaaksesi -käsittelijän virhe</translation>
     </message>
     <message>
         <source>URI handling</source>
         <translation>URI käsittely</translation>
     </message>
     <message>
-        <source>'bitgreen://' is not a valid URI. Use 'bitgreen:' instead.</source>
-        <translation>'bitgreen://' ei ole kelvollinen URI. Käytä 'bitgreen:' sen sijaan.</translation>
+        <source>'cspn://' is not a valid URI. Use 'cspn:' instead.</source>
+        <translation>'cspn://' ei ole kelvollinen URI. Käytä 'cspn:' sen sijaan.</translation>
     </message>
     <message>
         <source>Payment request fetch URL is invalid: %1</source>
@@ -1303,8 +1303,8 @@
         <translation>Virheellinen maksuosoite %1</translation>
     </message>
     <message>
-        <source>URI cannot be parsed! This can be caused by an invalid BitGreen address or malformed URI parameters.</source>
-        <translation>URIa ei voitu jäsentää! Tämä voi johtua virheellisestä BitGreen-osoitteesta tai väärin muotoilluista URI parametreista.</translation>
+        <source>URI cannot be parsed! This can be caused by an invalid CSPN address or malformed URI parameters.</source>
+        <translation>URIa ei voitu jäsentää! Tämä voi johtua virheellisestä CSPN-osoitteesta tai väärin muotoilluista URI parametreista.</translation>
     </message>
     <message>
         <source>Payment request file handling</source>
@@ -1405,8 +1405,8 @@
         <translation>Määrä</translation>
     </message>
     <message>
-        <source>Enter a BitGreen address (e.g. %1)</source>
-        <translation>Syötä BitGreen-osoite (esim. %1)</translation>
+        <source>Enter a CSPN address (e.g. %1)</source>
+        <translation>Syötä CSPN-osoite (esim. %1)</translation>
     </message>
     <message>
         <source>%1 d</source>
@@ -1814,8 +1814,8 @@
         <translation>&amp;Viesti:</translation>
     </message>
     <message>
-        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the BitGreen network.</source>
-        <translation>Valinnainen viesti liitetään maksupyyntöön ja näytetään avattaessa. Viestiä ei lähetetä BitGreen-verkkoon.</translation>
+        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the CSPN network.</source>
+        <translation>Valinnainen viesti liitetään maksupyyntöön ja näytetään avattaessa. Viestiä ei lähetetä CSPN-verkkoon.</translation>
     </message>
     <message>
         <source>An optional label to associate with the new receiving address.</source>
@@ -2191,8 +2191,8 @@
         <translation><numerusform>Vahvistuminen alkaa arviolta %n lohkon sisällä.</numerusform><numerusform>Vahvistuminen alkaa arviolta %n lohkon sisällä.</numerusform></translation>
     </message>
     <message>
-        <source>Warning: Invalid BitGreen address</source>
-        <translation>Varoitus: Virheellinen BitGreen-osoite </translation>
+        <source>Warning: Invalid CSPN address</source>
+        <translation>Varoitus: Virheellinen CSPN-osoite </translation>
     </message>
     <message>
         <source>Warning: Unknown change address</source>
@@ -2234,8 +2234,8 @@
         <translation>Tämä on normaali maksu.</translation>
     </message>
     <message>
-        <source>The BitGreen address to send the payment to</source>
-        <translation>BitGreen-osoite johon maksu lähetetään</translation>
+        <source>The CSPN address to send the payment to</source>
+        <translation>CSPN-osoite johon maksu lähetetään</translation>
     </message>
     <message>
         <source>Alt+A</source>
@@ -2254,8 +2254,8 @@
         <translation>Poista tämä alkio</translation>
     </message>
     <message>
-        <source>The fee will be deducted from the amount being sent. The recipient will receive less bitgreens than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
-        <translation>Kulu vähennetään lähetettävästä määrästä. Saaja vastaanottaa vähemmän bitgreeneja kuin merkitset Määrä-kenttään. Jos saajia on monia, kulu jaetaan tasan.</translation>
+        <source>The fee will be deducted from the amount being sent. The recipient will receive less cspns than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
+        <translation>Kulu vähennetään lähetettävästä määrästä. Saaja vastaanottaa vähemmän cspneja kuin merkitset Määrä-kenttään. Jos saajia on monia, kulu jaetaan tasan.</translation>
     </message>
     <message>
         <source>S&amp;ubtract fee from amount</source>
@@ -2282,8 +2282,8 @@
         <translation>Aseta nimi tälle osoitteelle lisätäksesi sen käytettyjen osoitteiden listalle.</translation>
     </message>
     <message>
-        <source>A message that was attached to the bitgreen: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the BitGreen network.</source>
-        <translation>Viesti joka liitettiin bitgreen: URI:iin tallennetaan rahansiirtoon viitteeksi. Tätä viestiä ei lähetetä BitGreen-verkkoon.</translation>
+        <source>A message that was attached to the cspn: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the CSPN network.</source>
+        <translation>Viesti joka liitettiin cspn: URI:iin tallennetaan rahansiirtoon viitteeksi. Tätä viestiä ei lähetetä CSPN-verkkoon.</translation>
     </message>
     <message>
         <source>Pay To:</source>
@@ -2327,12 +2327,12 @@
         <translation>&amp;Allekirjoita viesti</translation>
     </message>
     <message>
-        <source>You can sign messages/agreements with your addresses to prove you can receive bitgreens sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
-        <translation>Voit allekirjoittaa viestit / sopimukset omalla osoitteellasi todistaaksesi että voit vastaanottaa siihen lähetetyt bitgreenit. Varo allekirjoittamasta mitään epämääräistä, sillä phishing-hyökkääjät voivat huijata sinua luovuttamaan henkilöllisyytesi allekirjoituksella. Allekirjoita ainoastaan täysin yksityiskohtainen selvitys siitä, mihin olet sitoutumassa.</translation>
+        <source>You can sign messages/agreements with your addresses to prove you can receive cspns sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
+        <translation>Voit allekirjoittaa viestit / sopimukset omalla osoitteellasi todistaaksesi että voit vastaanottaa siihen lähetetyt cspnit. Varo allekirjoittamasta mitään epämääräistä, sillä phishing-hyökkääjät voivat huijata sinua luovuttamaan henkilöllisyytesi allekirjoituksella. Allekirjoita ainoastaan täysin yksityiskohtainen selvitys siitä, mihin olet sitoutumassa.</translation>
     </message>
     <message>
-        <source>The BitGreen address to sign the message with</source>
-        <translation>BitGreen-osoite jolla viesti allekirjoitetaan</translation>
+        <source>The CSPN address to sign the message with</source>
+        <translation>CSPN-osoite jolla viesti allekirjoitetaan</translation>
     </message>
     <message>
         <source>Choose previously used address</source>
@@ -2363,8 +2363,8 @@
         <translation>Kopioi tämänhetkinen allekirjoitus leikepöydälle</translation>
     </message>
     <message>
-        <source>Sign the message to prove you own this BitGreen address</source>
-        <translation>Allekirjoita viesti todistaaksesi, että omistat tämän BitGreen-osoitteen</translation>
+        <source>Sign the message to prove you own this CSPN address</source>
+        <translation>Allekirjoita viesti todistaaksesi, että omistat tämän CSPN-osoitteen</translation>
     </message>
     <message>
         <source>Sign &amp;Message</source>
@@ -2387,12 +2387,12 @@
         <translation>Syötä vastaanottajan osoite, viesti ja allekirjoitus (varmista että kopioit rivinvaihdot, välilyönnit, sarkaimet yms. täsmälleen) alle vahvistaaksesi viestin. Varo lukemasta allekirjoitukseen enempää kuin mitä viestissä itsessään on välttääksesi man-in-the-middle -hyökkäyksiltä. Huomaa, että tämä todentaa ainoastaan allekirjoittavan vastaanottajan osoitteen, tämä ei voi todentaa minkään tapahtuman lähettäjää!</translation>
     </message>
     <message>
-        <source>The BitGreen address the message was signed with</source>
-        <translation>BitGreen-osoite jolla viesti on allekirjoitettu</translation>
+        <source>The CSPN address the message was signed with</source>
+        <translation>CSPN-osoite jolla viesti on allekirjoitettu</translation>
     </message>
     <message>
-        <source>Verify the message to ensure it was signed with the specified BitGreen address</source>
-        <translation>Tarkista viestin allekirjoitus varmistaaksesi, että se allekirjoitettiin tietyllä BitGreen-osoitteella</translation>
+        <source>Verify the message to ensure it was signed with the specified CSPN address</source>
+        <translation>Tarkista viestin allekirjoitus varmistaaksesi, että se allekirjoitettiin tietyllä CSPN-osoitteella</translation>
     </message>
     <message>
         <source>Verify &amp;Message</source>
@@ -3001,7 +3001,7 @@
     </message>
 </context>
 <context>
-    <name>bitgreen-core</name>
+    <name>cspn-core</name>
     <message>
         <source>Distributed under the MIT software license, see the accompanying file %s or %s</source>
         <translation>Jaettu MIT -ohjelmistolisenssin alaisuudessa, katso mukana tuleva %s tiedosto tai %s</translation>

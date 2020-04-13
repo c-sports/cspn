@@ -4,8 +4,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_PUBKEY_H
-#define BITGREEN_PUBKEY_H
+#ifndef CSPN_PUBKEY_H
+#define CSPN_PUBKEY_H
 
 #include <hash.h>
 #include <serialize.h>
@@ -260,4 +260,4 @@ public:
     ~ECCVerifyHandle();
 };
 
-#endif // BITGREEN_PUBKEY_H
+#endif // CSPN_PUBKEY_H

@@ -62,8 +62,8 @@
         <translation>收款地址</translation>
     </message>
     <message>
-        <source>These are your BitGreen addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>這些是你要付款過去的 BitGreen 位址。在付款之前，務必要檢查金額和收款位址是否正確。</translation>
+        <source>These are your CSPN addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <translation>這些是你要付款過去的 CSPN 位址。在付款之前，務必要檢查金額和收款位址是否正確。</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -298,8 +298,8 @@
         <translation>正在為磁碟區塊重建索引...</translation>
     </message>
     <message>
-        <source>Send coins to a BitGreen address</source>
-        <translation>付款至一個 BitGreen 位址</translation>
+        <source>Send coins to a CSPN address</source>
+        <translation>付款至一個 CSPN 位址</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -350,8 +350,8 @@
         <translation>說明 &amp;H</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and bitgreen: URIs)</source>
-        <translation>要求付款 (產生QR碼 bitgreen: URIs)</translation>
+        <source>Request payments (generates QR codes and cspn: URIs)</source>
+        <translation>要求付款 (產生QR碼 cspn: URIs)</translation>
     </message>
     <message>
         <source>Indexing blocks on disk...</source>
@@ -401,8 +401,8 @@
 <context>
     <name>Intro</name>
     <message>
-        <source>BitGreen</source>
-        <translation>BitGreen</translation>
+        <source>CSPN</source>
+        <translation>CSPN</translation>
     </message>
     <message>
         <source>Error</source>
@@ -445,8 +445,8 @@
 <context>
     <name>QObject</name>
     <message>
-        <source>Enter a BitGreen address (e.g. %1)</source>
-        <translation>輸入一個 BitGreen 位址 (例如 %1)</translation>
+        <source>Enter a CSPN address (e.g. %1)</source>
+        <translation>輸入一個 CSPN 位址 (例如 %1)</translation>
     </message>
     <message>
         <source>%1 d</source>
@@ -669,6 +669,6 @@
     </message>
     </context>
 <context>
-    <name>bitgreen-core</name>
+    <name>cspn-core</name>
     </context>
 </TS>

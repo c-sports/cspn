@@ -383,6 +383,6 @@
     </message>
     </context>
 <context>
-    <name>bitgreen-core</name>
+    <name>cspn-core</name>
     </context>
 </TS>

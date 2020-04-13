@@ -1,5 +1,5 @@
 // Copyright (c) 2011-2019 The Bitcoin Core developers
-// Copyright (c) 2018-2019 The BitGreen Core developers
+// Copyright (c) 2018-2019 The BitTestForLaterSoICanUseReplaceGreen Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -106,16 +106,16 @@ void setupAddressWidget(QValidatedLineEdit *widget, QWidget *parent)
     widget->setFont(fixedPitchFont());
     // We don't want translators to use own addresses in translations
     // and this is the only place, where this address is supplied.
-    widget->setPlaceholderText(QObject::tr("Enter a BitGreen address (e.g. %1)").arg(
+    widget->setPlaceholderText(QObject::tr("Enter a CSPN address (e.g. %1)").arg(
         QString::fromStdString(DummyAddress(Params()))));
     widget->setValidator(new BitcoinAddressEntryValidator(parent));
     widget->setCheckValidator(new BitcoinAddressCheckValidator(parent));
 }
 
-bool parseBitGreenURI(const QUrl &uri, SendCoinsRecipient *out)
+bool parseBitcoinURI(const QUrl &uri, SendCoinsRecipient *out)
 {
-    // return if URI is not valid or is no bitgreen: URI
-    if(!uri.isValid() || uri.scheme() != QString("bitgreen"))
+    // return if URI is not valid or is no cspn: URI
+    if(!uri.isValid() || uri.scheme() != QString("cspn"))
         return false;
 
     SendCoinsRecipient rv;
@@ -151,7 +151,7 @@ bool parseBitGreenURI(const QUrl &uri, SendCoinsRecipient *out)
         {
             if(!i->second.isEmpty())
             {
-                if(!BitcoinUnits::parse(BitcoinUnits::BITG, i->second, &rv.amount))
+                if(!BitcoinUnits::parse(BitcoinUnits::CSPN, i->second, &rv.amount))
                 {
                     return false;
                 }
@@ -169,22 +169,22 @@ bool parseBitGreenURI(const QUrl &uri, SendCoinsRecipient *out)
     return true;
 }
 
-bool parseBitGreenURI(QString uri, SendCoinsRecipient *out)
+bool parseBitcoinURI(QString uri, SendCoinsRecipient *out)
 {
     QUrl uriInstance(uri);
-    return parseBitGreenURI(uriInstance, out);
+    return parseBitcoinURI(uriInstance, out);
 }
 
-QString formatBitGreenURI(const SendCoinsRecipient &info)
+QString formatBitcoinURI(const SendCoinsRecipient &info)
 {
     bool bech_32 = info.address.startsWith(QString::fromStdString(Params().Bech32HRP() + "1"));
 
-    QString ret = QString("bitgreen:%1").arg(bech_32 ? info.address.toUpper() : info.address);
+    QString ret = QString("cspn:%1").arg(bech_32 ? info.address.toUpper() : info.address);
     int paramCount = 0;
 
     if (info.amount)
     {
-        ret += QString("?amount=%1").arg(BitcoinUnits::format(BitcoinUnits::BITG, info.amount, false, BitcoinUnits::separatorNever));
+        ret += QString("?amount=%1").arg(BitcoinUnits::format(BitcoinUnits::CSPN, info.amount, false, BitcoinUnits::separatorNever));
         paramCount++;
     }
 
@@ -388,9 +388,9 @@ void openDebugLogfile()
         QDesktopServices::openUrl(QUrl::fromLocalFile(boostPathToQString(pathDebug)));
 }
 
-bool openBitGreenConf()
+bool openBitcoinConf()
 {
-    fs::path pathConfig = GetConfigFile(gArgs.GetArg("-conf", BITGREEN_CONF_FILENAME));
+    fs::path pathConfig = GetConfigFile(gArgs.GetArg("-conf", CSPN_CONF_FILENAME));
 
     /* Create the file */
     fsbridge::ofstream configFile(pathConfig, std::ios_base::app);
@@ -400,7 +400,7 @@ bool openBitGreenConf()
 
     configFile.close();
 
-    /* Open bitgreen.conf with the associated application */
+    /* Open cspn.conf with the associated application */
     bool res = QDesktopServices::openUrl(QUrl::fromLocalFile(boostPathToQString(pathConfig)));
 #ifdef Q_OS_MAC
     // Workaround for macOS-specific behavior; see #15409.
@@ -556,15 +556,15 @@ fs::path static StartupShortcutPath()
 {
     std::string chain = gArgs.GetChainName();
     if (chain == CBaseChainParams::MAIN)
-        return GetSpecialFolderPath(CSIDL_STARTUP) / "BitGreen.lnk";
+        return GetSpecialFolderPath(CSIDL_STARTUP) / "CSPN.lnk";
     if (chain == CBaseChainParams::TESTNET) // Remove this special case when CBaseChainParams::TESTNET = "testnet4"
-        return GetSpecialFolderPath(CSIDL_STARTUP) / "BitGreen (testnet).lnk";
-    return GetSpecialFolderPath(CSIDL_STARTUP) / strprintf("BitGreen (%s).lnk", chain);
+        return GetSpecialFolderPath(CSIDL_STARTUP) / "CSPN (testnet).lnk";
+    return GetSpecialFolderPath(CSIDL_STARTUP) / strprintf("CSPN (%s).lnk", chain);
 }
 
 bool GetStartOnSystemStartup()
 {
-    // check for BitGreen*.lnk
+    // check for CSPN*.lnk
     return fs::exists(StartupShortcutPath());
 }
 
@@ -639,8 +639,8 @@ fs::path static GetAutostartFilePath()
 {
     std::string chain = gArgs.GetChainName();
     if (chain == CBaseChainParams::MAIN)
-        return GetAutostartDir() / "bitgreen.desktop";
-    return GetAutostartDir() / strprintf("bitgreen-%s.desktop", chain);
+        return GetAutostartDir() / "cspn.desktop";
+    return GetAutostartDir() / strprintf("cspn-%s.desktop", chain);
 }
 
 bool GetStartOnSystemStartup()
@@ -680,13 +680,13 @@ bool SetStartOnSystemStartup(bool fAutoStart)
         if (!optionFile.good())
             return false;
         std::string chain = gArgs.GetChainName();
-        // Write a bitgreen.desktop file to the autostart directory:
+        // Write a cspn.desktop file to the autostart directory:
         optionFile << "[Desktop Entry]\n";
         optionFile << "Type=Application\n";
         if (chain == CBaseChainParams::MAIN)
-            optionFile << "Name=BitGreen\n";
+            optionFile << "Name=CSPN\n";
         else
-            optionFile << strprintf("Name=BitGreen (%s)\n", chain);
+            optionFile << strprintf("Name=CSPN (%s)\n", chain);
         optionFile << "Exec=" << pszExePath << strprintf(" -min -testnet=%d -regtest=%d\n", gArgs.GetBoolArg("-testnet", false), gArgs.GetBoolArg("-regtest", false));
         optionFile << "Terminal=false\n";
         optionFile << "Hidden=false\n";
@@ -705,7 +705,7 @@ LSSharedFileListItemRef findStartupItemInList(CFArrayRef listSnapshot, LSSharedF
         return nullptr;
     }
 
-    // loop through the list of startup items and try to find the bitgreen app
+    // loop through the list of startup items and try to find the cspn app
     for(int i = 0; i < CFArrayGetCount(listSnapshot); i++) {
         LSSharedFileListItemRef item = (LSSharedFileListItemRef)CFArrayGetValueAtIndex(listSnapshot, i);
         UInt32 resolutionFlags = kLSSharedFileListNoUserInteraction | kLSSharedFileListDoNotMountVolumes;
@@ -736,15 +736,15 @@ LSSharedFileListItemRef findStartupItemInList(CFArrayRef listSnapshot, LSSharedF
 
 bool GetStartOnSystemStartup()
 {
-    CFURLRef bitgreenAppUrl = CFBundleCopyBundleURL(CFBundleGetMainBundle());
-    if (bitgreenAppUrl == nullptr) {
+    CFURLRef bitcoinAppUrl = CFBundleCopyBundleURL(CFBundleGetMainBundle());
+    if (bitcoinAppUrl == nullptr) {
         return false;
     }
 
     LSSharedFileListRef loginItems = LSSharedFileListCreate(nullptr, kLSSharedFileListSessionLoginItems, nullptr);
     CFArrayRef listSnapshot = LSSharedFileListCopySnapshot(loginItems, nullptr);
-    bool res = (findStartupItemInList(listSnapshot, loginItems, bitgreenAppUrl) != nullptr);
-    CFRelease(bitgreenAppUrl);
+    bool res = (findStartupItemInList(listSnapshot, loginItems, bitcoinAppUrl) != nullptr);
+    CFRelease(bitcoinAppUrl);
     CFRelease(loginItems);
     CFRelease(listSnapshot);
     return res;
@@ -752,25 +752,25 @@ bool GetStartOnSystemStartup()
 
 bool SetStartOnSystemStartup(bool fAutoStart)
 {
-    CFURLRef bitgreenAppUrl = CFBundleCopyBundleURL(CFBundleGetMainBundle());
-    if (bitgreenAppUrl == nullptr) {
+    CFURLRef bitcoinAppUrl = CFBundleCopyBundleURL(CFBundleGetMainBundle());
+    if (bitcoinAppUrl == nullptr) {
         return false;
     }
 
     LSSharedFileListRef loginItems = LSSharedFileListCreate(nullptr, kLSSharedFileListSessionLoginItems, nullptr);
     CFArrayRef listSnapshot = LSSharedFileListCopySnapshot(loginItems, nullptr);
-    LSSharedFileListItemRef foundItem = findStartupItemInList(listSnapshot, loginItems, bitgreenAppUrl);
+    LSSharedFileListItemRef foundItem = findStartupItemInList(listSnapshot, loginItems, bitcoinAppUrl);
 
     if(fAutoStart && !foundItem) {
-        // add bitgreen app to startup item list
-        LSSharedFileListInsertItemURL(loginItems, kLSSharedFileListItemBeforeFirst, nullptr, nullptr, bitgreenAppUrl, nullptr, nullptr);
+        // add cspn app to startup item list
+        LSSharedFileListInsertItemURL(loginItems, kLSSharedFileListItemBeforeFirst, nullptr, nullptr, bitcoinAppUrl, nullptr, nullptr);
     }
     else if(!fAutoStart && foundItem) {
         // remove item
         LSSharedFileListItemRemove(loginItems, foundItem);
     }
 
-    CFRelease(bitgreenAppUrl);
+    CFRelease(bitcoinAppUrl);
     CFRelease(loginItems);
     CFRelease(listSnapshot);
     return true;

@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_HTTPSERVER_H
-#define BITGREEN_HTTPSERVER_H
+#ifndef CSPN_HTTPSERVER_H
+#define CSPN_HTTPSERVER_H
 
 #include <string>
 #include <stdint.h>
@@ -148,4 +148,4 @@ private:
     struct event* ev;
 };
 
-#endif // BITGREEN_HTTPSERVER_H
+#endif // CSPN_HTTPSERVER_H

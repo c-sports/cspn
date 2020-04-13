@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_QT_SIGNVERIFYMESSAGEDIALOG_H
-#define BITGREEN_QT_SIGNVERIFYMESSAGEDIALOG_H
+#ifndef CSPN_QT_SIGNVERIFYMESSAGEDIALOG_H
+#define CSPN_QT_SIGNVERIFYMESSAGEDIALOG_H
 
 #include <QDialog>
 
@@ -50,4 +50,4 @@ private Q_SLOTS:
     void on_clearButton_VM_clicked();
 };
 
-#endif // BITGREEN_QT_SIGNVERIFYMESSAGEDIALOG_H
+#endif // CSPN_QT_SIGNVERIFYMESSAGEDIALOG_H

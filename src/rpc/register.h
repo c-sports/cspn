@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_RPC_REGISTER_H
-#define BITGREEN_RPC_REGISTER_H
+#ifndef CSPN_RPC_REGISTER_H
+#define CSPN_RPC_REGISTER_H
 
 /** These are in one header file to avoid creating tons of single-function
  * headers for everything under src/rpc/ */
@@ -41,4 +41,4 @@ static inline void RegisterAllCoreRPCCommands(CRPCTable &t)
     RegisterGovernanceRPCCommands(t);
 }
 
-#endif // BITGREEN_RPC_REGISTER_H
+#endif // CSPN_RPC_REGISTER_H

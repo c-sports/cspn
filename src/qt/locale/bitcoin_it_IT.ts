@@ -66,8 +66,8 @@
         <translation>Indirizzi riceventi</translation>
     </message>
     <message>
-        <source>These are your BitGreen addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>Questi sono i suoi indirizzi BitGreen per ricevere i pagamenti. Controlla sempre l'importo e gli indirizzi prima di inviare i coins.</translation>
+        <source>These are your CSPN addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <translation>Questi sono i suoi indirizzi CSPN per ricevere i pagamenti. Controlla sempre l'importo e gli indirizzi prima di inviare i coins.</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -322,8 +322,8 @@
         <translation>Reindicizzazione dei blocchi sul disco...</translation>
     </message>
     <message>
-        <source>Send coins to a BitGreen address</source>
-        <translation>Invia monete ad un indirizzo BitGreen...</translation>
+        <source>Send coins to a CSPN address</source>
+        <translation>Invia monete ad un indirizzo CSPN...</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -366,12 +366,12 @@
         <translation>Cripta le chiavi private che appartengono al tuo portafoglio</translation>
     </message>
     <message>
-        <source>Sign messages with your BitGreen addresses to prove you own them</source>
-        <translation>Firma messaggi con i tuoi indirizzi BitGreen per provare che li possiedi</translation>
+        <source>Sign messages with your CSPN addresses to prove you own them</source>
+        <translation>Firma messaggi con i tuoi indirizzi CSPN per provare che li possiedi</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified BitGreen addresses</source>
-        <translation>Verifica messaggi per accertarti che siano firmati dagli indirizzi BitGreen specificati</translation>
+        <source>Verify messages to ensure they were signed with specified CSPN addresses</source>
+        <translation>Verifica messaggi per accertarti che siano firmati dagli indirizzi CSPN specificati</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -390,8 +390,8 @@
         <translation>Barra degli strumenti</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and bitgreen: URIs)</source>
-        <translation>Richiedi pagamenti (genera codici QR e bitgreen: URI)</translation>
+        <source>Request payments (generates QR codes and cspn: URIs)</source>
+        <translation>Richiedi pagamenti (genera codici QR e cspn: URI)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -402,8 +402,8 @@
         <translation>Mostra la lista degli indirizzi di ricezione usati e le relative etichette</translation>
     </message>
     <message>
-        <source>Open a bitgreen: URI or payment request</source>
-        <translation>Apri un bitgreen: URI o una richiesta di pagamento</translation>
+        <source>Open a cspn: URI or payment request</source>
+        <translation>Apri un cspn: URI o una richiesta di pagamento</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
@@ -446,8 +446,8 @@
         <translation>Aggiornato</translation>
     </message>
     <message>
-        <source>Show the %1 help message to get a list with possible BitGreen command-line options</source>
-        <translation>Mostra il %1 messaggio d'aiuto per ottenere una lista con le possibili opzioni per la riga di comando di BitGreen</translation>
+        <source>Show the %1 help message to get a list with possible CSPN command-line options</source>
+        <translation>Mostra il %1 messaggio d'aiuto per ottenere una lista con le possibili opzioni per la riga di comando di CSPN</translation>
     </message>
     <message>
         <source>default wallet</source>
@@ -492,8 +492,8 @@
         <translation>Transazione in arrivo</translation>
     </message>
     <message>
-        <source>A fatal error occurred. BitGreen can no longer continue safely and will quit.</source>
-        <translation>Si è verificato un errore fatale. BitGreen non può continuare in maniera sicura e sarà chiuso.</translation>
+        <source>A fatal error occurred. CSPN can no longer continue safely and will quit.</source>
+        <translation>Si è verificato un errore fatale. CSPN non può continuare in maniera sicura e sarà chiuso.</translation>
     </message>
 </context>
 <context>
@@ -666,8 +666,8 @@
         <translation>Modifica l'indirizzo di invio</translation>
     </message>
     <message>
-        <source>The entered address "%1" is not a valid BitGreen address.</source>
-        <translation>L'indirizzo inserito "%1" non è un indirizzo BitGreen valido.</translation>
+        <source>The entered address "%1" is not a valid CSPN address.</source>
+        <translation>L'indirizzo inserito "%1" non è un indirizzo CSPN valido.</translation>
     </message>
     <message>
         <source>Could not unlock wallet.</source>
@@ -729,8 +729,8 @@
         <translation>Benvenuto</translation>
     </message>
     <message>
-        <source>BitGreen</source>
-        <translation>BitGreen</translation>
+        <source>CSPN</source>
+        <translation>CSPN</translation>
     </message>
     <message>
         <source>The wallet will also be stored in this directory.</source>
@@ -747,12 +747,12 @@
 <context>
     <name>ModalOverlay</name>
     <message>
-        <source>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the bitgreen network, as detailed below.</source>
-        <translation>Le transazioni recenti potrebbero non essere ancora visibili, e quindi il saldo del wallet potrebbe essere incorretto. Questa informazione verra' corretta non appena il tuo wallet ha finito di sincronizzarsi con la rete bitgreen, come specificato di seguito.</translation>
+        <source>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the cspn network, as detailed below.</source>
+        <translation>Le transazioni recenti potrebbero non essere ancora visibili, e quindi il saldo del wallet potrebbe essere incorretto. Questa informazione verra' corretta non appena il tuo wallet ha finito di sincronizzarsi con la rete cspn, come specificato di seguito.</translation>
     </message>
     <message>
-        <source>Attempting to spend bitgreens that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
-        <translation>Tentare di spendere bitgreen che sono affetti da transazioni non ancora mostrate, non verra' accettato dal network.</translation>
+        <source>Attempting to spend cspns that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
+        <translation>Tentare di spendere cspn che sono affetti da transazioni non ancora mostrate, non verra' accettato dal network.</translation>
     </message>
     <message>
         <source>Number of blocks left</source>
@@ -1037,6 +1037,6 @@
     <name>WalletView</name>
     </context>
 <context>
-    <name>bitgreen-core</name>
+    <name>cspn-core</name>
     </context>
 </TS>

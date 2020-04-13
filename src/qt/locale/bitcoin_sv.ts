@@ -66,8 +66,8 @@
         <translation>Mottagaradresser</translation>
     </message>
     <message>
-        <source>These are your BitGreen addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>Detta är dina BitGreen-adresser för att skicka betalningar. Kontrollera alltid summan och den mottagande adressen innan du skickar bitgreen.</translation>
+        <source>These are your CSPN addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <translation>Detta är dina CSPN-adresser för att skicka betalningar. Kontrollera alltid summan och den mottagande adressen innan du skickar cspn.</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -331,8 +331,8 @@ Var vänlig och försök igen.</translation>
         <translation>Proxy är &lt;b&gt; aktiverad &lt;/b&gt;: %1</translation>
     </message>
     <message>
-        <source>Send coins to a BitGreen address</source>
-        <translation>Skicka bitgreen till en BitGreen-adress</translation>
+        <source>Send coins to a CSPN address</source>
+        <translation>Skicka cspn till en CSPN-adress</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -375,12 +375,12 @@ Var vänlig och försök igen.</translation>
         <translation>Kryptera de privata nycklar som tillhör din plånbok</translation>
     </message>
     <message>
-        <source>Sign messages with your BitGreen addresses to prove you own them</source>
-        <translation>Signera meddelanden med dina BitGreen-adresser för att bevisa att du äger dem</translation>
+        <source>Sign messages with your CSPN addresses to prove you own them</source>
+        <translation>Signera meddelanden med dina CSPN-adresser för att bevisa att du äger dem</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified BitGreen addresses</source>
-        <translation>Verifiera meddelanden för att vara säker på att de signerades med angivna BitGreen-adresser</translation>
+        <source>Verify messages to ensure they were signed with specified CSPN addresses</source>
+        <translation>Verifiera meddelanden för att vara säker på att de signerades med angivna CSPN-adresser</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -399,8 +399,8 @@ Var vänlig och försök igen.</translation>
         <translation>Verktygsfält för tabbar</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and bitgreen: URIs)</source>
-        <translation>Begär betalningar (skapar QR-koder och bitgreen: -URIer)</translation>
+        <source>Request payments (generates QR codes and cspn: URIs)</source>
+        <translation>Begär betalningar (skapar QR-koder och cspn: -URIer)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -411,16 +411,16 @@ Var vänlig och försök igen.</translation>
         <translation>Visa listan med använda mottagningsadresser och etiketter</translation>
     </message>
     <message>
-        <source>Open a bitgreen: URI or payment request</source>
-        <translation>Öppna en bitgreen: URI eller betalningsbegäran</translation>
+        <source>Open a cspn: URI or payment request</source>
+        <translation>Öppna en cspn: URI eller betalningsbegäran</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
         <translation>&amp;Kommandoradsalternativ</translation>
     </message>
     <message numerus="yes">
-        <source>%n active connection(s) to BitGreen network</source>
-        <translation><numerusform>%n aktiva anslutningar till BitGreen-nätverket.</numerusform><numerusform>%n aktiva anslutningar till BitGreen-nätverket.</numerusform></translation>
+        <source>%n active connection(s) to CSPN network</source>
+        <translation><numerusform>%n aktiva anslutningar till CSPN-nätverket.</numerusform><numerusform>%n aktiva anslutningar till CSPN-nätverket.</numerusform></translation>
     </message>
     <message>
         <source>Indexing blocks on disk...</source>
@@ -463,8 +463,8 @@ Var vänlig och försök igen.</translation>
         <translation>Uppdaterad</translation>
     </message>
     <message>
-        <source>Show the %1 help message to get a list with possible BitGreen command-line options</source>
-        <translation>Visa %1 hjälpmeddelande för att få en lista med möjliga BitGreen kommandoradsalternativ.</translation>
+        <source>Show the %1 help message to get a list with possible CSPN command-line options</source>
+        <translation>Visa %1 hjälpmeddelande för att få en lista med möjliga CSPN kommandoradsalternativ.</translation>
     </message>
     <message>
         <source>default wallet</source>
@@ -543,8 +543,8 @@ Var vänlig och försök igen.</translation>
         <translation>Denna plånbok är &lt;b&gt;krypterad&lt;/b&gt; och för närvarande &lt;b&gt;låst&lt;/b&gt;</translation>
     </message>
     <message>
-        <source>A fatal error occurred. BitGreen can no longer continue safely and will quit.</source>
-        <translation>Ett kritiskt fel uppstod. BitGreen kan inte fortsätta att köra säkert och kommer att avslutas.</translation>
+        <source>A fatal error occurred. CSPN can no longer continue safely and will quit.</source>
+        <translation>Ett kritiskt fel uppstod. CSPN kan inte fortsätta att köra säkert och kommer att avslutas.</translation>
     </message>
 </context>
 <context>
@@ -733,8 +733,8 @@ Var vänlig och försök igen.</translation>
         <translation>Redigera avsändaradress</translation>
     </message>
     <message>
-        <source>The entered address "%1" is not a valid BitGreen address.</source>
-        <translation>Den angivna adressen "%1" är inte en giltig BitGreen-adress.</translation>
+        <source>The entered address "%1" is not a valid CSPN address.</source>
+        <translation>Den angivna adressen "%1" är inte en giltig CSPN-adress.</translation>
     </message>
     <message>
         <source>Address "%1" already exists as a receiving address with label "%2" and so cannot be added as a sending address.</source>
@@ -836,8 +836,8 @@ Var vänlig och försök igen.</translation>
         <translation>Använd en anpassad datakatalog:</translation>
     </message>
     <message>
-        <source>BitGreen</source>
-        <translation>BitGreen</translation>
+        <source>CSPN</source>
+        <translation>CSPN</translation>
     </message>
     <message>
         <source>At least %1 GB of data will be stored in this directory, and it will grow over time.</source>
@@ -848,8 +848,8 @@ Var vänlig och försök igen.</translation>
         <translation>Ungefär %1 GB data kommer att lagras i den här katalogen.</translation>
     </message>
     <message>
-        <source>%1 will download and store a copy of the BitGreen block chain.</source>
-        <translation>%1 kommer att ladda ner och lagra en kopia av BitGreen-blockkedjan.</translation>
+        <source>%1 will download and store a copy of the CSPN block chain.</source>
+        <translation>%1 kommer att ladda ner och lagra en kopia av CSPN-blockkedjan.</translation>
     </message>
     <message>
         <source>The wallet will also be stored in this directory.</source>
@@ -882,12 +882,12 @@ Var vänlig och försök igen.</translation>
         <translation>Formulär</translation>
     </message>
     <message>
-        <source>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the bitgreen network, as detailed below.</source>
-        <translation>Nyligen gjorda transaktioner visas inte korrekt och därför kan din plånboks saldo visas felaktigt. Denna information kommer att visas korrekt så snart din plånbok har synkroniserat klart med BitGreen-nätverket enligt detaljer nedan.</translation>
+        <source>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the cspn network, as detailed below.</source>
+        <translation>Nyligen gjorda transaktioner visas inte korrekt och därför kan din plånboks saldo visas felaktigt. Denna information kommer att visas korrekt så snart din plånbok har synkroniserat klart med CSPN-nätverket enligt detaljer nedan.</translation>
     </message>
     <message>
-        <source>Attempting to spend bitgreens that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
-        <translation>Att försöka spendera bitgreen som påverkas av transaktioner som ännu inte visas kommer inte accepteras av nätverket. </translation>
+        <source>Attempting to spend cspns that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
+        <translation>Att försöka spendera cspn som påverkas av transaktioner som ännu inte visas kommer inte accepteras av nätverket. </translation>
     </message>
     <message>
         <source>Number of blocks left</source>
@@ -1060,8 +1060,8 @@ Var vänlig och försök igen.</translation>
         <translation>&amp;Spendera obekräftad växel</translation>
     </message>
     <message>
-        <source>Automatically open the BitGreen client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Öppna automatiskt BitGreen-klientens port på routern. Detta fungerar endast om din router stödjer UPnP och det är är aktiverat.</translation>
+        <source>Automatically open the CSPN client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Öppna automatiskt CSPN-klientens port på routern. Detta fungerar endast om din router stödjer UPnP och det är är aktiverat.</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
@@ -1076,8 +1076,8 @@ Var vänlig och försök igen.</translation>
         <translation>Tillåt ankommande anslutningar</translation>
     </message>
     <message>
-        <source>Connect to the BitGreen network through a SOCKS5 proxy.</source>
-        <translation>Anslut till BitGreen-nätverket genom en SOCKS5-proxy.</translation>
+        <source>Connect to the CSPN network through a SOCKS5 proxy.</source>
+        <translation>Anslut till CSPN-nätverket genom en SOCKS5-proxy.</translation>
     </message>
     <message>
         <source>&amp;Connect through SOCKS5 proxy (default proxy):</source>
@@ -1112,8 +1112,8 @@ Var vänlig och försök igen.</translation>
         <translation>Tor</translation>
     </message>
     <message>
-        <source>Connect to the BitGreen network through a separate SOCKS5 proxy for Tor hidden services.</source>
-        <translation>Anslut till BitGreen-nätverket genom en separat SOCKS5-proxy för dolda tjänster i Tor.</translation>
+        <source>Connect to the CSPN network through a separate SOCKS5 proxy for Tor hidden services.</source>
+        <translation>Anslut till CSPN-nätverket genom en separat SOCKS5-proxy för dolda tjänster i Tor.</translation>
     </message>
     <message>
         <source>&amp;Window</source>
@@ -1219,8 +1219,8 @@ Var vänlig och försök igen.</translation>
         <translation>Formulär</translation>
     </message>
     <message>
-        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the BitGreen network after a connection is established, but this process has not completed yet.</source>
-        <translation>Den visade informationen kan vara inaktuell. Plånboken synkroniseras automatiskt med BitGreen-nätverket efter att anslutningen är upprättad, men denna process har inte slutförts ännu.</translation>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the CSPN network after a connection is established, but this process has not completed yet.</source>
+        <translation>Den visade informationen kan vara inaktuell. Plånboken synkroniseras automatiskt med CSPN-nätverket efter att anslutningen är upprättad, men denna process har inte slutförts ännu.</translation>
     </message>
     <message>
         <source>Watch-only:</source>
@@ -1294,16 +1294,16 @@ Var vänlig och försök igen.</translation>
         <translation>Fel vid betalningsbegäran</translation>
     </message>
     <message>
-        <source>Cannot start bitgreen: click-to-pay handler</source>
-        <translation>Kan inte starta bitgreen: klicka-och-betala hanteraren</translation>
+        <source>Cannot start cspn: click-to-pay handler</source>
+        <translation>Kan inte starta cspn: klicka-och-betala hanteraren</translation>
     </message>
     <message>
         <source>URI handling</source>
         <translation>URI-hantering</translation>
     </message>
     <message>
-        <source>'bitgreen://' is not a valid URI. Use 'bitgreen:' instead.</source>
-        <translation>'bitgreen://' är inte en accepterad URI. Använd 'bitgreen:' istället.</translation>
+        <source>'cspn://' is not a valid URI. Use 'cspn:' instead.</source>
+        <translation>'cspn://' är inte en accepterad URI. Använd 'cspn:' istället.</translation>
     </message>
     <message>
         <source>Payment request fetch URL is invalid: %1</source>
@@ -1314,8 +1314,8 @@ Var vänlig och försök igen.</translation>
         <translation>Ogiltig betalningsadress %1</translation>
     </message>
     <message>
-        <source>URI cannot be parsed! This can be caused by an invalid BitGreen address or malformed URI parameters.</source>
-        <translation>URI kan inte parsas! Detta kan orsakas av en ogiltig BitGreen-adress eller felaktiga URI-parametrar.</translation>
+        <source>URI cannot be parsed! This can be caused by an invalid CSPN address or malformed URI parameters.</source>
+        <translation>URI kan inte parsas! Detta kan orsakas av en ogiltig CSPN-adress eller felaktiga URI-parametrar.</translation>
     </message>
     <message>
         <source>Payment request file handling</source>
@@ -1416,8 +1416,8 @@ Var vänlig och försök igen.</translation>
         <translation>Mängd</translation>
     </message>
     <message>
-        <source>Enter a BitGreen address (e.g. %1)</source>
-        <translation>Ange en BitGreen-adress (t.ex. %1)</translation>
+        <source>Enter a CSPN address (e.g. %1)</source>
+        <translation>Ange en CSPN-adress (t.ex. %1)</translation>
     </message>
     <message>
         <source>%1 d</source>
@@ -1841,8 +1841,8 @@ Var vänlig och försök igen.</translation>
         <translation>&amp;Meddelande:</translation>
     </message>
     <message>
-        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the BitGreen network.</source>
-        <translation>Ett valfritt meddelande att bifoga betalningsbegäran, vilket visas när begäran öppnas. Obs: Meddelandet kommer inte att sändas med betalningen över BitGreen-nätverket.</translation>
+        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the CSPN network.</source>
+        <translation>Ett valfritt meddelande att bifoga betalningsbegäran, vilket visas när begäran öppnas. Obs: Meddelandet kommer inte att sändas med betalningen över CSPN-nätverket.</translation>
     </message>
     <message>
         <source>An optional label to associate with the new receiving address.</source>
@@ -2234,8 +2234,8 @@ Notera: Då avgiften beräknas per byte kommer en avgift på 50 satoshi tas ut f
         <translation><numerusform>Uppskattas till att påbörja bekräftelse inom %n block.</numerusform><numerusform>Uppskattas till att påbörja bekräftelse inom %n block.</numerusform></translation>
     </message>
     <message>
-        <source>Warning: Invalid BitGreen address</source>
-        <translation>Varning: Ogiltig BitGreen-adress</translation>
+        <source>Warning: Invalid CSPN address</source>
+        <translation>Varning: Ogiltig CSPN-adress</translation>
     </message>
     <message>
         <source>Warning: Unknown change address</source>
@@ -2277,8 +2277,8 @@ Notera: Då avgiften beräknas per byte kommer en avgift på 50 satoshi tas ut f
         <translation>Detta är en normal betalning.</translation>
     </message>
     <message>
-        <source>The BitGreen address to send the payment to</source>
-        <translation>BitGreen-adress att sända betalning till</translation>
+        <source>The CSPN address to send the payment to</source>
+        <translation>CSPN-adress att sända betalning till</translation>
     </message>
     <message>
         <source>Alt+A</source>
@@ -2297,8 +2297,8 @@ Notera: Då avgiften beräknas per byte kommer en avgift på 50 satoshi tas ut f
         <translation>Radera denna post</translation>
     </message>
     <message>
-        <source>The fee will be deducted from the amount being sent. The recipient will receive less bitgreens than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
-        <translation>Avgiften dras från beloppet som skickas. Mottagaren kommer att ta emot mindre bitgreen än du angivit i beloppsfältet. Om flera mottagare valts kommer avgiften att fördelas jämt.</translation>
+        <source>The fee will be deducted from the amount being sent. The recipient will receive less cspns than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
+        <translation>Avgiften dras från beloppet som skickas. Mottagaren kommer att ta emot mindre cspn än du angivit i beloppsfältet. Om flera mottagare valts kommer avgiften att fördelas jämt.</translation>
     </message>
     <message>
         <source>S&amp;ubtract fee from amount</source>
@@ -2325,8 +2325,8 @@ Notera: Då avgiften beräknas per byte kommer en avgift på 50 satoshi tas ut f
         <translation>Ange en etikett för denna adress för att lägga till den i listan med använda adresser</translation>
     </message>
     <message>
-        <source>A message that was attached to the bitgreen: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the BitGreen network.</source>
-        <translation>Ett meddelande som bifogades bitgreen: -URIn och som lagras med transaktionen som referens. NB: Meddelandet kommer inte att sändas över BitGreen-nätverket.</translation>
+        <source>A message that was attached to the cspn: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the CSPN network.</source>
+        <translation>Ett meddelande som bifogades cspn: -URIn och som lagras med transaktionen som referens. NB: Meddelandet kommer inte att sändas över CSPN-nätverket.</translation>
     </message>
     <message>
         <source>Pay To:</source>
@@ -2370,12 +2370,12 @@ Notera: Då avgiften beräknas per byte kommer en avgift på 50 satoshi tas ut f
         <translation>&amp;Signera Meddelande</translation>
     </message>
     <message>
-        <source>You can sign messages/agreements with your addresses to prove you can receive bitgreens sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
-        <translation>Du kan signera meddelanden/avtal med dina adresser för att bevisa att du kan ta emot bitgreen som skickats till dem. Var försiktig så du inte signerar något oklart eller konstigt, eftersom phishing-angrepp kan försöka få dig att signera över din identitet till dem. Signera endast väldetaljerade meddelanden som du godkänner.</translation>
+        <source>You can sign messages/agreements with your addresses to prove you can receive cspns sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
+        <translation>Du kan signera meddelanden/avtal med dina adresser för att bevisa att du kan ta emot cspn som skickats till dem. Var försiktig så du inte signerar något oklart eller konstigt, eftersom phishing-angrepp kan försöka få dig att signera över din identitet till dem. Signera endast väldetaljerade meddelanden som du godkänner.</translation>
     </message>
     <message>
-        <source>The BitGreen address to sign the message with</source>
-        <translation>BitGreen-adress att signera meddelandet med</translation>
+        <source>The CSPN address to sign the message with</source>
+        <translation>CSPN-adress att signera meddelandet med</translation>
     </message>
     <message>
         <source>Choose previously used address</source>
@@ -2406,8 +2406,8 @@ Notera: Då avgiften beräknas per byte kommer en avgift på 50 satoshi tas ut f
         <translation>Kopiera signaturen till systemets Urklipp</translation>
     </message>
     <message>
-        <source>Sign the message to prove you own this BitGreen address</source>
-        <translation>Signera meddelandet för att bevisa att du äger denna BitGreen-adress</translation>
+        <source>Sign the message to prove you own this CSPN address</source>
+        <translation>Signera meddelandet för att bevisa att du äger denna CSPN-adress</translation>
     </message>
     <message>
         <source>Sign &amp;Message</source>
@@ -2430,12 +2430,12 @@ Notera: Då avgiften beräknas per byte kommer en avgift på 50 satoshi tas ut f
         <translation>Ange mottagarens adress, meddelande (kopiera radbrytningar, mellanslag, TAB-tecken, osv. exakt) och signatur nedan, för att verifiera meddelandet. Undvik att läsa in mera information i signaturen än vad som stod i själva det signerade meddelandet, för att undvika ett man-in-the-middle-angrepp. Notera att detta endast bevisar att den signerande parten tar emot med adressen, det bevisar inte vem som skickat transaktionen!</translation>
     </message>
     <message>
-        <source>The BitGreen address the message was signed with</source>
-        <translation>BitGreen-adress som meddelandet signerades med</translation>
+        <source>The CSPN address the message was signed with</source>
+        <translation>CSPN-adress som meddelandet signerades med</translation>
     </message>
     <message>
-        <source>Verify the message to ensure it was signed with the specified BitGreen address</source>
-        <translation>Verifiera meddelandet för att vara säker på att det signerades med angiven BitGreen-adress</translation>
+        <source>Verify the message to ensure it was signed with the specified CSPN address</source>
+        <translation>Verifiera meddelandet för att vara säker på att det signerades med angiven CSPN-adress</translation>
     </message>
     <message>
         <source>Verify &amp;Message</source>
@@ -2977,7 +2977,7 @@ Notera: Då avgiften beräknas per byte kommer en avgift på 50 satoshi tas ut f
     <name>WalletModel</name>
     <message>
         <source>Send Coins</source>
-        <translation>Skicka BitGreens</translation>
+        <translation>Skicka CSPNs</translation>
     </message>
     <message>
         <source>Fee bump error</source>
@@ -3056,7 +3056,7 @@ Notera: Då avgiften beräknas per byte kommer en avgift på 50 satoshi tas ut f
     </message>
 </context>
 <context>
-    <name>bitgreen-core</name>
+    <name>cspn-core</name>
     <message>
         <source>Distributed under the MIT software license, see the accompanying file %s or %s</source>
         <translation>Distribuerad under MIT mjukvarulicens, se den bifogade filen %s eller %s</translation>
@@ -3467,7 +3467,7 @@ Notera: Då avgiften beräknas per byte kommer en avgift på 50 satoshi tas ut f
     </message>
     <message>
         <source>Insufficient funds</source>
-        <translation>Otillräckligt med bitgreens</translation>
+        <translation>Otillräckligt med cspns</translation>
     </message>
     <message>
         <source>Cannot upgrade a non HD split wallet without upgrading to support pre split keypool. Please use -upgradewallet=169900 or -upgradewallet with no version specified.</source>

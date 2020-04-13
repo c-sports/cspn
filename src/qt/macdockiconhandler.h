@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_QT_MACDOCKICONHANDLER_H
-#define BITGREEN_QT_MACDOCKICONHANDLER_H
+#ifndef CSPN_QT_MACDOCKICONHANDLER_H
+#define CSPN_QT_MACDOCKICONHANDLER_H
 
 #include <QObject>
 
@@ -24,4 +24,4 @@ private:
     MacDockIconHandler();
 };
 
-#endif // BITGREEN_QT_MACDOCKICONHANDLER_H
+#endif // CSPN_QT_MACDOCKICONHANDLER_H

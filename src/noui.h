@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_NOUI_H
-#define BITGREEN_NOUI_H
+#ifndef CSPN_NOUI_H
+#define CSPN_NOUI_H
 
 #include <string>
 
@@ -14,7 +14,7 @@ bool noui_ThreadSafeQuestion(const std::string& /* ignored interactive message *
 /** Non-GUI handler, which only logs a message. */
 void noui_InitMessage(const std::string& message);
 
-/** Connect all bitgreend signal handlers */
+/** Connect all cspnd signal handlers */
 void noui_connect();
 
-#endif // BITGREEN_NOUI_H
+#endif // CSPN_NOUI_H

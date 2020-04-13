@@ -68,8 +68,8 @@ Alihkan fail data ke dalam tab semasa</translation>
         <translation>alamat-alamat penerimaan</translation>
     </message>
     <message>
-        <source>These are your BitGreen addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>Ini adalah alamat BitGreen anda untuk pembayaran. Periksa jumlah dan alamat penerima sebelum membuat penghantaran koin sentiasa.</translation>
+        <source>These are your CSPN addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <translation>Ini adalah alamat CSPN anda untuk pembayaran. Periksa jumlah dan alamat penerima sebelum membuat penghantaran koin sentiasa.</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -329,8 +329,8 @@ Alihkan fail data ke dalam tab semasa</translation>
         <translation>Reindexi blok pada cakera...</translation>
     </message>
     <message>
-        <source>Send coins to a BitGreen address</source>
-        <translation>Menghantar koin kepada alamat BitGreen</translation>
+        <source>Send coins to a CSPN address</source>
+        <translation>Menghantar koin kepada alamat CSPN</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -373,12 +373,12 @@ Alihkan fail data ke dalam tab semasa</translation>
         <translation>sulitkan kata laluan milik peribadi anda </translation>
     </message>
     <message>
-        <source>Sign messages with your BitGreen addresses to prove you own them</source>
-        <translation>sahkan mesej bersama alamat bitgreen anda untuk menunjukkan alamat ini anda punya</translation>
+        <source>Sign messages with your CSPN addresses to prove you own them</source>
+        <translation>sahkan mesej bersama alamat cspn anda untuk menunjukkan alamat ini anda punya</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified BitGreen addresses</source>
-        <translation>Sahkan mesej untuk memastikan mereka telah ditandatangani dengan alamat BitGreen yang ditentukan</translation>
+        <source>Verify messages to ensure they were signed with specified CSPN addresses</source>
+        <translation>Sahkan mesej untuk memastikan mereka telah ditandatangani dengan alamat CSPN yang ditentukan</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -398,8 +398,8 @@ Alihkan fail data ke dalam tab semasa</translation>
 </translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and bitgreen: URIs)</source>
-        <translation>Request payments (generates QR codes and bitgreen: URIs)
+        <source>Request payments (generates QR codes and cspn: URIs)</source>
+        <translation>Request payments (generates QR codes and cspn: URIs)
 </translation>
     </message>
     <message>
@@ -446,8 +446,8 @@ Alihkan fail data ke dalam tab semasa</translation>
 <context>
     <name>Intro</name>
     <message>
-        <source>BitGreen</source>
-        <translation>BitGreen</translation>
+        <source>CSPN</source>
+        <translation>CSPN</translation>
     </message>
     </context>
 <context>
@@ -599,6 +599,6 @@ Alihkan fail data ke dalam tab semasa</translation>
     </message>
     </context>
 <context>
-    <name>bitgreen-core</name>
+    <name>cspn-core</name>
     </context>
 </TS>

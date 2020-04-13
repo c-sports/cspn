@@ -2,15 +2,15 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_QT_TEST_APPTESTS_H
-#define BITGREEN_QT_TEST_APPTESTS_H
+#ifndef CSPN_QT_TEST_APPTESTS_H
+#define CSPN_QT_TEST_APPTESTS_H
 
 #include <QObject>
 #include <set>
 #include <string>
 #include <utility>
 
-class BitGreenApplication;
+class BitcoinApplication;
 class BitcoinGUI;
 class RPCConsole;
 
@@ -18,7 +18,7 @@ class AppTests : public QObject
 {
     Q_OBJECT
 public:
-    explicit AppTests(BitGreenApplication& app) : m_app(app) {}
+    explicit AppTests(BitcoinApplication& app) : m_app(app) {}
 
 private Q_SLOTS:
     void appTests();
@@ -37,8 +37,8 @@ private:
         ~HandleCallback();
     };
 
-    //! BitGreen application.
-    BitGreenApplication& m_app;
+    //! CSPN application.
+    BitcoinApplication& m_app;
 
     //! Set of pending callback names. Used to track expected callbacks and shut
     //! down the app after the last callback has been handled and all tests have
@@ -47,4 +47,4 @@ private:
     std::multiset<std::string> m_callbacks;
 };
 
-#endif // BITGREEN_QT_TEST_APPTESTS_H
+#endif // CSPN_QT_TEST_APPTESTS_H

@@ -2,11 +2,11 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_QT_BITCOIN_H
-#define BITGREEN_QT_BITCOIN_H
+#ifndef CSPN_QT_BITCOIN_H
+#define CSPN_QT_BITCOIN_H
 
 #if defined(HAVE_CONFIG_H)
-#include <config/bitgreen-config.h>
+#include <config/cspn-config.h>
 #endif
 
 #include <QApplication>
@@ -26,14 +26,14 @@ class Handler;
 class Node;
 } // namespace interfaces
 
-/** Class encapsulating BitGreen Core startup and shutdown.
+/** Class encapsulating CSPN Core startup and shutdown.
  * Allows running startup and shutdown in a different thread from the UI thread.
  */
-class BitGreenCore: public QObject
+class BitcoinCore: public QObject
 {
     Q_OBJECT
 public:
-    explicit BitGreenCore(interfaces::Node& node);
+    explicit BitcoinCore(interfaces::Node& node);
 
 public Q_SLOTS:
     void initialize();
@@ -55,13 +55,13 @@ private:
     interfaces::Node& m_node;
 };
 
-/** Main BitGreen application object */
-class BitGreenApplication: public QApplication
+/** Main CSPN application object */
+class BitcoinApplication: public QApplication
 {
     Q_OBJECT
 public:
-    explicit BitGreenApplication(interfaces::Node& node, int &argc, char **argv);
-    ~BitGreenApplication();
+    explicit BitcoinApplication(interfaces::Node& node, int &argc, char **argv);
+    ~BitcoinApplication();
 
 #ifdef ENABLE_WALLET
     /// Create payment server
@@ -125,4 +125,4 @@ private:
 
 int GuiMain(int argc, char* argv[]);
 
-#endif // BITGREEN_QT_BITCOIN_H
+#endif // CSPN_QT_BITCOIN_H

@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_QT_RECENTREQUESTSTABLEMODEL_H
-#define BITGREEN_QT_RECENTREQUESTSTABLEMODEL_H
+#ifndef CSPN_QT_RECENTREQUESTSTABLEMODEL_H
+#define CSPN_QT_RECENTREQUESTSTABLEMODEL_H
 
 #include <qt/walletmodel.h>
 
@@ -50,7 +50,7 @@ private:
     Qt::SortOrder order;
 };
 
-/** Model for list of recently generated payment requests / bitgreen: URIs.
+/** Model for list of recently generated payment requests / cspn: URIs.
  * Part of wallet model.
  */
 class RecentRequestsTableModel: public QAbstractTableModel
@@ -102,4 +102,4 @@ private:
     QString getAmountTitle();
 };
 
-#endif // BITGREEN_QT_RECENTREQUESTSTABLEMODEL_H
+#endif // CSPN_QT_RECENTREQUESTSTABLEMODEL_H

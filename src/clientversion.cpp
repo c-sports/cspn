@@ -9,10 +9,10 @@
 
 /**
  * Name of client reported in the 'version' message. Report the same name
- * for both bitgreend and bitgreen-qt, to make it harder for attackers to
+ * for both cspnd and cspn-qt, to make it harder for attackers to
  * target servers or GUI users specifically.
  */
-const std::string CLIENT_NAME("BitGreen");
+const std::string CLIENT_NAME("CSPN");
 
 /**
  * Client version number

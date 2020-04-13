@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_BLS_IES_H
-#define BITGREEN_BLS_IES_H
+#ifndef CSPN_BLS_IES_H
+#define CSPN_BLS_IES_H
 
 #include <bls/bls.h>
 #include <streams.h>
@@ -161,4 +161,4 @@ public:
     }
 };
 
-#endif // BITGREEN_BLS_IES_H
+#endif // CSPN_BLS_IES_H

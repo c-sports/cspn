@@ -1,11 +1,11 @@
-# BitGreen Core integration/staging tree
+# CSPN Core integration/staging tree
 
-[![Build Status](https://travis-ci.org/bitgreen/bitgreen.svg?branch=master)](https://travis-ci.org/bitgreen/bitgreen) ![GitHub](https://img.shields.io/github/license/mashape/apistatus.svg)
+[![Build Status](https://travis-ci.org/cspn/cspn.svg?branch=master)](https://travis-ci.org/cspn/cspn) ![GitHub](https://img.shields.io/github/license/mashape/apistatus.svg)
 
-## What is BitGreen?
+## What is CSPN?
 
-BitGreen is a sustainable cryptocurrency modeled after Satoshi Nakamoto’s vision for Bitcoin. It is a decentralized, peer-to-peer transactional currency designed to offer a solution to the problem posed by the exponential increase in energy consumed by Bitcoin and other proof-of-work currencies.
-Proof-of-work mining is environmentally unsustainable due to the electricity used by high-powered mining hardware. BitGreen utilizes the Green Protocol, an energy efficient proof-of-stake algorithm inspired by peercoin, can be mined on any computer, and will never require specialized mining equipment. The Green Protocol offers a simple solution to Bitcoin sustainability issues and provides a faster, more scalable blockchain that is better suited for daily transactional use.
+CSPN is a sustainable cryptocurrency modeled after Satoshi Nakamoto’s vision for Bitcoin. It is a decentralized, peer-to-peer transactional currency designed to offer a solution to the problem posed by the exponential increase in energy consumed by Bitcoin and other proof-of-work currencies.
+Proof-of-work mining is environmentally unsustainable due to the electricity used by high-powered mining hardware. CSPN utilizes the Green Protocol, an energy efficient proof-of-stake algorithm inspired by peercoin, can be mined on any computer, and will never require specialized mining equipment. The Green Protocol offers a simple solution to Bitcoin sustainability issues and provides a faster, more scalable blockchain that is better suited for daily transactional use.
 
 More information at [bitg.org](http://www.bitg.org)
 
@@ -13,14 +13,14 @@ Please reach out at info@bitg.org
 
 ## License
 
-BitGreen Core is released under the terms of the MIT license. See [COPYING](COPYING) for more
+CSPN Core is released under the terms of the MIT license. See [COPYING](COPYING) for more
 information or see https://opensource.org/licenses/MIT.
 
 ## Development Process
 
 The `master` branch is regularly built and tested, but is not guaranteed to be
-completely stable. [Tags](https://github.com/bitgreen/bitgreen/tags) are created
-regularly to indicate new official, stable release versions of BitGreen Core.
+completely stable. [Tags](https://github.com/cspn/cspn/tags) are created
+regularly to indicate new official, stable release versions of CSPN Core.
 
 The contribution workflow is described in [CONTRIBUTING.md](CONTRIBUTING.md)
 and useful hints for developers can be found in [doc/developer-notes.md](doc/developer-notes.md).

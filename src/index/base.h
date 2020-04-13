@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_INDEX_BASE_H
-#define BITGREEN_INDEX_BASE_H
+#ifndef CSPN_INDEX_BASE_H
+#define CSPN_INDEX_BASE_H
 
 #include <dbwrapper.h>
 #include <primitives/block.h>
@@ -110,4 +110,4 @@ public:
     void Stop();
 };
 
-#endif // BITGREEN_INDEX_BASE_H
+#endif // CSPN_INDEX_BASE_H

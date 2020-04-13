@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_WALLET_WALLETDB_H
-#define BITGREEN_WALLET_WALLETDB_H
+#ifndef CSPN_WALLET_WALLETDB_H
+#define CSPN_WALLET_WALLETDB_H
 
 #include <amount.h>
 #include <primitives/transaction.h>
@@ -261,4 +261,4 @@ private:
 //! Compacts BDB state so that wallet.dat is self-contained (if there are changes)
 void MaybeCompactWalletDB();
 
-#endif // BITGREEN_WALLET_WALLETDB_H
+#endif // CSPN_WALLET_WALLETDB_H

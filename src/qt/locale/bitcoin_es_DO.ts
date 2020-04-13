@@ -62,8 +62,8 @@
         <translation>Direcciones de recepción</translation>
     </message>
     <message>
-        <source>These are your BitGreen addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>Estas son sus direcciones BitGreen para enviar pagos. Compruebe siempre la cantidad y la dirección de recibo antes de transferir monedas.</translation>
+        <source>These are your CSPN addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <translation>Estas son sus direcciones CSPN para enviar pagos. Compruebe siempre la cantidad y la dirección de recibo antes de transferir monedas.</translation>
     </message>
     <message>
         <source>Export Address List</source>
@@ -226,8 +226,8 @@
         <translation>Reindexando bloques en disco...</translation>
     </message>
     <message>
-        <source>Send coins to a BitGreen address</source>
-        <translation>Enviar monedas a una dirección BitGreen</translation>
+        <source>Send coins to a CSPN address</source>
+        <translation>Enviar monedas a una dirección CSPN</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -270,12 +270,12 @@
         <translation>Cifrar las claves privadas de su monedero</translation>
     </message>
     <message>
-        <source>Sign messages with your BitGreen addresses to prove you own them</source>
-        <translation>Firmar mensajes con sus direcciones BitGreen para demostrar la propiedad</translation>
+        <source>Sign messages with your CSPN addresses to prove you own them</source>
+        <translation>Firmar mensajes con sus direcciones CSPN para demostrar la propiedad</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified BitGreen addresses</source>
-        <translation>Verificar mensajes comprobando que están firmados con direcciones BitGreen concretas</translation>
+        <source>Verify messages to ensure they were signed with specified CSPN addresses</source>
+        <translation>Verificar mensajes comprobando que están firmados con direcciones CSPN concretas</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -294,8 +294,8 @@
         <translation>Barra de pestañas</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and bitgreen: URIs)</source>
-        <translation>Solicitar pagos (genera codigo QR y URL's de BitGreen)</translation>
+        <source>Request payments (generates QR codes and cspn: URIs)</source>
+        <translation>Solicitar pagos (genera codigo QR y URL's de CSPN)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -306,8 +306,8 @@
         <translation>Muestra la lista de direcciones de recepción y etiquetas</translation>
     </message>
     <message>
-        <source>Open a bitgreen: URI or payment request</source>
-        <translation>Abrir un bitgreen: URI o petición de pago</translation>
+        <source>Open a cspn: URI or payment request</source>
+        <translation>Abrir un cspn: URI o petición de pago</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
@@ -495,8 +495,8 @@
         <translation>Utilice un directorio de datos personalizado:</translation>
     </message>
     <message>
-        <source>BitGreen</source>
-        <translation>BitGreen</translation>
+        <source>CSPN</source>
+        <translation>CSPN</translation>
     </message>
     <message>
         <source>Error</source>
@@ -571,8 +571,8 @@
         <translation>Experto</translation>
     </message>
     <message>
-        <source>Automatically open the BitGreen client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Abrir automáticamente el puerto del cliente BitGreen en el router. Esta opción solo funciona si el router admite UPnP y está activado.</translation>
+        <source>Automatically open the CSPN client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Abrir automáticamente el puerto del cliente CSPN en el router. Esta opción solo funciona si el router admite UPnP y está activado.</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
@@ -670,8 +670,8 @@
         <translation>Desde</translation>
     </message>
     <message>
-        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the BitGreen network after a connection is established, but this process has not completed yet.</source>
-        <translation>La información mostrada puede estar desactualizada. Su monedero se sincroniza automáticamente con la red BitGreen después de que se haya establecido una conexión, pero este proceso aún no se ha completado.</translation>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the CSPN network after a connection is established, but this process has not completed yet.</source>
+        <translation>La información mostrada puede estar desactualizada. Su monedero se sincroniza automáticamente con la red CSPN después de que se haya establecido una conexión, pero este proceso aún no se ha completado.</translation>
     </message>
     <message>
         <source>Your current spendable balance</source>
@@ -1097,8 +1097,8 @@
         <translation>Copiar la firma actual al portapapeles del sistema</translation>
     </message>
     <message>
-        <source>Sign the message to prove you own this BitGreen address</source>
-        <translation>Firmar el mensaje para demostrar que se posee esta dirección BitGreen</translation>
+        <source>Sign the message to prove you own this CSPN address</source>
+        <translation>Firmar el mensaje para demostrar que se posee esta dirección CSPN</translation>
     </message>
     <message>
         <source>Sign &amp;Message</source>
@@ -1117,8 +1117,8 @@
         <translation>&amp;Verificar mensaje</translation>
     </message>
     <message>
-        <source>Verify the message to ensure it was signed with the specified BitGreen address</source>
-        <translation>Verificar el mensaje para comprobar que fue firmado con la dirección BitGreen indicada</translation>
+        <source>Verify the message to ensure it was signed with the specified CSPN address</source>
+        <translation>Verificar el mensaje para comprobar que fue firmado con la dirección CSPN indicada</translation>
     </message>
     <message>
         <source>Verify &amp;Message</source>
@@ -1195,7 +1195,7 @@
     <name>WalletView</name>
     </context>
 <context>
-    <name>bitgreen-core</name>
+    <name>cspn-core</name>
     <message>
         <source>Corrupted block database detected</source>
         <translation>Corrupción de base de datos de bloques detectada.</translation>

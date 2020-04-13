@@ -66,8 +66,8 @@
         <translation>Alamat menerima</translation>
     </message>
     <message>
-        <source>These are your BitGreen addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>Ini adalah alamat BitGreen anda untuk mengirim pembayaran. Selalu periksa jumlah dan alamat penerima sebelum mengirim koin</translation>
+        <source>These are your CSPN addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <translation>Ini adalah alamat CSPN anda untuk mengirim pembayaran. Selalu periksa jumlah dan alamat penerima sebelum mengirim koin</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -318,8 +318,8 @@
         <translation>Klik untuk mengaktifkan kembali network</translation>
     </message>
     <message>
-        <source>Send coins to a BitGreen address</source>
-        <translation>Kirim koin ke alamat BitGreen</translation>
+        <source>Send coins to a CSPN address</source>
+        <translation>Kirim koin ke alamat CSPN</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -362,12 +362,12 @@
         <translation>Enkripsi private keys wallet anda</translation>
     </message>
     <message>
-        <source>Sign messages with your BitGreen addresses to prove you own them</source>
-        <translation>Tambahkan pesan di alamat BitGreen untuk membuktikan bahwa anda pemiliknya</translation>
+        <source>Sign messages with your CSPN addresses to prove you own them</source>
+        <translation>Tambahkan pesan di alamat CSPN untuk membuktikan bahwa anda pemiliknya</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified BitGreen addresses</source>
-        <translation>Verifikasi pesan untuk memastikan bahwa telah ditanda tangani dengan alamat BitGreen tertentu</translation>
+        <source>Verify messages to ensure they were signed with specified CSPN addresses</source>
+        <translation>Verifikasi pesan untuk memastikan bahwa telah ditanda tangani dengan alamat CSPN tertentu</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -665,8 +665,8 @@
 <context>
     <name>Intro</name>
     <message>
-        <source>BitGreen</source>
-        <translation>BitGreen</translation>
+        <source>CSPN</source>
+        <translation>CSPN</translation>
     </message>
     <message>
         <source>Error</source>
@@ -929,6 +929,6 @@
     </message>
     </context>
 <context>
-    <name>bitgreen-core</name>
+    <name>cspn-core</name>
     </context>
 </TS>

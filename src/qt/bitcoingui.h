@@ -1,13 +1,13 @@
 // Copyright (c) 2011-2019 The Bitcoin Core developers
-// Copyright (c) 2018-2019 The BitGreen Core developers
+// Copyright (c) 2018-2019 The BitTestForLaterSoICanUseReplaceGreen Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_QT_BITCOINGUI_H
-#define BITGREEN_QT_BITCOINGUI_H
+#ifndef CSPN_QT_BITCOINGUI_H
+#define CSPN_QT_BITCOINGUI_H
 
 #if defined(HAVE_CONFIG_H)
-#include <config/bitgreen-config.h>
+#include <config/cspn-config.h>
 #endif
 
 #include <qt/optionsdialog.h>
@@ -62,7 +62,7 @@ class ClickableProgressBar;
 }
 
 /**
-  BitGreen GUI main class. This class represents the main window of the BitGreen UI. It communicates with both the client and
+  CSPN GUI main class. This class represents the main window of the CSPN UI. It communicates with both the client and
   wallet models to give the user an up-to-date view of the current core state.
 */
 class BitcoinGUI : public QMainWindow
@@ -85,7 +85,7 @@ public:
 
 #ifdef ENABLE_WALLET
     /** Set the wallet model.
-        The wallet model represents a bitgreen wallet, and offers access to the list of transactions, address book and sending
+        The wallet model represents a cspn wallet, and offers access to the list of transactions, address book and sending
         functionality.
     */
     void addWallet(WalletModel* walletModel);
@@ -364,4 +364,4 @@ private Q_SLOTS:
     void onMenuSelection(QAction* action);
 };
 
-#endif // BITGREEN_QT_BITCOINGUI_H
+#endif // CSPN_QT_BITCOINGUI_H

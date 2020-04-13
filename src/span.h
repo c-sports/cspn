@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_SPAN_H
-#define BITGREEN_SPAN_H
+#ifndef CSPN_SPAN_H
+#define CSPN_SPAN_H
 
 #include <type_traits>
 #include <cstddef>

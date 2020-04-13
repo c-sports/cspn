@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_QT_SENDCOINSDIALOG_H
-#define BITGREEN_QT_SENDCOINSDIALOG_H
+#ifndef CSPN_QT_SENDCOINSDIALOG_H
+#define CSPN_QT_SENDCOINSDIALOG_H
 
 #include <qt/walletmodel.h>
 
@@ -25,7 +25,7 @@ QT_BEGIN_NAMESPACE
 class QUrl;
 QT_END_NAMESPACE
 
-/** Dialog for sending bitgreens */
+/** Dialog for sending cspns */
 class SendCoinsDialog : public QDialog
 {
     Q_OBJECT
@@ -124,4 +124,4 @@ private:
     int secDelay;
 };
 
-#endif // BITGREEN_QT_SENDCOINSDIALOG_H
+#endif // CSPN_QT_SENDCOINSDIALOG_H

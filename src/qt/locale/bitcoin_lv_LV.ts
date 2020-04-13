@@ -43,11 +43,11 @@
     </message>
     <message>
         <source>Choose the address to send coins to</source>
-        <translation>Izvēlies adresi uz kuru sūtīt bitgreens</translation>
+        <translation>Izvēlies adresi uz kuru sūtīt cspns</translation>
     </message>
     <message>
         <source>Choose the address to receive coins with</source>
-        <translation>Izvēlies adresi ar kuru saņemt bitgreens</translation>
+        <translation>Izvēlies adresi ar kuru saņemt cspns</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -202,8 +202,8 @@
         <translation>Bloku reindeksēšana no diska...</translation>
     </message>
     <message>
-        <source>Send coins to a BitGreen address</source>
-        <translation>Nosūtīt bitkoinus uz BitGreen adresi</translation>
+        <source>Send coins to a CSPN address</source>
+        <translation>Nosūtīt bitkoinus uz CSPN adresi</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -246,12 +246,12 @@
         <translation>Šifrēt privātās atslēgas kuras pieder tavam maciņam</translation>
     </message>
     <message>
-        <source>Sign messages with your BitGreen addresses to prove you own them</source>
-        <translation>Parakstīt ziņojumus ar savām BitGreen adresēm lai pierādītu ka tās pieder tev</translation>
+        <source>Sign messages with your CSPN addresses to prove you own them</source>
+        <translation>Parakstīt ziņojumus ar savām CSPN adresēm lai pierādītu ka tās pieder tev</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified BitGreen addresses</source>
-        <translation>Pārbaudīt ziņojumus lai pārliecinātos, ka tie tika parakstīti ar norādītajām BitGreen adresēm</translation>
+        <source>Verify messages to ensure they were signed with specified CSPN addresses</source>
+        <translation>Pārbaudīt ziņojumus lai pārliecinātos, ka tie tika parakstīti ar norādītajām CSPN adresēm</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -270,12 +270,12 @@
         <translation>Ciļņu rīkjosla</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and bitgreen: URIs)</source>
-        <translation>Pieprasīt maksājumus (izveido QR kodu un bitgreen: URIs)</translation>
+        <source>Request payments (generates QR codes and cspn: URIs)</source>
+        <translation>Pieprasīt maksājumus (izveido QR kodu un cspn: URIs)</translation>
     </message>
     <message>
-        <source>Open a bitgreen: URI or payment request</source>
-        <translation>Atvērt bitgreen URI vai maksājuma pieprasījumu</translation>
+        <source>Open a cspn: URI or payment request</source>
+        <translation>Atvērt cspn URI vai maksājuma pieprasījumu</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
@@ -455,8 +455,8 @@
         <translation>Izmantot pielāgotu datu mapi:</translation>
     </message>
     <message>
-        <source>BitGreen</source>
-        <translation>BitGreen</translation>
+        <source>CSPN</source>
+        <translation>CSPN</translation>
     </message>
     <message>
         <source>Error</source>
@@ -544,15 +544,15 @@
     </message>
     <message>
         <source>Enable coin &amp;control features</source>
-        <translation>Ieslēgt bitgreen &amp;kontroles funkcijas</translation>
+        <translation>Ieslēgt cspn &amp;kontroles funkcijas</translation>
     </message>
     <message>
         <source>&amp;Spend unconfirmed change</source>
         <translation>&amp;Tērēt neapstiprinātu atlikumu</translation>
     </message>
     <message>
-        <source>Automatically open the BitGreen client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Uz rūtera automātiski atvērt BitGreen klienta portu. Tas strādā tikai tad, ja rūteris atbalsta UPnP un tas ir ieslēgts.</translation>
+        <source>Automatically open the CSPN client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Uz rūtera automātiski atvērt CSPN klienta portu. Tas strādā tikai tad, ja rūteris atbalsta UPnP un tas ir ieslēgts.</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
@@ -604,7 +604,7 @@
     </message>
     <message>
         <source>Whether to show coin control features or not.</source>
-        <translation>Vai rādīt BitGreen kontroles funkcijas vai nē.</translation>
+        <translation>Vai rādīt CSPN kontroles funkcijas vai nē.</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -642,8 +642,8 @@
         <translation>Forma</translation>
     </message>
     <message>
-        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the BitGreen network after a connection is established, but this process has not completed yet.</source>
-        <translation>Attēlotā informācija var būt novecojusi. Jūsu maciņš pēc savienojuma izveides automātiski sinhronizējas ar BitGreen tīklu, taču šis process vēl nav beidzies.</translation>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the CSPN network after a connection is established, but this process has not completed yet.</source>
+        <translation>Attēlotā informācija var būt novecojusi. Jūsu maciņš pēc savienojuma izveides automātiski sinhronizējas ar CSPN tīklu, taču šis process vēl nav beidzies.</translation>
     </message>
     <message>
         <source>Available:</source>
@@ -902,7 +902,7 @@
     </message>
     <message>
         <source>Coin Control Features</source>
-        <translation>BitGreen Kontroles Funkcijas</translation>
+        <translation>CSPN Kontroles Funkcijas</translation>
     </message>
     <message>
         <source>Inputs...</source>
@@ -1085,8 +1085,8 @@
         <translation>Kopēt parakstu uz sistēmas starpliktuvi</translation>
     </message>
     <message>
-        <source>Sign the message to prove you own this BitGreen address</source>
-        <translation>Parakstīt ziņojumu lai pierādītu, ka esi šīs BitGreen adreses īpašnieks.</translation>
+        <source>Sign the message to prove you own this CSPN address</source>
+        <translation>Parakstīt ziņojumu lai pierādītu, ka esi šīs CSPN adreses īpašnieks.</translation>
     </message>
     <message>
         <source>Sign &amp;Message</source>
@@ -1179,7 +1179,7 @@
     <name>WalletView</name>
     </context>
 <context>
-    <name>bitgreen-core</name>
+    <name>cspn-core</name>
     <message>
         <source>Error loading block database</source>
         <translation>Kļūda ielādējot bloku datubāzi</translation>

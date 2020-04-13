@@ -6,11 +6,11 @@
 
 import os
 
-from test_framework.test_framework import BitGreenTestFramework
+from test_framework.test_framework import CSPNTestFramework
 from test_framework.test_node import ErrorMatch
 
 
-class LoggingTest(BitGreenTestFramework):
+class LoggingTest(CSPNTestFramework):
     def set_test_params(self):
         self.num_nodes = 1
         self.setup_clean_chain = True

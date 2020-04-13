@@ -51,7 +51,7 @@
 #include <memory>
 
 #if defined(NDEBUG)
-# error "BitGreen cannot be compiled without assertions."
+# error "CSPN cannot be compiled without assertions."
 #endif
 
 /** Expiration time for orphan transactions in seconds */
@@ -845,7 +845,7 @@ void RequestTx(CNodeState* state, const uint256& txid, int64_t nNow) EXCLUSIVE_L
     peer_download_state.m_tx_process_time.emplace(process_time, txid);
 }
 
-// Specific BitGreen get custom data
+// Specific CSPN get custom data
 void EraseDataRequest(const CInv& inv) EXCLUSIVE_LOCKS_REQUIRED(cs_main)
 {
     g_already_data_asked_for.erase(inv);
@@ -1500,7 +1500,7 @@ bool static AlreadyHave(const CInv& inv) EXCLUSIVE_LOCKS_REQUIRED(cs_main)
         return LookupBlockIndex(inv.hash) != nullptr;
 
     /*
-        BitGreen Related Inventory Messages
+        CSPN Related Inventory Messages
 
         --
 
@@ -2341,7 +2341,7 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
         }
 
         // Ban old versions
-        if (cleanSubVer == "/BitGreen:1.4.0.3/" || cleanSubVer == "/BitGreen:1.4.0.4/") {
+        if (cleanSubVer == "/CSPN:1.4.0.3/" || cleanSubVer == "/CSPN:1.4.0.4/") {
             LogPrint(BCLog::NET, "peer=%d using obsolete version %s; disconnecting\n", pfrom->GetId(), cleanSubVer);
             pfrom->fDisconnect = true;
             return false;
@@ -3710,7 +3710,7 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
         return true;
     }
     else {
-        // BitGreen: manage protocol extensions
+        // CSPN: manage protocol extensions
         bool found = false;
         const std::vector<std::string> &allMessages = getAllNetMessageTypes();
         for (const std::string msg : allMessages) {
@@ -4600,7 +4600,7 @@ bool PeerLogicValidation::SendMessages(CNode* pto)
         }
 
         //
-        // Message: getdata (BitGreen specific inventory)
+        // Message: getdata (CSPN specific inventory)
         //
         if (state.m_inv_download.m_check_expiry_timer <= nNow) {
             for (auto it=state.m_inv_download.m_inv_in_flight.begin(); it != state.m_inv_download.m_inv_in_flight.end();) {

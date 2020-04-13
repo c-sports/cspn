@@ -3,7 +3,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #if defined(HAVE_CONFIG_H)
-#include <config/bitgreen-config.h>
+#include <config/cspn-config.h>
 #endif
 
 #include <fs.h>
@@ -126,7 +126,7 @@ Intro::Intro(QWidget *parent, uint64_t blockchain_size, uint64_t chain_state_siz
         .arg(PACKAGE_NAME)
         .arg(m_blockchain_size)
         .arg(2019)
-        .arg(tr("BitGreen"))
+        .arg(tr("CSPN"))
     );
     ui->lblExplanation2->setText(ui->lblExplanation2->text().arg(PACKAGE_NAME));
 
@@ -145,7 +145,7 @@ Intro::Intro(QWidget *parent, uint64_t blockchain_size, uint64_t chain_state_siz
     }
     requiredSpace += m_chain_state_size;
     ui->sizeWarningLabel->setText(
-        tr("%1 will download and store a copy of the BitGreen block chain.").arg(PACKAGE_NAME) + " " +
+        tr("%1 will download and store a copy of the CSPN block chain.").arg(PACKAGE_NAME) + " " +
         storageRequiresMsg.arg(requiredSpace) + " " +
         tr("The wallet will also be stored in this directory.")
     );
@@ -204,7 +204,7 @@ bool Intro::pickDataDirectory(interfaces::Node& node)
         /* If current default data directory does not exist, let the user choose one */
         Intro intro(0, node.getAssumedBlockchainSize(), node.getAssumedChainStateSize());
         intro.setDataDirectory(dataDir);
-        intro.setWindowIcon(QIcon(":icons/bitgreen"));
+        intro.setWindowIcon(QIcon(":icons/cspn"));
 
         while(true)
         {
@@ -231,8 +231,8 @@ bool Intro::pickDataDirectory(interfaces::Node& node)
         settings.setValue("fReset", false);
     }
     /* Only override -datadir if different from the default, to make it possible to
-     * override -datadir in the bitgreen.conf file in the default data directory
-     * (to be consistent with bitgreend behavior)
+     * override -datadir in the cspn.conf file in the default data directory
+     * (to be consistent with cspnd behavior)
      */
     if(dataDir != GUIUtil::getDefaultDataDirectory()) {
         node.softSetArg("-datadir", GUIUtil::qstringToBoostPath(dataDir).string()); // use OS locale for path setting

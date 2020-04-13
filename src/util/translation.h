@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_UTIL_TRANSLATION_H
-#define BITGREEN_UTIL_TRANSLATION_H
+#ifndef CSPN_UTIL_TRANSLATION_H
+#define CSPN_UTIL_TRANSLATION_H
 
 #include <tinyformat.h>
 
@@ -39,4 +39,4 @@ inline bilingual_str _(const char* psz)
     return bilingual_str{psz, G_TRANSLATION_FUN ? (G_TRANSLATION_FUN)(psz) : psz};
 }
 
-#endif // BITGREEN_UTIL_TRANSLATION_H
+#endif // CSPN_UTIL_TRANSLATION_H

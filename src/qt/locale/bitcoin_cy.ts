@@ -62,8 +62,8 @@
         <translation>Derbyn cyfeiriadau</translation>
     </message>
     <message>
-        <source>These are your BitGreen addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>Rhain ydi eich cyfeiriadau BitGreen ar gyfer gyrru taliadau. Gwnewch yn sicr o'r swm a'r cyfeiriad derbyn cyn gyrru arian.</translation>
+        <source>These are your CSPN addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <translation>Rhain ydi eich cyfeiriadau CSPN ar gyfer gyrru taliadau. Gwnewch yn sicr o'r swm a'r cyfeiriad derbyn cyn gyrru arian.</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -310,8 +310,8 @@
         <translation>Ailfynegi y blociau ar ddisg...</translation>
     </message>
     <message>
-        <source>Send coins to a BitGreen address</source>
-        <translation>Anfon arian i gyfeiriad BitGreen</translation>
+        <source>Send coins to a CSPN address</source>
+        <translation>Anfon arian i gyfeiriad CSPN</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -350,12 +350,12 @@
         <translation>Amgryptio'r allweddi preifat sy'n perthyn i'ch waled</translation>
     </message>
     <message>
-        <source>Sign messages with your BitGreen addresses to prove you own them</source>
-        <translation>Arwyddo negeseuon gyda eich cyfeiriadau BitGreen i brofi mae chi sy'n berchen arnynt</translation>
+        <source>Sign messages with your CSPN addresses to prove you own them</source>
+        <translation>Arwyddo negeseuon gyda eich cyfeiriadau CSPN i brofi mae chi sy'n berchen arnynt</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified BitGreen addresses</source>
-        <translation>Gwirio negeseuon i sicrhau eu bod wedi eu harwyddo gyda cyfeiriadau BitGreen penodol</translation>
+        <source>Verify messages to ensure they were signed with specified CSPN addresses</source>
+        <translation>Gwirio negeseuon i sicrhau eu bod wedi eu harwyddo gyda cyfeiriadau CSPN penodol</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -374,8 +374,8 @@
         <translation>Bar offer tabiau</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and bitgreen: URIs)</source>
-        <translation>Gofyn taliadau (creu côd QR a bitgreen: URIs)</translation>
+        <source>Request payments (generates QR codes and cspn: URIs)</source>
+        <translation>Gofyn taliadau (creu côd QR a cspn: URIs)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -386,8 +386,8 @@
         <translation>Dangos rhestr o gyfeiriadau derbyn a labelau wedi eu defnyddio</translation>
     </message>
     <message>
-        <source>Open a bitgreen: URI or payment request</source>
-        <translation>Agor BitGreen: URI neu ofyn taliad</translation>
+        <source>Open a cspn: URI or payment request</source>
+        <translation>Agor CSPN: URI neu ofyn taliad</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
@@ -492,8 +492,8 @@
         <translation>Mae'r waled &lt;b&gt;wedi'i amgryptio&lt;/b&gt; ac &lt;b&gt;ar glo&lt;/b&gt; ar hyn o bryd</translation>
     </message>
     <message>
-        <source>A fatal error occurred. BitGreen can no longer continue safely and will quit.</source>
-        <translation>Mae gwall angheuol wedi digwydd. Ni all BitGreen barhau'n ddiogel ac mae'n cau lawr.</translation>
+        <source>A fatal error occurred. CSPN can no longer continue safely and will quit.</source>
+        <translation>Mae gwall angheuol wedi digwydd. Ni all CSPN barhau'n ddiogel ac mae'n cau lawr.</translation>
     </message>
 </context>
 <context>
@@ -605,8 +605,8 @@
         <translation>Croeso</translation>
     </message>
     <message>
-        <source>BitGreen</source>
-        <translation>BitGreen</translation>
+        <source>CSPN</source>
+        <translation>CSPN</translation>
     </message>
     <message>
         <source>Error</source>
@@ -1013,6 +1013,6 @@
     </message>
     </context>
 <context>
-    <name>bitgreen-core</name>
+    <name>cspn-core</name>
     </context>
 </TS>

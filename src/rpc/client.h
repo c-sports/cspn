@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_RPC_CLIENT_H
-#define BITGREEN_RPC_CLIENT_H
+#ifndef CSPN_RPC_CLIENT_H
+#define CSPN_RPC_CLIENT_H
 
 #include <univalue.h>
 
@@ -19,4 +19,4 @@ UniValue RPCConvertNamedValues(const std::string& strMethod, const std::vector<s
  */
 UniValue ParseNonRFCJSONValue(const std::string& strVal);
 
-#endif // BITGREEN_RPC_CLIENT_H
+#endif // CSPN_RPC_CLIENT_H

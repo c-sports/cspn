@@ -15,9 +15,9 @@ BitcoinUnits::BitcoinUnits(QObject *parent):
 QList<BitcoinUnits::Unit> BitcoinUnits::availableUnits()
 {
     QList<BitcoinUnits::Unit> unitlist;
-    unitlist.append(BITG);
-    unitlist.append(mBITG);
-    unitlist.append(uBITG);
+    unitlist.append(CSPN);
+    unitlist.append(mCSPN);
+    unitlist.append(uCSPN);
     unitlist.append(SAT);
     return unitlist;
 }
@@ -26,9 +26,9 @@ bool BitcoinUnits::valid(int unit)
 {
     switch(unit)
     {
-    case BITG:
-    case mBITG:
-    case uBITG:
+    case CSPN:
+    case mCSPN:
+    case uCSPN:
     case SAT:
         return true;
     default:
@@ -40,9 +40,9 @@ QString BitcoinUnits::longName(int unit)
 {
     switch(unit)
     {
-    case BITG: return QString("BITG");
-    case mBITG: return QString("mBITG");
-    case uBITG: return QString::fromUtf8("µBITG (bits)");
+    case CSPN: return QString("CSPN");
+    case mCSPN: return QString("mCSPN");
+    case uCSPN: return QString::fromUtf8("µCSPN (bits)");
     case SAT: return QString("Satoshi (sat)");
     default: return QString("???");
     }
@@ -52,7 +52,7 @@ QString BitcoinUnits::shortName(int unit)
 {
     switch(unit)
     {
-    case uBITG: return QString::fromUtf8("bits");
+    case uCSPN: return QString::fromUtf8("bits");
     case SAT: return QString("sat");
     default: return longName(unit);
     }
@@ -62,9 +62,9 @@ QString BitcoinUnits::description(int unit)
 {
     switch(unit)
     {
-    case BITG: return QString("BitGreens");
-    case mBITG: return QString("Milli-BitGreens (1 / 1" THIN_SP_UTF8 "000)");
-    case uBITG: return QString("Micro-BitGreens (bits) (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
+    case CSPN: return QString("CSPNs");
+    case mCSPN: return QString("Milli-CSPNs (1 / 1" THIN_SP_UTF8 "000)");
+    case uCSPN: return QString("Micro-CSPNs (bits) (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
     case SAT: return QString("Satoshi (sat) (1 / 100" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
     default: return QString("???");
     }
@@ -74,9 +74,9 @@ qint64 BitcoinUnits::factor(int unit)
 {
     switch(unit)
     {
-    case BITG: return 100000000;
-    case mBITG: return 100000;
-    case uBITG: return 100;
+    case CSPN: return 100000000;
+    case mCSPN: return 100000;
+    case uCSPN: return 100;
     case SAT: return 1;
     default: return 100000000;
     }
@@ -86,9 +86,9 @@ int BitcoinUnits::decimals(int unit)
 {
     switch(unit)
     {
-    case BITG: return 8;
-    case mBITG: return 5;
-    case uBITG: return 2;
+    case CSPN: return 8;
+    case mCSPN: return 5;
+    case uCSPN: return 2;
     case SAT: return 0;
     default: return 0;
     }

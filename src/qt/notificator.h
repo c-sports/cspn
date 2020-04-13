@@ -2,11 +2,11 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_QT_NOTIFICATOR_H
-#define BITGREEN_QT_NOTIFICATOR_H
+#ifndef CSPN_QT_NOTIFICATOR_H
+#define CSPN_QT_NOTIFICATOR_H
 
 #if defined(HAVE_CONFIG_H)
-#include <config/bitgreen-config.h>
+#include <config/cspn-config.h>
 #endif
 
 #include <QIcon>
@@ -74,4 +74,4 @@ private:
 #endif
 };
 
-#endif // BITGREEN_QT_NOTIFICATOR_H
+#endif // CSPN_QT_NOTIFICATOR_H

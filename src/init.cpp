@@ -4,7 +4,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #if defined(HAVE_CONFIG_H)
-#include <config/bitgreen-config.h>
+#include <config/cspn-config.h>
 #endif
 
 #include <init.h>
@@ -120,11 +120,11 @@ static const char* FEE_ESTIMATES_FILENAME="fee_estimates.dat";
 /**
  * The PID file facilities.
  */
-static const char* BITGREEN_PID_FILENAME = "bitgreend.pid";
+static const char* CSPN_PID_FILENAME = "cspnd.pid";
 
 static fs::path GetPidFile()
 {
-    return AbsPathForConfigVal(fs::path(gArgs.GetArg("-pid", BITGREEN_PID_FILENAME)));
+    return AbsPathForConfigVal(fs::path(gArgs.GetArg("-pid", CSPN_PID_FILENAME)));
 }
 
 NODISCARD static bool CreatePidFile()
@@ -418,7 +418,7 @@ void SetupServerArgs()
 #endif
     gArgs.AddArg("-blockreconstructionextratxn=<n>", strprintf("Extra transactions to keep in memory for compact block reconstructions (default: %u)", DEFAULT_BLOCK_RECONSTRUCTION_EXTRA_TXN), false, OptionsCategory::OPTIONS);
     gArgs.AddArg("-blocksonly", strprintf("Whether to reject transactions from network peers. Transactions from the wallet or RPC are not affected. (default: %u)", DEFAULT_BLOCKSONLY), false, OptionsCategory::OPTIONS);
-    gArgs.AddArg("-conf=<file>", strprintf("Specify configuration file. Relative paths will be prefixed by datadir location. (default: %s)", BITGREEN_CONF_FILENAME), false, OptionsCategory::OPTIONS);
+    gArgs.AddArg("-conf=<file>", strprintf("Specify configuration file. Relative paths will be prefixed by datadir location. (default: %s)", CSPN_CONF_FILENAME), false, OptionsCategory::OPTIONS);
     gArgs.AddArg("-datadir=<dir>", "Specify data directory", false, OptionsCategory::OPTIONS);
     gArgs.AddArg("-dbbatchsize", strprintf("Maximum database write batch size in bytes (default: %u)", nDefaultDbBatchSize), true, OptionsCategory::OPTIONS);
     gArgs.AddArg("-dbcache=<n>", strprintf("Maximum database cache size <n> MiB (%d to %d, default: %d). In addition, unused mempool memory is shared for this cache (see -maxmempool).", nMinDbCache, nMaxDbCache, nDefaultDbCache), false, OptionsCategory::OPTIONS);
@@ -433,7 +433,7 @@ void SetupServerArgs()
     gArgs.AddArg("-par=<n>", strprintf("Set the number of script verification threads (%u to %d, 0 = auto, <0 = leave that many cores free, default: %d)",
         -GetNumCores(), MAX_SCRIPTCHECK_THREADS, DEFAULT_SCRIPTCHECK_THREADS), false, OptionsCategory::OPTIONS);
     gArgs.AddArg("-persistmempool", strprintf("Whether to save the mempool on shutdown and load on restart (default: %u)", DEFAULT_PERSIST_MEMPOOL), false, OptionsCategory::OPTIONS);
-    gArgs.AddArg("-pid=<file>", strprintf("Specify pid file. Relative paths will be prefixed by a net-specific datadir location. (default: %s)", BITGREEN_PID_FILENAME), false, OptionsCategory::OPTIONS);
+    gArgs.AddArg("-pid=<file>", strprintf("Specify pid file. Relative paths will be prefixed by a net-specific datadir location. (default: %s)", CSPN_PID_FILENAME), false, OptionsCategory::OPTIONS);
     gArgs.AddArg("-prune=<n>", strprintf("Reduce storage requirements by enabling pruning (deleting) of old blocks. This allows the pruneblockchain RPC to be called to delete specific blocks, and enables automatic pruning of old blocks if a target size in MiB is provided. This mode is incompatible with -txindex and -rescan. "
             "Warning: Reverting this setting requires re-downloading the entire blockchain. "
             "(default: 0 = disable pruning blocks, 1 = allow manual pruning via RPC, >=%u = automatically prune block files to stay under the specified target size in MiB)", MIN_DISK_SPACE_FOR_BLOCK_FILES / 1024 / 1024), false, OptionsCategory::OPTIONS);
@@ -596,8 +596,8 @@ void SetupServerArgs()
 #endif
 
     gArgs.AddArg("-staking", "Enable staking while working with wallet, default is 1", false, OptionsCategory::OPTIONS);
-    gArgs.AddArg("-litemode", strprintf("Disable all BitGreen specific functionality (Masternodes, Governance) (default: %u)", false), false, OptionsCategory::OPTIONS);
-    gArgs.AddArg("-sporkaddr=<bitgreenaddress>", "Override spork address. Only useful for regtest and devnet. Using this on mainnet or testnet will ban you.", false, OptionsCategory::OPTIONS);
+    gArgs.AddArg("-litemode", strprintf("Disable all CSPN specific functionality (Masternodes, Governance) (default: %u)", false), false, OptionsCategory::OPTIONS);
+    gArgs.AddArg("-sporkaddr=<cspnaddress>", "Override spork address. Only useful for regtest and devnet. Using this on mainnet or testnet will ban you.", false, OptionsCategory::OPTIONS);
     gArgs.AddArg("-minsporkkeys=<n>", "Overrides minimum spork signers to change spork value. Only useful for regtest and devnet. Using this on mainnet or testnet will ban you.", false, OptionsCategory::OPTIONS);
     gArgs.AddArg("-sporkkey", "Private key to send spork messages", false, OptionsCategory::OPTIONS);
 
@@ -614,8 +614,8 @@ void SetupServerArgs()
 
 std::string LicenseInfo()
 {
-    const std::string URL_SOURCE_CODE = "<https://github.com/bitgreen/bitgreen>";
-    const std::string URL_WEBSITE = "<https://bitg.org>";
+    const std::string URL_SOURCE_CODE = "<https://github.com/c-sports/CSPN>";
+    const std::string URL_WEBSITE = "<https://www.crypto-sports.io/>";
 
     return CopyrightHolders(strprintf(_("Copyright (C) %i-%i").translated, 2018, COPYRIGHT_YEAR) + " ") + "\n" +
            "\n" +
@@ -789,7 +789,7 @@ static void ThreadImport(std::vector<fs::path> vImportFiles)
     }
     } // End scope of CImportingNow
 
-    // TODO: BitGreen
+    // TODO: CSPN
     // force UpdatedBlockTip to initialize nCachedBlockHeight for DS, MN payments and budgets
     // but don't call it directly to prevent triggering of other listeners like zmq etc.
     g_mn_notification_interface->InitializeCurrentBlockTip();
@@ -811,7 +811,7 @@ static void ThreadImport(std::vector<fs::path> vImportFiles)
 }
 
 /** Sanity checks
- *  Ensure that BitGreen is running in a usable environment with all
+ *  Ensure that CSPN is running in a usable environment with all
  *  necessary library support.
  */
 static bool InitSanityCheck()
@@ -1250,7 +1250,7 @@ bool AppInitParameterInteraction()
 
 static bool LockDataDirectory(bool probeOnly)
 {
-    // Make sure only a single BitGreen process is using the data directory.
+    // Make sure only a single CSPN process is using the data directory.
     fs::path datadir = GetDataDir();
     if (!DirIsWritable(datadir)) {
         return InitError(strprintf(_("Cannot write to data directory '%s'; check permissions.").translated, datadir.string()));
@@ -1320,7 +1320,7 @@ bool AppInitMain(InitInterfaces& interfaces)
     LogPrintf("Using data directory %s\n", GetDataDir().string());
 
     // Only log conf file usage message if conf file actually exists.
-    fs::path config_file_path = GetConfigFile(gArgs.GetArg("-conf", BITGREEN_CONF_FILENAME));
+    fs::path config_file_path = GetConfigFile(gArgs.GetArg("-conf", CSPN_CONF_FILENAME));
     if (fs::exists(config_file_path)) {
         LogPrintf("Config file: %s\n", config_file_path.string());
     } else if (gArgs.IsArgSet("-conf")) {
@@ -1336,9 +1336,9 @@ bool AppInitMain(InitInterfaces& interfaces)
     // Warn about relative -datadir path.
     if (gArgs.IsArgSet("-datadir") && !fs::path(gArgs.GetArg("-datadir", "")).is_absolute()) {
         LogPrintf("Warning: relative datadir option '%s' specified, which will be interpreted relative to the " /* Continued */
-                  "current working directory '%s'. This is fragile, because if bitgreen is started in the future "
+                  "current working directory '%s'. This is fragile, because if cspn is started in the future "
                   "from a different location, it will be unable to locate the current data files. There could "
-                  "also be data loss if bitgreen is started while in a temporary directory.\n",
+                  "also be data loss if cspn is started while in a temporary directory.\n",
             gArgs.GetArg("-datadir", ""), fs::current_path().string());
     }
 
@@ -1831,7 +1831,7 @@ bool AppInitMain(InitInterfaces& interfaces)
     LogPrintf("fLiteMode %d\n", fLiteMode);
 
     if (fLiteMode)
-        InitWarning(_("You are starting in lite mode, all BitGreen-specific functionality is disabled.").translated);
+        InitWarning(_("You are starting in lite mode, all CSPN-specific functionality is disabled.").translated);
 
     if ((!fLiteMode && !g_txindex)
        && chainparams.NetworkIDString() != CBaseChainParams::REGTEST) {
@@ -1969,7 +1969,7 @@ bool AppInitMain(InitInterfaces& interfaces)
         }
     }
 
-    // ********************************************************* Step 10-C: schedule BitGreen-specific tasks
+    // ********************************************************* Step 10-C: schedule CSPN-specific tasks
 
     if (!fLiteMode) {
         scheduler.scheduleEvery(boost::bind(&CNetFulfilledRequestManager::DoMaintenance, boost::ref(netfulfilledman)), 60 * 1000);

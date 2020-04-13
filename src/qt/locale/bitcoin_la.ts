@@ -118,8 +118,8 @@
         <translation>Recreans indicem frustorum in disco...</translation>
     </message>
     <message>
-        <source>Send coins to a BitGreen address</source>
-        <translation>Mitte nummos ad inscriptionem BitGreen</translation>
+        <source>Send coins to a CSPN address</source>
+        <translation>Mitte nummos ad inscriptionem CSPN</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -162,12 +162,12 @@
         <translation>Cifra claves privatas quae cassidili tui sunt</translation>
     </message>
     <message>
-        <source>Sign messages with your BitGreen addresses to prove you own them</source>
-        <translation>Signa nuntios cum tuis inscriptionibus BitGreen ut demonstres te eas possidere</translation>
+        <source>Sign messages with your CSPN addresses to prove you own them</source>
+        <translation>Signa nuntios cum tuis inscriptionibus CSPN ut demonstres te eas possidere</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified BitGreen addresses</source>
-        <translation>Verifica nuntios ut certus sis eos signatos esse cum specificatis inscriptionibus BitGreen</translation>
+        <source>Verify messages to ensure they were signed with specified CSPN addresses</source>
+        <translation>Verifica nuntios ut certus sis eos signatos esse cum specificatis inscriptionibus CSPN</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -295,8 +295,8 @@
 <context>
     <name>Intro</name>
     <message>
-        <source>BitGreen</source>
-        <translation>BitGreen</translation>
+        <source>CSPN</source>
+        <translation>CSPN</translation>
     </message>
     <message>
         <source>Error</source>
@@ -347,8 +347,8 @@
         <translation>Cassidile</translation>
     </message>
     <message>
-        <source>Automatically open the BitGreen client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Aperi per se portam clientis BitGreen in itineratore.  Hoc tantum effectivum est si itineratrum tuum supportat UPnP et id activum est.</translation>
+        <source>Automatically open the CSPN client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Aperi per se portam clientis CSPN in itineratore.  Hoc tantum effectivum est si itineratrum tuum supportat UPnP et id activum est.</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
@@ -430,8 +430,8 @@
         <translation>Schema</translation>
     </message>
     <message>
-        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the BitGreen network after a connection is established, but this process has not completed yet.</source>
-        <translation>Monstrata informatio fortasse non recentissima est.  Tuum cassidile per se synchronizat cum rete BitGreen postquam conexio constabilita est, sed hoc actio nondum perfecta est.</translation>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the CSPN network after a connection is established, but this process has not completed yet.</source>
+        <translation>Monstrata informatio fortasse non recentissima est.  Tuum cassidile per se synchronizat cum rete CSPN postquam conexio constabilita est, sed hoc actio nondum perfecta est.</translation>
     </message>
     <message>
         <source>Immature:</source>
@@ -677,8 +677,8 @@
         <translation>Copia signationem in latibulum systematis</translation>
     </message>
     <message>
-        <source>Sign the message to prove you own this BitGreen address</source>
-        <translation>Signa nuntium ut demonstres hanc inscriptionem BitGreen a te possessa esse</translation>
+        <source>Sign the message to prove you own this CSPN address</source>
+        <translation>Signa nuntium ut demonstres hanc inscriptionem CSPN a te possessa esse</translation>
     </message>
     <message>
         <source>Sign &amp;Message</source>
@@ -697,8 +697,8 @@
         <translation>&amp;Verifica Nuntium</translation>
     </message>
     <message>
-        <source>Verify the message to ensure it was signed with the specified BitGreen address</source>
-        <translation>Verifica nuntium ut cures signatum esse cum specifica inscriptione BitGreen</translation>
+        <source>Verify the message to ensure it was signed with the specified CSPN address</source>
+        <translation>Verifica nuntium ut cures signatum esse cum specifica inscriptione CSPN</translation>
     </message>
     <message>
         <source>Verify &amp;Message</source>
@@ -751,7 +751,7 @@
     <name>WalletView</name>
     </context>
 <context>
-    <name>bitgreen-core</name>
+    <name>cspn-core</name>
     <message>
         <source>Corrupted block database detected</source>
         <translation>Corruptum databasum frustorum invenitur</translation>

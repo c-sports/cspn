@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_QT_PAYMENTREQUESTPLUS_H
-#define BITGREEN_QT_PAYMENTREQUESTPLUS_H
+#ifndef CSPN_QT_PAYMENTREQUESTPLUS_H
+#define CSPN_QT_PAYMENTREQUESTPLUS_H
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
@@ -49,4 +49,4 @@ private:
     payments::PaymentDetails details;
 };
 
-#endif // BITGREEN_QT_PAYMENTREQUESTPLUS_H
+#endif // CSPN_QT_PAYMENTREQUESTPLUS_H

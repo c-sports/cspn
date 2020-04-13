@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_QT_SENDCOINSENTRY_H
-#define BITGREEN_QT_SENDCOINSENTRY_H
+#ifndef CSPN_QT_SENDCOINSENTRY_H
+#define CSPN_QT_SENDCOINSENTRY_H
 
 #include <qt/walletmodel.h>
 
@@ -17,7 +17,7 @@ namespace Ui {
 }
 
 /**
- * A single entry in the dialog for sending bitgreens.
+ * A single entry in the dialog for sending cspns.
  * Stacked widget, with different UIs for payment requests
  * with a strong payee identity.
  */
@@ -74,4 +74,4 @@ private:
     bool updateLabel(const QString &address);
 };
 
-#endif // BITGREEN_QT_SENDCOINSENTRY_H
+#endif // CSPN_QT_SENDCOINSENTRY_H

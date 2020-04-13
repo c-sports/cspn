@@ -114,8 +114,8 @@
         <translation>Cambiar contraseña</translation>
     </message>
     <message>
-        <source>Send coins to a BitGreen address</source>
-        <translation>Enviar monedas a una dirección BitGreen</translation>
+        <source>Send coins to a CSPN address</source>
+        <translation>Enviar monedas a una dirección CSPN</translation>
     </message>
     <message>
         <source>Change the passphrase used for wallet encryption</source>
@@ -246,8 +246,8 @@
 <context>
     <name>Intro</name>
     <message>
-        <source>BitGreen</source>
-        <translation>BitGreen</translation>
+        <source>CSPN</source>
+        <translation>CSPN</translation>
     </message>
     <message>
         <source>Error</source>
@@ -466,6 +466,6 @@
     </message>
     </context>
 <context>
-    <name>bitgreen-core</name>
+    <name>cspn-core</name>
     </context>
 </TS>

@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_SCRIPT_DESCRIPTOR_H
-#define BITGREEN_SCRIPT_DESCRIPTOR_H
+#ifndef CSPN_SCRIPT_DESCRIPTOR_H
+#define CSPN_SCRIPT_DESCRIPTOR_H
 
 #include <script/script.h>
 #include <script/sign.h>
@@ -97,4 +97,4 @@ std::unique_ptr<Descriptor> Parse(const std::string& descriptor, FlatSigningProv
  */
 std::unique_ptr<Descriptor> InferDescriptor(const CScript& script, const SigningProvider& provider);
 
-#endif // BITGREEN_SCRIPT_DESCRIPTOR_H
+#endif // CSPN_SCRIPT_DESCRIPTOR_H

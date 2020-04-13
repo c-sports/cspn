@@ -6,8 +6,8 @@
 /**
  * Utilities for converting data from/to strings.
  */
-#ifndef BITGREEN_UTIL_STRENCODINGS_H
-#define BITGREEN_UTIL_STRENCODINGS_H
+#ifndef CSPN_UTIL_STRENCODINGS_H
+#define CSPN_UTIL_STRENCODINGS_H
 
 #include <attributes.h>
 
@@ -239,4 +239,4 @@ constexpr char ToUpper(char c)
  */
 std::string Capitalize(std::string str);
 
-#endif // BITGREEN_UTIL_STRENCODINGS_H
+#endif // CSPN_UTIL_STRENCODINGS_H

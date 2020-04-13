@@ -66,8 +66,8 @@
         <translation>Alınan Adresler</translation>
     </message>
     <message>
-        <source>These are your BitGreen addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>Bunlar ödeme göndermek için gereken BitGreen adreslerinizdir. Para göndermeden önce her zaman miktarı ve alıcı adresi kontrol edin.</translation>
+        <source>These are your CSPN addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <translation>Bunlar ödeme göndermek için gereken CSPN adreslerinizdir. Para göndermeden önce her zaman miktarı ve alıcı adresi kontrol edin.</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -278,8 +278,8 @@
         <translation>Bloklar disk üzerinde yeniden indeksleniyor...</translation>
     </message>
     <message>
-        <source>Send coins to a BitGreen address</source>
-        <translation>BitGreen adresine madeni para gönderin</translation>
+        <source>Send coins to a CSPN address</source>
+        <translation>CSPN adresine madeni para gönderin</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -441,8 +441,8 @@
         <translation>Gönderim adresini düzenleyin</translation>
     </message>
     <message>
-        <source>The entered address "%1" is not a valid BitGreen address.</source>
-        <translation>Girilen adres "%1" BitGreen adresiyle eşleşmiyor.</translation>
+        <source>The entered address "%1" is not a valid CSPN address.</source>
+        <translation>Girilen adres "%1" CSPN adresiyle eşleşmiyor.</translation>
     </message>
     <message>
         <source>New key generation failed.</source>
@@ -484,8 +484,8 @@
         <translation>Hoş geldiniz</translation>
     </message>
     <message>
-        <source>BitGreen</source>
-        <translation>BitGreen
+        <source>CSPN</source>
+        <translation>CSPN
 </translation>
     </message>
     <message>
@@ -620,7 +620,7 @@
         <translation>Form</translation>
     </message>
     <message>
-        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the BitGreen network after a connection is established, but this process has not completed yet.</source>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the CSPN network after a connection is established, but this process has not completed yet.</source>
         <translation>Gösterilen bilgi geçerli olmayabilir. Bağlantı tekrar sağlandıktan sonra cüzdanınız otomatik olarak senkronize olacaktır. Henüz senkronize olma işlemi tamamlanmadı.</translation>
     </message>
     <message>
@@ -701,8 +701,8 @@
 <context>
     <name>QObject</name>
     <message>
-        <source>Enter a BitGreen address (e.g. %1)</source>
-        <translation>BitGreen adresinizi girin (örneğin %1)</translation>
+        <source>Enter a CSPN address (e.g. %1)</source>
+        <translation>CSPN adresinizi girin (örneğin %1)</translation>
     </message>
     <message>
         <source>N/A</source>
@@ -1079,8 +1079,8 @@
         <translation>Coin gönderimini onaylayın</translation>
     </message>
     <message>
-        <source>Warning: Invalid BitGreen address</source>
-        <translation>Uyarı: Hatalı BitGreen adresi</translation>
+        <source>Warning: Invalid CSPN address</source>
+        <translation>Uyarı: Hatalı CSPN adresi</translation>
     </message>
     <message>
         <source>(no label)</source>
@@ -1373,7 +1373,7 @@
     </message>
     </context>
 <context>
-    <name>bitgreen-core</name>
+    <name>cspn-core</name>
     <message>
         <source>Copyright (C) %i-%i</source>
         <translation>Copyright (C) %i-%i</translation>

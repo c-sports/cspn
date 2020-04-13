@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_QT_RPCCONSOLE_H
-#define BITGREEN_QT_RPCCONSOLE_H
+#ifndef CSPN_QT_RPCCONSOLE_H
+#define CSPN_QT_RPCCONSOLE_H
 
 #include <qt/guiutil.h>
 #include <qt/peertablemodel.h>
@@ -32,7 +32,7 @@ class QMenu;
 class QItemSelection;
 QT_END_NAMESPACE
 
-/** Local BitGreen RPC console. */
+/** Local CSPN RPC console. */
 class RPCConsole: public QWidget
 {
     Q_OBJECT
@@ -195,4 +195,4 @@ private:
     void buildParameterlist(QString arg);
 };
 
-#endif // BITGREEN_QT_RPCCONSOLE_H
+#endif // CSPN_QT_RPCCONSOLE_H

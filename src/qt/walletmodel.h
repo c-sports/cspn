@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_QT_WALLETMODEL_H
-#define BITGREEN_QT_WALLETMODEL_H
+#ifndef CSPN_QT_WALLETMODEL_H
+#define CSPN_QT_WALLETMODEL_H
 
 #include <amount.h>
 #include <key.h>
@@ -11,7 +11,7 @@
 #include <script/standard.h>
 
 #if defined(HAVE_CONFIG_H)
-#include <config/bitgreen-config.h>
+#include <config/cspn-config.h>
 #endif
 
 #ifdef ENABLE_BIP70
@@ -122,7 +122,7 @@ public:
     }
 };
 
-/** Interface to BitGreen wallet from Qt view code. */
+/** Interface to CSPN wallet from Qt view code. */
 class WalletModel : public QObject
 {
     Q_OBJECT
@@ -323,4 +323,4 @@ public Q_SLOTS:
     void pollBalanceChanged();
 };
 
-#endif // BITGREEN_QT_WALLETMODEL_H
+#endif // CSPN_QT_WALLETMODEL_H

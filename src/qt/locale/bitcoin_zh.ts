@@ -137,7 +137,7 @@
         <translation>收款人地址无效，请再次确认。</translation>
     </message>
     <message>
-        <source>Warning: Invalid BitGreen address</source>
+        <source>Warning: Invalid CSPN address</source>
         <translation>警告：比特币地址无效</translation>
     </message>
     </context>
@@ -203,7 +203,7 @@
     </message>
     </context>
 <context>
-    <name>bitgreen-core</name>
+    <name>cspn-core</name>
     <message>
         <source>Transaction too large</source>
         <translation>超额转账</translation>

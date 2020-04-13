@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_SCRIPT_SIGNINGPROVIDER_H
-#define BITGREEN_SCRIPT_SIGNINGPROVIDER_H
+#ifndef CSPN_SCRIPT_SIGNINGPROVIDER_H
+#define CSPN_SCRIPT_SIGNINGPROVIDER_H
 
 #include <key.h>
 #include <pubkey.h>
@@ -89,4 +89,4 @@ public:
 /** Return the CKeyID of the key involved in a script (if there is a unique one). */
 CKeyID GetKeyForDestination(const SigningProvider& store, const CTxDestination& dest);
 
-#endif // BITGREEN_SCRIPT_SIGNINGPROVIDER_H
+#endif // CSPN_SCRIPT_SIGNINGPROVIDER_H

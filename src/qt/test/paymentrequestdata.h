@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_QT_TEST_PAYMENTREQUESTDATA_H
-#define BITGREEN_QT_TEST_PAYMENTREQUESTDATA_H
+#ifndef CSPN_QT_TEST_PAYMENTREQUESTDATA_H
+#define CSPN_QT_TEST_PAYMENTREQUESTDATA_H
 
 //
 // Data for paymentservertests.cpp
@@ -438,7 +438,7 @@ d2hj739GDLz0b5KuJ2SG6VknMRQM976w/m2qlq0ccVGaaZ2zMIGfpzL3p6adwx/5\
 ";
 
 //
-// Payment request with amount overflow (amount is set to 21000001 BITG)
+// Payment request with amount overflow (amount is set to 21000001 CSPN)
 //
 const char* paymentrequest5_cert2_BASE64 =
 "\
@@ -462,4 +462,4 @@ XR2T3Gy2LzRvhVA25QgGqpz0/juS2BtmNbsZPkN9gMMwKimgzc+PuCzmEKwPK9cQ\
 YQ==\
 ";
 
-#endif // BITGREEN_QT_TEST_PAYMENTREQUESTDATA_H
+#endif // CSPN_QT_TEST_PAYMENTREQUESTDATA_H

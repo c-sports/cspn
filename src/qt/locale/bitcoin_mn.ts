@@ -223,7 +223,7 @@
 <context>
     <name>Intro</name>
     <message>
-        <source>BitGreen</source>
+        <source>CSPN</source>
         <translation>Биткойн</translation>
     </message>
     <message>
@@ -551,7 +551,7 @@
     <name>WalletView</name>
     </context>
 <context>
-    <name>bitgreen-core</name>
+    <name>cspn-core</name>
     <message>
         <source>Insufficient funds</source>
         <translation>Таны дансны үлдэгдэл хүрэлцэхгүй байна</translation>

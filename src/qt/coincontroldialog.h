@@ -1,10 +1,10 @@
 // Copyright (c) 2011-2018 The Bitcoin Core developers
-// Copyright (c) 2018-2019 The BitGreen Core developers
+// Copyright (c) 2018-2019 The BitTestForLaterSoICanUseReplaceGreen Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_QT_COINCONTROLDIALOG_H
-#define BITGREEN_QT_COINCONTROLDIALOG_H
+#ifndef CSPN_QT_COINCONTROLDIALOG_H
+#define CSPN_QT_COINCONTROLDIALOG_H
 
 #include <amount.h>
 
@@ -116,4 +116,4 @@ private Q_SLOTS:
     void updateLabelLocked();
 };
 
-#endif // BITGREEN_QT_COINCONTROLDIALOG_H
+#endif // CSPN_QT_COINCONTROLDIALOG_H

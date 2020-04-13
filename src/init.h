@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_INIT_H
-#define BITGREEN_INIT_H
+#ifndef CSPN_INIT_H
+#define CSPN_INIT_H
 
 #include <memory>
 #include <string>
@@ -35,7 +35,7 @@ void InitLogging();
 //!Parameter interaction: change current parameters depending on various rules
 void InitParameterInteraction();
 
-/** Initialize bitgreen core: Basic context setup.
+/** Initialize cspn core: Basic context setup.
  *  @note This can be done before daemonization. Do not call Shutdown() if this function fails.
  *  @pre Parameters should be parsed and config file should be read.
  */
@@ -53,13 +53,13 @@ bool AppInitParameterInteraction();
  */
 bool AppInitSanityChecks();
 /**
- * Lock bitgreen core data directory.
+ * Lock cspn core data directory.
  * @note This should only be done after daemonization. Do not call Shutdown() if this function fails.
  * @pre Parameters should be parsed and config file should be read, AppInitSanityChecks should have been called.
  */
 bool AppInitLockDataDirectory();
 /**
- * BitGreen core main initialization.
+ * CSPN core main initialization.
  * @note This should only be done after daemonization. Call Shutdown() if this function fails.
  * @pre Parameters should be parsed and config file should be read, AppInitLockDataDirectory should have been called.
  */
@@ -73,4 +73,4 @@ void SetupServerArgs();
 /** Returns licensing information (for -version) */
 std::string LicenseInfo();
 
-#endif // BITGREEN_INIT_H
+#endif // CSPN_INIT_H

@@ -2,14 +2,14 @@
 
 *.exe
 *.pdb
-src/bitgreen
-src/bitgreend
-src/bitgreen-cli
-src/bitgreen-tx
-src/bitgreen-wallet
-src/test/test_bitgreen
-src/test/test_bitgreen_fuzzy
-src/qt/test/test_bitgreen-qt
+src/cspn
+src/cspnd
+src/cspn-cli
+src/cspn-tx
+src/cspn-wallet
+src/test/test_cspn
+src/test/test_cspn_fuzzy
+src/qt/test/test_cspn-qt
 
 # autoreconf
 Makefile.in
@@ -32,8 +32,8 @@ config.log
 config.status
 configure
 libtool
-src/config/bitgreen-config.h
-src/config/bitgreen-config.h.in
+src/config/cspn-config.h
+src/config/cspn-config.h.in
 src/config/stamp-h1
 share/setup.nsi
 share/qt/Info.plist
@@ -46,11 +46,11 @@ src/qt/forms/ui_*.h
 
 src/qt/test/moc*.cpp
 
-src/qt/bitgreen-qt.config
-src/qt/bitgreen-qt.creator
-src/qt/bitgreen-qt.creator.user
-src/qt/bitgreen-qt.files
-src/qt/bitgreen-qt.includes
+src/qt/cspn-qt.config
+src/qt/cspn-qt.creator
+src/qt/cspn-qt.creator.user
+src/qt/cspn-qt.files
+src/qt/cspn-qt.includes
 
 .deps
 .dirstamp
@@ -86,13 +86,13 @@ src/qt/bitgreen-qt.includes
 # Compilation and Qt preprocessor part
 *.qm
 Makefile
-bitgreen-qt
-BitGreen-Qt.app
+cspn-qt
+CSPN-Qt.app
 background.tiff*
 
 # Unit-tests
 Makefile.test
-bitgreen-qt_test
+cspn-qt_test
 
 # Resources cpp
 qrc_*.cpp
@@ -105,7 +105,7 @@ build
 *.gcno
 *.gcda
 /*.info
-test_bitgreen.coverage/
+test_cspn.coverage/
 total.coverage/
 coverage_percent.txt
 
@@ -120,7 +120,7 @@ test/cache/*
 
 /doc/doxygen/
 
-libbitgreenconsensus.pc
+libcspnconsensus.pc
 contrib/devtools/split-debug.sh
 
 # Output from running db4 installation

@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_QT_BITCOINADDRESSVALIDATOR_H
-#define BITGREEN_QT_BITCOINADDRESSVALIDATOR_H
+#ifndef CSPN_QT_BITCOINADDRESSVALIDATOR_H
+#define CSPN_QT_BITCOINADDRESSVALIDATOR_H
 
 #include <QValidator>
 
@@ -20,7 +20,7 @@ public:
     State validate(QString &input, int &pos) const;
 };
 
-/** BitGreen address widget validator, checks for a valid bitgreen address.
+/** CSPN address widget validator, checks for a valid cspn address.
  */
 class BitcoinAddressCheckValidator : public QValidator
 {
@@ -32,4 +32,4 @@ public:
     State validate(QString &input, int &pos) const;
 };
 
-#endif // BITGREEN_QT_BITCOINADDRESSVALIDATOR_H
+#endif // CSPN_QT_BITCOINADDRESSVALIDATOR_H

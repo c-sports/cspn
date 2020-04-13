@@ -16,9 +16,9 @@ Verify that:
 """
 import os
 
-from test_framework.test_framework import BitGreenTestFramework
+from test_framework.test_framework import CSPNTestFramework
 
-class IncludeConfTest(BitGreenTestFramework):
+class IncludeConfTest(CSPNTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = False
         self.num_nodes = 1
@@ -32,7 +32,7 @@ class IncludeConfTest(BitGreenTestFramework):
         # - tmpdir/node0/relative2.conf
         with open(os.path.join(self.options.tmpdir, "node0", "relative2.conf"), "w", encoding="utf8") as f:
             f.write("uacomment=relative2\n")
-        with open(os.path.join(self.options.tmpdir, "node0", "bitgreen.conf"), "a", encoding='utf8') as f:
+        with open(os.path.join(self.options.tmpdir, "node0", "cspn.conf"), "a", encoding='utf8') as f:
             f.write("uacomment=main\nincludeconf=relative.conf\n")
 
     def run_test(self):
@@ -70,7 +70,7 @@ class IncludeConfTest(BitGreenTestFramework):
             # Restore initial file contents
             f.write("uacomment=relative\n")
 
-        with open(os.path.join(self.options.tmpdir, "node0", "bitgreen.conf"), "a", encoding='utf8') as f:
+        with open(os.path.join(self.options.tmpdir, "node0", "cspn.conf"), "a", encoding='utf8') as f:
             f.write("includeconf=relative2.conf\n")
 
         self.start_node(0)

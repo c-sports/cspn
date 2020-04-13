@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_UTIL_VALIDATION_H
-#define BITGREEN_UTIL_VALIDATION_H
+#ifndef CSPN_UTIL_VALIDATION_H
+#define CSPN_UTIL_VALIDATION_H
 
 #include <string>
 
@@ -15,4 +15,4 @@ std::string FormatStateMessage(const CValidationState &state);
 
 extern const std::string strMessageMagic;
 
-#endif // BITGREEN_UTIL_VALIDATION_H
+#endif // CSPN_UTIL_VALIDATION_H

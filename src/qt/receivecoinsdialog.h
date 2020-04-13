@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_QT_RECEIVECOINSDIALOG_H
-#define BITGREEN_QT_RECEIVECOINSDIALOG_H
+#ifndef CSPN_QT_RECEIVECOINSDIALOG_H
+#define CSPN_QT_RECEIVECOINSDIALOG_H
 
 #include <qt/guiutil.h>
 
@@ -26,7 +26,7 @@ QT_BEGIN_NAMESPACE
 class QModelIndex;
 QT_END_NAMESPACE
 
-/** Dialog for requesting payment of bitgreens */
+/** Dialog for requesting payment of cspns */
 class ReceiveCoinsDialog : public QDialog
 {
     Q_OBJECT
@@ -77,4 +77,4 @@ private Q_SLOTS:
     void copyAmount();
 };
 
-#endif // BITGREEN_QT_RECEIVECOINSDIALOG_H
+#endif // CSPN_QT_RECEIVECOINSDIALOG_H

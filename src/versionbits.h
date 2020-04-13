@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_VERSIONBITS_H
-#define BITGREEN_VERSIONBITS_H
+#ifndef CSPN_VERSIONBITS_H
+#define CSPN_VERSIONBITS_H
 
 #include <chain.h>
 #include <map>
@@ -68,4 +68,4 @@ BIP9Stats VersionBitsStatistics(const CBlockIndex* pindexPrev, const Consensus::
 int VersionBitsStateSinceHeight(const CBlockIndex* pindexPrev, const Consensus::Params& params, Consensus::DeploymentPos pos, VersionBitsCache& cache);
 uint32_t VersionBitsMask(const Consensus::Params& params, Consensus::DeploymentPos pos);
 
-#endif // BITGREEN_VERSIONBITS_H
+#endif // CSPN_VERSIONBITS_H

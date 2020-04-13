@@ -1,30 +1,30 @@
-BitGreen Core
+CSPN Core
 =============
 
 Setup
 ---------------------
-BitGreen Core is the original BitGreen client and it builds the backbone of the network. It downloads and, by default, stores the entire history of BitGreen transactions.
+CSPN Core is the original CSPN client and it builds the backbone of the network. It downloads and, by default, stores the entire history of CSPN transactions.
 
-To download BitGreen Core, visit [bitg.org](https://bitg.org/).
+To download CSPN Core, visit [bitg.org](https://bitg.org/).
 
 Running
 ---------------------
-The following are some helpful notes on how to run BitGreen Core on your native platform.
+The following are some helpful notes on how to run CSPN Core on your native platform.
 
 ### Unix
 
 Unpack the files into a directory and run:
 
-- `bin/bitgreen-qt` (GUI) or
-- `bin/bitgreend` (headless)
+- `bin/cspn-qt` (GUI) or
+- `bin/cspnd` (headless)
 
 ### Windows
 
-Unpack the files into a directory, and then run bitgreen-qt.exe.
+Unpack the files into a directory, and then run cspn-qt.exe.
 
 ### macOS
 
-Drag BitGreen Core to your applications folder, and then run BitGreen Core.
+Drag CSPN Core to your applications folder, and then run CSPN Core.
 
 ### Need Help?
 
@@ -33,7 +33,7 @@ for help and more information.
 
 Building
 ---------------------
-The following are developer notes on how to build BitGreen Core on your native platform. They are not complete guides, but include notes on the necessary libraries, compile flags, etc.
+The following are developer notes on how to build CSPN Core on your native platform. They are not complete guides, but include notes on the necessary libraries, compile flags, etc.
 
 - [Dependencies](dependencies.md)
 - [macOS Build Notes](build-osx.md)
@@ -46,7 +46,7 @@ The following are developer notes on how to build BitGreen Core on your native p
 
 Development
 ---------------------
-The BitGreen repo's [root README](/README.md) contains relevant information on the development process and automated testing.
+The CSPN repo's [root README](/README.md) contains relevant information on the development process and automated testing.
 
 - [Developer Notes](developer-notes.md)
 - [Productivity Notes](productivity.md)
@@ -65,7 +65,7 @@ The BitGreen repo's [root README](/README.md) contains relevant information on t
 
 ### Miscellaneous
 - [Assets Attribution](assets-attribution.md)
-- [bitgreen.conf Configuration File](bitgreen-conf.md)
+- [cspn.conf Configuration File](cspn-conf.md)
 - [Files](files.md)
 - [Fuzz-testing](fuzzing.md)
 - [Reduce Memory](reduce-memory.md)

@@ -66,8 +66,8 @@
         <translation>Адреса получения</translation>
     </message>
     <message>
-        <source>These are your BitGreen addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>Это ваши BitGreen адреса для отправки платежа. Всегда проверяйте сумму и адрес получателя перед отправкой платежа.</translation>
+        <source>These are your CSPN addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <translation>Это ваши CSPN адреса для отправки платежа. Всегда проверяйте сумму и адрес получателя перед отправкой платежа.</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -326,7 +326,7 @@
         <translation>Прокси &lt;b&gt;включен&lt;/b&gt;: %1</translation>
     </message>
     <message>
-        <source>Send coins to a BitGreen address</source>
+        <source>Send coins to a CSPN address</source>
         <translation>Послать средства на биткойн адрес</translation>
     </message>
     <message>
@@ -370,12 +370,12 @@
         <translation>Зашифровать приватные ключи, принадлежащие вашему кошельку</translation>
     </message>
     <message>
-        <source>Sign messages with your BitGreen addresses to prove you own them</source>
-        <translation>Подписывайте сообщения BitGreen адресами чтобы подтвердить что это написали именно Вы</translation>
+        <source>Sign messages with your CSPN addresses to prove you own them</source>
+        <translation>Подписывайте сообщения CSPN адресами чтобы подтвердить что это написали именно Вы</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified BitGreen addresses</source>
-        <translation>Проверяйте сообщения чтобы убедиться что они подписаны конкретными BitGreen адресами</translation>
+        <source>Verify messages to ensure they were signed with specified CSPN addresses</source>
+        <translation>Проверяйте сообщения чтобы убедиться что они подписаны конкретными CSPN адресами</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -394,7 +394,7 @@
         <translation>Панель вкладок</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and bitgreen: URIs)</source>
+        <source>Request payments (generates QR codes and cspn: URIs)</source>
         <translation>Запросить платеж</translation>
     </message>
     <message>
@@ -406,7 +406,7 @@
         <translation>Показать список использованных адресов и меток получателей</translation>
     </message>
     <message>
-        <source>Open a bitgreen: URI or payment request</source>
+        <source>Open a cspn: URI or payment request</source>
         <translation>Открыть биткойн: URI или запрос платежа</translation>
     </message>
     <message>
@@ -414,8 +414,8 @@
         <translation>Опции командной строки</translation>
     </message>
     <message numerus="yes">
-        <source>%n active connection(s) to BitGreen network</source>
-        <translation><numerusform>%n активное подключение к сети BitGreen</numerusform><numerusform>%n активных подключения к сети BitGreen</numerusform><numerusform>%n активных подключений к сети BitGreen</numerusform><numerusform>%n активных подключений к сети BitGreen</numerusform></translation>
+        <source>%n active connection(s) to CSPN network</source>
+        <translation><numerusform>%n активное подключение к сети CSPN</numerusform><numerusform>%n активных подключения к сети CSPN</numerusform><numerusform>%n активных подключений к сети CSPN</numerusform><numerusform>%n активных подключений к сети CSPN</numerusform></translation>
     </message>
     <message>
         <source>Indexing blocks on disk...</source>
@@ -522,8 +522,8 @@
         <translation>Кошелек &lt;b&gt;зашифрован&lt;/b&gt; и сейчас &lt;b&gt;заблокирован&lt;/b&gt;</translation>
     </message>
     <message>
-        <source>A fatal error occurred. BitGreen can no longer continue safely and will quit.</source>
-        <translation>Произошла критическая ошибка. BitGreen больше не может продолжать безопасную работу и будет закрыт.</translation>
+        <source>A fatal error occurred. CSPN can no longer continue safely and will quit.</source>
+        <translation>Произошла критическая ошибка. CSPN больше не может продолжать безопасную работу и будет закрыт.</translation>
     </message>
 </context>
 <context>
@@ -771,8 +771,8 @@
         <translation>Использовать пользовательскую директорию данных</translation>
     </message>
     <message>
-        <source>BitGreen</source>
-        <translation>BitGreen Core</translation>
+        <source>CSPN</source>
+        <translation>CSPN Core</translation>
     </message>
     <message>
         <source>At least %1 GB of data will be stored in this directory, and it will grow over time.</source>
@@ -805,11 +805,11 @@
         <translation>Форма</translation>
     </message>
     <message>
-        <source>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the bitgreen network, as detailed below.</source>
+        <source>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the cspn network, as detailed below.</source>
         <translation>Последние транзакции пока могут быть не видны, поэтому вы можете видеть некорректный баланс ваших кошельков. Отображаемая информация будет верна после завершения синхронизации. Прогресс синхронизации вы можете видеть ниже.</translation>
     </message>
     <message>
-        <source>Attempting to spend bitgreens that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
+        <source>Attempting to spend cspns that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
         <translation>Попытка потратить средства, использованные в транзакциях, которые ещё не синхронизированы, будет отклонена сетью.</translation>
     </message>
     <message>
@@ -951,8 +951,8 @@
         <translation>Разрешить входящие соединения</translation>
     </message>
     <message>
-        <source>Connect to the BitGreen network through a SOCKS5 proxy.</source>
-        <translation>Подключится к сети BitGreen через SOCKS5 прокси.</translation>
+        <source>Connect to the CSPN network through a SOCKS5 proxy.</source>
+        <translation>Подключится к сети CSPN через SOCKS5 прокси.</translation>
     </message>
     <message>
         <source>&amp;Connect through SOCKS5 proxy (default proxy):</source>
@@ -987,7 +987,7 @@
         <translation>Tor</translation>
     </message>
     <message>
-        <source>Connect to the BitGreen network through a separate SOCKS5 proxy for Tor hidden services.</source>
+        <source>Connect to the CSPN network through a separate SOCKS5 proxy for Tor hidden services.</source>
         <translation>Соединяться к Биткоин-сети через отдельные SOCKS5 прокси через Tor hidden services:</translation>
     </message>
     <message>
@@ -1117,8 +1117,8 @@
         <translation>Ошибка запроса платежа</translation>
     </message>
     <message>
-        <source>'bitgreen://' is not a valid URI. Use 'bitgreen:' instead.</source>
-        <translation>'bitgreen://' не верный URI. Используйте 'bitgreen:' вместо этого.</translation>
+        <source>'cspn://' is not a valid URI. Use 'cspn:' instead.</source>
+        <translation>'cspn://' не верный URI. Используйте 'cspn:' вместо этого.</translation>
     </message>
     <message>
         <source>Invalid payment address %1</source>
@@ -1183,7 +1183,7 @@
         <translation>Количество</translation>
     </message>
     <message>
-        <source>Enter a BitGreen address (e.g. %1)</source>
+        <source>Enter a CSPN address (e.g. %1)</source>
         <translation>Введите биткоин-адрес (напр. %1)</translation>
     </message>
     <message>
@@ -1753,8 +1753,8 @@
         <translation>Истекло время ожидания запроса платежа</translation>
     </message>
     <message>
-        <source>Warning: Invalid BitGreen address</source>
-        <translation>Предупреждение: Неверный BitGreen адрес</translation>
+        <source>Warning: Invalid CSPN address</source>
+        <translation>Предупреждение: Неверный CSPN адрес</translation>
     </message>
     <message>
         <source>Warning: Unknown change address</source>
@@ -2199,7 +2199,7 @@
     </message>
     </context>
 <context>
-    <name>bitgreen-core</name>
+    <name>cspn-core</name>
     <message>
         <source>Error: A fatal internal error occurred, see debug.log for details</source>
         <translation>Ошибка: произошла критическая внутренняя ошибка, для получения деталей см. debug.log</translation>

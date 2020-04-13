@@ -2,15 +2,15 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_CHAINPARAMSBASE_H
-#define BITGREEN_CHAINPARAMSBASE_H
+#ifndef CSPN_CHAINPARAMSBASE_H
+#define CSPN_CHAINPARAMSBASE_H
 
 #include <memory>
 #include <string>
 
 /**
- * CBaseChainParams defines the base parameters (shared between bitgreen-cli and bitgreend)
- * of a given instance of the BitGreen system.
+ * CBaseChainParams defines the base parameters (shared between cspn-cli and cspnd)
+ * of a given instance of the CSPN system.
  */
 class CBaseChainParams
 {
@@ -52,4 +52,4 @@ const CBaseChainParams& BaseParams();
 /** Sets the params returned by Params() to those for the given network. */
 void SelectBaseParams(const std::string& chain);
 
-#endif // BITGREEN_CHAINPARAMSBASE_H
+#endif // CSPN_CHAINPARAMSBASE_H

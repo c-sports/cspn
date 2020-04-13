@@ -1,10 +1,10 @@
 // Copyright (c) 2014-2019 The Dash Core developers
-// Copyright (c) 2019 The BitGreen Core developers
+// Copyright (c) 2019 The BitTestForLaterSoICanUseReplaceGreen Core developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_MASTERNODES_ACTIVEMASTERNODE_H
-#define BITGREEN_MASTERNODES_ACTIVEMASTERNODE_H
+#ifndef CSPN_MASTERNODES_ACTIVEMASTERNODE_H
+#define CSPN_MASTERNODES_ACTIVEMASTERNODE_H
 
 #include <chainparams.h>
 #include <key.h>
@@ -72,4 +72,4 @@ private:
     bool GetLocalAddress(CService& addrRet);
 };
 
-#endif // BITGREEN_MASTERNODES_ACTIVEMASTERNODE_H
+#endif // CSPN_MASTERNODES_ACTIVEMASTERNODE_H

@@ -3,7 +3,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #if defined(HAVE_CONFIG_H)
-#include <config/bitgreen-config.h>
+#include <config/cspn-config.h>
 #endif
 
 #include <qt/bitcoin.h>
@@ -108,11 +108,11 @@ static void initTranslations(QTranslator &qtTranslatorBase, QTranslator &qtTrans
     if (qtTranslator.load("qt_" + lang_territory, QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
         QApplication::installTranslator(&qtTranslator);
 
-    // Load e.g. bitcoin_de.qm (shortcut "de" needs to be defined in bitgreen.qrc)
+    // Load e.g. bitcoin_de.qm (shortcut "de" needs to be defined in cspn.qrc)
     if (translatorBase.load(lang, ":/translations/"))
         QApplication::installTranslator(&translatorBase);
 
-    // Load e.g. bitcoin_de_DE.qm (shortcut "de_DE" needs to be defined in bitgreen.qrc)
+    // Load e.g. bitcoin_de_DE.qm (shortcut "de_DE" needs to be defined in cspn.qrc)
     if (translator.load(lang_territory, ":/translations/"))
         QApplication::installTranslator(&translator);
 }
@@ -128,18 +128,18 @@ void DebugMessageHandler(QtMsgType type, const QMessageLogContext& context, cons
     }
 }
 
-BitGreenCore::BitGreenCore(interfaces::Node& node) :
+BitcoinCore::BitcoinCore(interfaces::Node& node) :
     QObject(), m_node(node)
 {
 }
 
-void BitGreenCore::handleRunawayException(const std::exception *e)
+void BitcoinCore::handleRunawayException(const std::exception *e)
 {
     PrintExceptionContinue(e, "Runaway exception");
     Q_EMIT runawayException(QString::fromStdString(m_node.getWarnings("gui")));
 }
 
-void BitGreenCore::initialize()
+void BitcoinCore::initialize()
 {
     execute_restart = true;
 
@@ -156,7 +156,7 @@ void BitGreenCore::initialize()
     }
 }
 
-void BitGreenCore::shutdown()
+void BitcoinCore::shutdown()
 {
     try
     {
@@ -171,7 +171,7 @@ void BitGreenCore::shutdown()
     }
 }
 
-void BitGreenCore::restart(const QStringList args)
+void BitcoinCore::restart(const QStringList args)
 {
     if (execute_restart) { // Only restart 1x, no matter how often a user clicks on a restart-button
         execute_restart = false;
@@ -190,7 +190,7 @@ void BitGreenCore::restart(const QStringList args)
     }
 }
 
-BitGreenApplication::BitGreenApplication(interfaces::Node& node, int &argc, char **argv):
+BitcoinApplication::BitcoinApplication(interfaces::Node& node, int &argc, char **argv):
     QApplication(argc, argv),
     coreThread(nullptr),
     m_node(node),
@@ -204,10 +204,10 @@ BitGreenApplication::BitGreenApplication(interfaces::Node& node, int &argc, char
     setQuitOnLastWindowClosed(false);
 }
 
-void BitGreenApplication::setupPlatformStyle()
+void BitcoinApplication::setupPlatformStyle()
 {
     // UI per-platform customization
-    // This must be done inside the BitGreenApplication constructor, or after it, because
+    // This must be done inside the BitcoinApplication constructor, or after it, because
     // PlatformStyle::instantiate requires a QApplication
     std::string platformName;
     platformName = gArgs.GetArg("-uiplatform", BitcoinGUI::DEFAULT_UIPLATFORM);
@@ -217,7 +217,7 @@ void BitGreenApplication::setupPlatformStyle()
     assert(platformStyle);
 }
 
-BitGreenApplication::~BitGreenApplication()
+BitcoinApplication::~BitcoinApplication()
 {
     if(coreThread)
     {
@@ -242,18 +242,18 @@ BitGreenApplication::~BitGreenApplication()
 }
 
 #ifdef ENABLE_WALLET
-void BitGreenApplication::createPaymentServer()
+void BitcoinApplication::createPaymentServer()
 {
     paymentServer = new PaymentServer(this);
 }
 #endif
 
-void BitGreenApplication::createOptionsModel(bool resetSettings)
+void BitcoinApplication::createOptionsModel(bool resetSettings)
 {
     optionsModel = new OptionsModel(m_node, nullptr, resetSettings);
 }
 
-void BitGreenApplication::createWindow(const NetworkStyle *networkStyle)
+void BitcoinApplication::createWindow(const NetworkStyle *networkStyle)
 {
     window = new BitcoinGUI(m_node, platformStyle, networkStyle, nullptr);
 
@@ -261,35 +261,35 @@ void BitGreenApplication::createWindow(const NetworkStyle *networkStyle)
     connect(pollShutdownTimer, &QTimer::timeout, window, &BitcoinGUI::detectShutdown);
 }
 
-void BitGreenApplication::createSplashScreen(const NetworkStyle *networkStyle)
+void BitcoinApplication::createSplashScreen(const NetworkStyle *networkStyle)
 {
     SplashScreen *splash = new SplashScreen(m_node, nullptr, networkStyle);
     // We don't hold a direct pointer to the splash screen after creation, but the splash
     // screen will take care of deleting itself when finish() happens.
     splash->show();
-    connect(this, &BitGreenApplication::splashFinished, splash, &SplashScreen::finish);
-    connect(this, &BitGreenApplication::requestedShutdown, splash, &QWidget::close);
+    connect(this, &BitcoinApplication::splashFinished, splash, &SplashScreen::finish);
+    connect(this, &BitcoinApplication::requestedShutdown, splash, &QWidget::close);
 }
 
-bool BitGreenApplication::baseInitialize()
+bool BitcoinApplication::baseInitialize()
 {
     return m_node.baseInitialize();
 }
 
-void BitGreenApplication::startThread()
+void BitcoinApplication::startThread()
 {
     if(coreThread)
         return;
     coreThread = new QThread(this);
-    BitGreenCore *executor = new BitGreenCore(m_node);
+    BitcoinCore *executor = new BitcoinCore(m_node);
     executor->moveToThread(coreThread);
 
     /*  communication to and from thread */
-    connect(executor, &BitGreenCore::initializeResult, this, &BitGreenApplication::initializeResult);
-    connect(executor, &BitGreenCore::shutdownResult, this, &BitGreenApplication::shutdownResult);
-    connect(executor, &BitGreenCore::runawayException, this, &BitGreenApplication::handleRunawayException);
-    connect(this, &BitGreenApplication::requestedInitialize, executor, &BitGreenCore::initialize);
-    connect(this, &BitGreenApplication::requestedShutdown, executor, &BitGreenCore::shutdown);
+    connect(executor, &BitcoinCore::initializeResult, this, &BitcoinApplication::initializeResult);
+    connect(executor, &BitcoinCore::shutdownResult, this, &BitcoinApplication::shutdownResult);
+    connect(executor, &BitcoinCore::runawayException, this, &BitcoinApplication::handleRunawayException);
+    connect(this, &BitcoinApplication::requestedInitialize, executor, &BitcoinCore::initialize);
+    connect(this, &BitcoinApplication::requestedShutdown, executor, &BitcoinCore::shutdown);
     connect(window, &BitcoinGUI::requestedRestart, executor, &BitGreenCore::restart);
     /*  make sure executor object is deleted in its own thread */
     connect(coreThread, &QThread::finished, executor, &QObject::deleteLater);
@@ -297,7 +297,7 @@ void BitGreenApplication::startThread()
     coreThread->start();
 }
 
-void BitGreenApplication::parameterSetup()
+void BitcoinApplication::parameterSetup()
 {
     // Default printtoconsole to false for the GUI. GUI programs should not
     // print to the console unnecessarily.
@@ -307,14 +307,14 @@ void BitGreenApplication::parameterSetup()
     m_node.initParameterInteraction();
 }
 
-void BitGreenApplication::requestInitialize()
+void BitcoinApplication::requestInitialize()
 {
     qDebug() << __func__ << ": Requesting initialize";
     startThread();
     Q_EMIT requestedInitialize();
 }
 
-void BitGreenApplication::requestShutdown()
+void BitcoinApplication::requestShutdown()
 {
     // Show a simple window indicating shutdown status
     // Do this first as some of the steps may take some time below,
@@ -342,7 +342,7 @@ void BitGreenApplication::requestShutdown()
     Q_EMIT requestedShutdown();
 }
 
-void BitGreenApplication::initializeResult(bool success)
+void BitcoinApplication::initializeResult(bool success)
 {
     qDebug() << __func__ << ": Initialization result: " << success;
     // Set exit result.
@@ -383,7 +383,7 @@ void BitGreenApplication::initializeResult(bool success)
 
 #ifdef ENABLE_WALLET
         // Now that initialization/startup is done, process any command-line
-        // bitgreen: URIs or payment requests:
+        // cspn: URIs or payment requests:
         if (paymentServer) {
             connect(paymentServer, &PaymentServer::receivedPaymentRequest, window, &BitcoinGUI::handlePaymentRequest);
             connect(window, &BitcoinGUI::receivedURI, paymentServer, &PaymentServer::handleURIOrFile);
@@ -400,18 +400,18 @@ void BitGreenApplication::initializeResult(bool success)
     }
 }
 
-void BitGreenApplication::shutdownResult()
+void BitcoinApplication::shutdownResult()
 {
     quit(); // Exit second main loop invocation after shutdown finished
 }
 
-void BitGreenApplication::handleRunawayException(const QString &message)
+void BitcoinApplication::handleRunawayException(const QString &message)
 {
-    QMessageBox::critical(nullptr, "Runaway exception", BitcoinGUI::tr("A fatal error occurred. BitGreen can no longer continue safely and will quit.") + QString("\n\n") + message);
+    QMessageBox::critical(nullptr, "Runaway exception", BitcoinGUI::tr("A fatal error occurred. CSPN can no longer continue safely and will quit.") + QString("\n\n") + message);
     ::exit(EXIT_FAILURE);
 }
 
-WId BitGreenApplication::getMainWinId() const
+WId BitcoinApplication::getMainWinId() const
 {
     if (!window)
         return 0;
@@ -452,8 +452,8 @@ int GuiMain(int argc, char* argv[])
     // Do not refer to data directory yet, this can be overridden by Intro::pickDataDirectory
 
     /// 1. Basic Qt initialization (not dependent on parameters or configuration)
-    Q_INIT_RESOURCE(bitgreen);
-    Q_INIT_RESOURCE(bitgreen_locale);
+    Q_INIT_RESOURCE(cspn);
+    Q_INIT_RESOURCE(cspn_locale);
 
     // Generate high-dpi pixmaps
     QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
@@ -464,7 +464,7 @@ int GuiMain(int argc, char* argv[])
     QApplication::setAttribute(Qt::AA_DontShowIconsInMenus);
 #endif
 
-    BitGreenApplication app(*node, argc, argv);
+    BitcoinApplication app(*node, argc, argv);
 
     // Register meta types used for QMetaObject::invokeMethod
     qRegisterMetaType< bool* >();
@@ -518,7 +518,7 @@ int GuiMain(int argc, char* argv[])
     if (!Intro::pickDataDirectory(*node))
         return EXIT_SUCCESS;
 
-    /// 6. Determine availability of data and blocks directory and parse bitgreen.conf
+    /// 6. Determine availability of data and blocks directory and parse cspn.conf
     /// - Do not call GetDataDir(true) before this step finishes
     if (!fs::is_directory(GetDataDir(false)))
     {
@@ -571,7 +571,7 @@ int GuiMain(int argc, char* argv[])
         exit(EXIT_SUCCESS);
 
     // Start up the payment server early, too, so impatient users that click on
-    // bitgreen: links repeatedly have their payment requests routed to this process:
+    // cspn: links repeatedly have their payment requests routed to this process:
     app.createPaymentServer();
 #endif
 

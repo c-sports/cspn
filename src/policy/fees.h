@@ -2,8 +2,8 @@
 // Copyright (c) 2009-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
-#ifndef BITGREEN_POLICY_FEES_H
-#define BITGREEN_POLICY_FEES_H
+#ifndef CSPN_POLICY_FEES_H
+#define CSPN_POLICY_FEES_H
 
 #include <amount.h>
 #include <policy/feerate.h>
@@ -288,4 +288,4 @@ private:
     FastRandomContext insecure_rand;
 };
 
-#endif // BITGREEN_POLICY_FEES_H
+#endif // CSPN_POLICY_FEES_H

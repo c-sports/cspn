@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_CRYPTO_HMAC_SHA256_H
-#define BITGREEN_CRYPTO_HMAC_SHA256_H
+#ifndef CSPN_CRYPTO_HMAC_SHA256_H
+#define CSPN_CRYPTO_HMAC_SHA256_H
 
 #include <crypto/sha256.h>
 
@@ -29,4 +29,4 @@ public:
     void Finalize(unsigned char hash[OUTPUT_SIZE]);
 };
 
-#endif // BITGREEN_CRYPTO_HMAC_SHA256_H
+#endif // CSPN_CRYPTO_HMAC_SHA256_H

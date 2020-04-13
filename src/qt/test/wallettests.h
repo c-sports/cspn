@@ -1,5 +1,5 @@
-#ifndef BITGREEN_QT_TEST_WALLETTESTS_H
-#define BITGREEN_QT_TEST_WALLETTESTS_H
+#ifndef CSPN_QT_TEST_WALLETTESTS_H
+#define CSPN_QT_TEST_WALLETTESTS_H
 
 #include <QObject>
 #include <QTest>
@@ -12,4 +12,4 @@ private Q_SLOTS:
     void walletTests();
 };
 
-#endif // BITGREEN_QT_TEST_WALLETTESTS_H
+#endif // CSPN_QT_TEST_WALLETTESTS_H

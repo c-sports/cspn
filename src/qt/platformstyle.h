@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_QT_PLATFORMSTYLE_H
-#define BITGREEN_QT_PLATFORMSTYLE_H
+#ifndef CSPN_QT_PLATFORMSTYLE_H
+#define CSPN_QT_PLATFORMSTYLE_H
 
 #include <QIcon>
 #include <QPixmap>
@@ -51,5 +51,5 @@ private:
     /* ... more to come later */
 };
 
-#endif // BITGREEN_QT_PLATFORMSTYLE_H
+#endif // CSPN_QT_PLATFORMSTYLE_H
 

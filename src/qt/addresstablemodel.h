@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_QT_ADDRESSTABLEMODEL_H
-#define BITGREEN_QT_ADDRESSTABLEMODEL_H
+#ifndef CSPN_QT_ADDRESSTABLEMODEL_H
+#define CSPN_QT_ADDRESSTABLEMODEL_H
 
 #include <QAbstractTableModel>
 #include <QStringList>
@@ -30,7 +30,7 @@ public:
 
     enum ColumnIndex {
         Label = 0,   /**< User specified label */
-        Address = 1  /**< BitGreen address */
+        Address = 1  /**< CSPN address */
     };
 
     enum RoleIndex {
@@ -102,4 +102,4 @@ public Q_SLOTS:
     friend class AddressTablePriv;
 };
 
-#endif // BITGREEN_QT_ADDRESSTABLEMODEL_H
+#endif // CSPN_QT_ADDRESSTABLEMODEL_H

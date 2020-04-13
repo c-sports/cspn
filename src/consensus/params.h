@@ -1,11 +1,11 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2018 The Bitcoin Core developers
-// Copyright (c) 2019 The BitGreen Core developers
+// Copyright (c) 2019 The BitTestForLaterSoICanUseReplaceGreen Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_CONSENSUS_PARAMS_H
-#define BITGREEN_CONSENSUS_PARAMS_H
+#ifndef CSPN_CONSENSUS_PARAMS_H
+#define CSPN_CONSENSUS_PARAMS_H
 
 #include <amount.h>
 #include <uint256.h>
@@ -191,4 +191,4 @@ struct Params {
 };
 } // namespace Consensus
 
-#endif // BITGREEN_CONSENSUS_PARAMS_H
+#endif // CSPN_CONSENSUS_PARAMS_H

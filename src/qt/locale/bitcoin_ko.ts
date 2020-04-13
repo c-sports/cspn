@@ -66,7 +66,7 @@
         <translation>받을 주소</translation>
     </message>
     <message>
-        <source>These are your BitGreen addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <source>These are your CSPN addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
         <translation>이것은 비트코인 전송을 위한 주소입니다. 코인을 보내기 전에 항상 받는 주소와 수량을 확인하세요</translation>
     </message>
     <message>
@@ -306,7 +306,7 @@
         <translation>디스크에서 블럭 불러오는 중</translation>
     </message>
     <message>
-        <source>Send coins to a BitGreen address</source>
+        <source>Send coins to a CSPN address</source>
         <translation>비트코인 주소로 코인 보내기</translation>
     </message>
     <message>
@@ -443,7 +443,7 @@
     </message>
     </context>
 <context>
-    <name>bitgreen-core</name>
+    <name>cspn-core</name>
     <message>
         <source>Transaction amounts must not be negative</source>
         <translation>송금액은 마이너스가 될 수 없습니다</translation>

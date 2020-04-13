@@ -2,8 +2,8 @@
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_FLAT_DATABASE_H
-#define BITGREEN_FLAT_DATABASE_H
+#ifndef CSPN_FLAT_DATABASE_H
+#define CSPN_FLAT_DATABASE_H
 
 #include <chainparams.h>
 #include <clientversion.h>
@@ -223,4 +223,4 @@ public:
 
 };
 
-#endif // BITGREEN_FLAT_DATABASE_H
+#endif // CSPN_FLAT_DATABASE_H

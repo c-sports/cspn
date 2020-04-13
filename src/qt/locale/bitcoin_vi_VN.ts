@@ -62,8 +62,8 @@
         <translation>Địa chỉ nhận</translation>
     </message>
     <message>
-        <source>These are your BitGreen addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>Đây là các địa chỉ BitGreen để gửi bạn gửi tiền. Trước khi gửi bạn nên kiểm tra lại số tiền bạn muốn gửi và địa chỉ bitgreen của người nhận.</translation>
+        <source>These are your CSPN addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <translation>Đây là các địa chỉ CSPN để gửi bạn gửi tiền. Trước khi gửi bạn nên kiểm tra lại số tiền bạn muốn gửi và địa chỉ cspn của người nhận.</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -315,8 +315,8 @@ Ví của bạn chưa được mã hóa.</translation>
         <translation>Đánh chỉ số (indexing) lại các khối (blocks) trên ổ đĩa ...</translation>
     </message>
     <message>
-        <source>Send coins to a BitGreen address</source>
-        <translation>Gửi coins đến tài khoản BitGreen</translation>
+        <source>Send coins to a CSPN address</source>
+        <translation>Gửi coins đến tài khoản CSPN</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -359,12 +359,12 @@ Ví của bạn chưa được mã hóa.</translation>
         <translation>Mã hoá các khoá bí mật trong Ví của bạn.</translation>
     </message>
     <message>
-        <source>Sign messages with your BitGreen addresses to prove you own them</source>
-        <translation>Dùng địa chỉ BitGreen của bạn ký các tin nhắn để xác minh những nội dung tin nhắn đó là của bạn.</translation>
+        <source>Sign messages with your CSPN addresses to prove you own them</source>
+        <translation>Dùng địa chỉ CSPN của bạn ký các tin nhắn để xác minh những nội dung tin nhắn đó là của bạn.</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified BitGreen addresses</source>
-        <translation>Kiểm tra các tin nhắn để chắc chắn rằng chúng được ký bằng các địa chỉ BitGreen xác định.</translation>
+        <source>Verify messages to ensure they were signed with specified CSPN addresses</source>
+        <translation>Kiểm tra các tin nhắn để chắc chắn rằng chúng được ký bằng các địa chỉ CSPN xác định.</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -383,8 +383,8 @@ Ví của bạn chưa được mã hóa.</translation>
         <translation>Thanh công cụ (toolbar)</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and bitgreen: URIs)</source>
-        <translation>Yêu cầu thanh toán(tạo mã QR và địa chỉ BitGreen: URLs)</translation>
+        <source>Request payments (generates QR codes and cspn: URIs)</source>
+        <translation>Yêu cầu thanh toán(tạo mã QR và địa chỉ CSPN: URLs)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -395,16 +395,16 @@ Ví của bạn chưa được mã hóa.</translation>
         <translation>Hiện thỉ danh sách các địa chỉ và nhãn đã dùng để nhận.</translation>
     </message>
     <message>
-        <source>Open a bitgreen: URI or payment request</source>
-        <translation>Mở bitgreen:URL hoặc yêu cầu thanh toán</translation>
+        <source>Open a cspn: URI or payment request</source>
+        <translation>Mở cspn:URL hoặc yêu cầu thanh toán</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
         <translation>7Tùy chọn dòng lệnh</translation>
     </message>
     <message numerus="yes">
-        <source>%n active connection(s) to BitGreen network</source>
-        <translation><numerusform>%n liên kết hoạt động với mạng lưới BitGreen</numerusform></translation>
+        <source>%n active connection(s) to CSPN network</source>
+        <translation><numerusform>%n liên kết hoạt động với mạng lưới CSPN</numerusform></translation>
     </message>
     <message>
         <source>Indexing blocks on disk...</source>
@@ -447,8 +447,8 @@ Ví của bạn chưa được mã hóa.</translation>
         <translation>Đã cập nhật</translation>
     </message>
     <message>
-        <source>Show the %1 help message to get a list with possible BitGreen command-line options</source>
-        <translation>Hiển thị tin nhắn trợ giúp %1 để có được danh sách với các tùy chọn dòng lệnh BitGreen.</translation>
+        <source>Show the %1 help message to get a list with possible CSPN command-line options</source>
+        <translation>Hiển thị tin nhắn trợ giúp %1 để có được danh sách với các tùy chọn dòng lệnh CSPN.</translation>
     </message>
     <message>
         <source>Connecting to peers...</source>
@@ -618,8 +618,8 @@ Ví của bạn chưa được mã hóa.</translation>
         <translation>Sử dụng vị trí dữ liệu mặc định</translation>
     </message>
     <message>
-        <source>BitGreen</source>
-        <translation>BitGreen</translation>
+        <source>CSPN</source>
+        <translation>CSPN</translation>
     </message>
     <message>
         <source>Error</source>
@@ -670,8 +670,8 @@ Ví của bạn chưa được mã hóa.</translation>
         <translation>Ví</translation>
     </message>
     <message>
-        <source>Connect to the BitGreen network through a SOCKS5 proxy.</source>
-        <translation>Kết nối đến máy chủ BitGreen thông qua SOCKS5 proxy.</translation>
+        <source>Connect to the CSPN network through a SOCKS5 proxy.</source>
+        <translation>Kết nối đến máy chủ CSPN thông qua SOCKS5 proxy.</translation>
     </message>
     <message>
         <source>Proxy &amp;IP:</source>
@@ -1170,7 +1170,7 @@ Ví của bạn chưa được mã hóa.</translation>
     </message>
     </context>
 <context>
-    <name>bitgreen-core</name>
+    <name>cspn-core</name>
     <message>
         <source>Transaction too large</source>
         <translation>Giao dịch quá lớn</translation>

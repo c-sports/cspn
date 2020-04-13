@@ -28,7 +28,7 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_Main">
        <item>
-        <widget class="QCheckBox" name="bitgreenAtStartup">
+        <widget class="QCheckBox" name="bitcoinAtStartup">
          <property name="toolTip">
           <string>Automatically start %1 after logging in to the system.</string>
          </property>
@@ -300,7 +300,7 @@
        <item>
         <widget class="QCheckBox" name="mapPortUpnp">
          <property name="toolTip">
-          <string>Automatically open the BitGreen client port on the router. This only works when your router supports UPnP and it is enabled.</string>
+          <string>Automatically open the CSPN client port on the router. This only works when your router supports UPnP and it is enabled.</string>
          </property>
          <property name="text">
           <string>Map port using &amp;UPnP</string>
@@ -320,7 +320,7 @@
        <item>
         <widget class="QCheckBox" name="connectSocks">
          <property name="toolTip">
-          <string>Connect to the BitGreen network through a SOCKS5 proxy.</string>
+          <string>Connect to the CSPN network through a SOCKS5 proxy.</string>
          </property>
          <property name="text">
           <string>&amp;Connect through SOCKS5 proxy (default proxy):</string>
@@ -507,7 +507,7 @@
        <item>
         <widget class="QCheckBox" name="connectSocksTor">
          <property name="toolTip">
-          <string>Connect to the BitGreen network through a separate SOCKS5 proxy for Tor hidden services.</string>
+          <string>Connect to the CSPN network through a separate SOCKS5 proxy for Tor hidden services.</string>
          </property>
          <property name="text">
           <string>Use separate SOCKS&amp;5 proxy to reach peers via Tor hidden services:</string>
@@ -805,7 +805,7 @@
      <item>
       <layout class="QVBoxLayout" name="verticalLayout_Buttons">
        <item>
-        <widget class="QPushButton" name="openBitGreenConfButton">
+        <widget class="QPushButton" name="openBitcoinConfButton">
          <property name="toolTip">
           <string>Open the %1 configuration file from the working directory.</string>
          </property>

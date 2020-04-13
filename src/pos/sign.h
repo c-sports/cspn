@@ -1,9 +1,9 @@
 // Copyright (c) 2012-2019 The Peercoin developers
-// Copyright (c) 2019 The BitGreen Core developers
+// Copyright (c) 2019 The BitTestForLaterSoICanUseReplaceGreen Core developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
-#ifndef BITGREEN_POS_SIGN_H
-#define BITGREEN_POS_SIGN_H
+#ifndef CSPN_POS_SIGN_H
+#define CSPN_POS_SIGN_H
 
 #include <memory>
 
@@ -22,4 +22,4 @@ public:
     bool CheckBlockSignature();
 };
 
-#endif // BITGREEN_POS_SIGN_H
+#endif // CSPN_POS_SIGN_H

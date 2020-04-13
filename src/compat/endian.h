@@ -2,11 +2,11 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_COMPAT_ENDIAN_H
-#define BITGREEN_COMPAT_ENDIAN_H
+#ifndef CSPN_COMPAT_ENDIAN_H
+#define CSPN_COMPAT_ENDIAN_H
 
 #if defined(HAVE_CONFIG_H)
-#include <config/bitgreen-config.h>
+#include <config/cspn-config.h>
 #endif
 
 #include <compat/byteswap.h>
@@ -22,7 +22,7 @@
 #ifndef HAVE_CONFIG_H
 // While not technically a supported configuration, defaulting to defining these
 // DECLs when we were compiled without autotools makes it easier for other build
-// systems to build things like libbitgreenconsensus for strange targets.
+// systems to build things like libcspnconsensus for strange targets.
 #ifdef htobe16
 #define HAVE_DECL_HTOBE16 1
 #endif
@@ -238,4 +238,4 @@ inline uint64_t le64toh(uint64_t little_endian_64bits)
 
 #endif // WORDS_BIGENDIAN
 
-#endif // BITGREEN_COMPAT_ENDIAN_H
+#endif // CSPN_COMPAT_ENDIAN_H

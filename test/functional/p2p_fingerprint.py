@@ -19,13 +19,13 @@ from test_framework.mininode import (
     msg_getdata,
     msg_getheaders,
 )
-from test_framework.test_framework import BitGreenTestFramework
+from test_framework.test_framework import CSPNTestFramework
 from test_framework.util import (
     assert_equal,
     wait_until,
 )
 
-class P2PFingerprintTest(BitGreenTestFramework):
+class P2PFingerprintTest(CSPNTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 1

@@ -1,6 +1,6 @@
 // Copyright (c) 2010 Satoshi Nakamoto
 // Copyright (c) 2009-2018 The Bitcoin Core developers
-// Copyright (c) 2019 The BitGreen Core developers
+// Copyright (c) 2019 The BitTestForLaterSoICanUseReplaceGreen Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -53,8 +53,8 @@ static CBlock CreateGenesisBlock(const char* pszTimestamp, const CScript& genesi
  */
 static CBlock CreateGenesisBlock(uint32_t nTime, uint32_t nNonce, uint32_t nBits, int32_t nVersion, const CAmount& genesisReward)
 {
-    const char* pszTimestamp = "112018 Bitcoin has hit below $4225 USD 12mo Low. BCH trying to recover from 51% attack. People balming BCH for crypto maket free fail.";
-    const CScript genesisOutputScript = CScript() << ParseHex("04e5a8143f86ad8ac63791fbbdb8e0b91a8da88c8c693a95f6c2c13c063ea790f7960b8025a9047a7bc671d5cfe707a2dd2e13b86182e1064a0eea7bf863636363") << OP_CHECKSIG;
+    const char* pszTimestamp = "112018 Bitcoin has hit below $4225 USD 12";
+    const CScript genesisOutputScript = CScript() << ParseHex("04e5a8143f86a111163791fbbdb8e0b91a8d22228c693a95f6c2c13c063ea790f7960b8025a9047a7bc671d5cfe707a2dd2e13b86182e1064a0eea7bf863636363") << OP_CHECKSIG;
     return CreateGenesisBlock(pszTimestamp, genesisOutputScript, nTime, nNonce, nBits, nVersion, genesisReward);
 }
 
@@ -213,10 +213,11 @@ public:
         m_assumed_blockchain_size = 1;
         m_assumed_chain_state_size = 0;
 
-        genesis = CreateGenesisBlock(1574334000, 27296764, 0x1e0ffff0, 1, 0 * COIN);
+
+        genesis = CreateGenesisBlock(1587179601, 27710506, 0x1e0ffff0, 1, 0 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x0000025289d6b03cbda4950e825cd865185f34fbb3e098295534b63d78beba15"));
-        assert(genesis.hashMerkleRoot == uint256S("0x07cbcacfc822fba6bbeb05312258fa43b96a68fc310af8dfcec604591763f7cf"));
+        //assert(consensus.hashGenesisBlock == uint256S("0x0000025289d6b03cbda4950e825cd865185f34fbb3e098295534b63d78beba15"));
+        //assert(genesis.hashMerkleRoot == uint256S("0x07cbcacfc822fba6bbeb05312258fa43b96a68fc310af8dfcec604591763f7cf"));
 
         // Note that of those which support the service bits prefix, most only support a subset of
         // possible options.
@@ -249,7 +250,7 @@ public:
         fAllowMultiplePorts = true;
         nFulfilledRequestExpireTime = 60 * 60; // fulfilled requests expire in 1 hour
 
-        vSporkAddresses = {"GMWbuDW6m6WCc7Zc9W3CSuviXzqPKK3eBj"};
+        vSporkAddresses = {"CQGjnKEWxF69yoo9chv6PwmEJLssnX1uZN"};
         nMinSporkKeys = 1;
 
         checkpointData = {
@@ -258,9 +259,9 @@ public:
         chainTxData = ChainTxData{
             // Data from rpc: getchaintxstats <nblock> <blockhash>
             // Data from RPC: getchaintxstats 70004 2da7cf773e5032a76aa4480b033c1ac6978ff64531f168c92d022c90f5bf7996
-            /* nTime    */ 1583583293,
-            /* nTxCount */ 268247,
-            /* dTxRate  */ 0.02924633374616526};
+            /* nTime    */ 0,
+            /* nTxCount */ 0,
+            /* dTxRate  */ 0};
     }
 };
 
@@ -343,8 +344,8 @@ public:
 
         genesis = CreateGenesisBlock(1565017975, 21212214, 0x1e0ffff0, 1, 0 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x00000546a6b03a54ae05f94119e37c55202e90a953058c35364d112d41ded06a"));
-        assert(genesis.hashMerkleRoot == uint256S("0x07cbcacfc822fba6bbeb05312258fa43b96a68fc310af8dfcec604591763f7cf"));
+        //assert(consensus.hashGenesisBlock == uint256S("0x00000546a6b03a54ae05f94119e37c55202e90a953058c35364d112d41ded06a"));
+        //assert(genesis.hashMerkleRoot == uint256S("0x07cbcacfc822fba6bbeb05312258fa43b96a68fc310af8dfcec604591763f7cf"));
 
         vFixedSeeds.clear();
         vSeeds.clear();
@@ -375,7 +376,7 @@ public:
         fAllowMultiplePorts = false;
         nFulfilledRequestExpireTime = 5 * 60; // fulfilled requests expire in 5 minutes
 
-        vSporkAddresses = {"gprpehZBigGDp7sNMjEKY46afAd9BWtd29"};
+        vSporkAddresses = {"CQGjnKEWxF69yoo9chv6PwmEJLssnX1uZN"};
         nMinSporkKeys = 1;
 
         checkpointData = {
@@ -461,8 +462,8 @@ public:
 
         genesis = CreateGenesisBlock(1565017975, 20542302, 0x207fffff, 1, 0 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x100a3271b95d1a817101bcbd7045ad14c9799cb34e1cb6071973c8932ae48b6a"));
-        assert(genesis.hashMerkleRoot == uint256S("0x07cbcacfc822fba6bbeb05312258fa43b96a68fc310af8dfcec604591763f7cf"));
+        //assert(consensus.hashGenesisBlock == uint256S("0x100a3271b95d1a817101bcbd7045ad14c9799cb34e1cb6071973c8932ae48b6a"));
+        //assert(genesis.hashMerkleRoot == uint256S("0x07cbcacfc822fba6bbeb05312258fa43b96a68fc310af8dfcec604591763f7cf"));
 
         vFixedSeeds.clear(); //!< Regtest mode doesn't have any fixed seeds.
         vSeeds.clear();      //!< Regtest mode doesn't have any DNS seeds.
@@ -474,7 +475,7 @@ public:
         fAllowMultiplePorts = true;
         nFulfilledRequestExpireTime = 5 * 60; // fulfilled requests expire in 5 minutes
 
-        vSporkAddresses = {"gprpehZBigGDp7sNMjEKY46afAd9BWtd29"};
+        vSporkAddresses = {"CQGjnKEWxF69yoo9chv6PwmEJLssnX1uZN"};
         nMinSporkKeys = 1;
 
         checkpointData = {

@@ -1,10 +1,10 @@
 // Copyright (c) 2018 The Dash Core developers
-// Copyright (c) 2019 The BitGreen Core developers
+// Copyright (c) 2019 The BitTestForLaterSoICanUseReplaceGreen Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_SPECIAL_DETERMINISTICMNS_H
-#define BITGREEN_SPECIAL_DETERMINISTICMNS_H
+#ifndef CSPN_SPECIAL_DETERMINISTICMNS_H
+#define CSPN_SPECIAL_DETERMINISTICMNS_H
 
 #include <arith_uint256.h>
 #include <dbwrapper.h>
@@ -663,4 +663,4 @@ private:
 
 extern std::unique_ptr<CDeterministicMNManager> deterministicMNManager;
 
-#endif //BITGREEN_SPECIAL_DETERMINISTICMNS_H
+#endif //CSPN_SPECIAL_DETERMINISTICMNS_H

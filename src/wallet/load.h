@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_WALLET_LOAD_H
-#define BITGREEN_WALLET_LOAD_H
+#ifndef CSPN_WALLET_LOAD_H
+#define CSPN_WALLET_LOAD_H
 
 #include <string>
 #include <vector>
@@ -35,4 +35,4 @@ void StopWallets();
 //! Close all wallets.
 void UnloadWallets();
 
-#endif // BITGREEN_WALLET_LOAD_H
+#endif // CSPN_WALLET_LOAD_H

@@ -2,11 +2,11 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_QT_PAYMENTSERVER_H
-#define BITGREEN_QT_PAYMENTSERVER_H
+#ifndef CSPN_QT_PAYMENTSERVER_H
+#define CSPN_QT_PAYMENTSERVER_H
 
 // This class handles payment requests from clicking on
-// bitgreen: URIs
+// cspn: URIs
 //
 // This is somewhat tricky, because we have to deal with
 // the situation where the user clicks on a link during
@@ -33,7 +33,7 @@
 //
 
 #if defined(HAVE_CONFIG_H)
-#include <config/bitgreen-config.h>
+#include <config/cspn-config.h>
 #endif
 
 #ifdef ENABLE_BIP70
@@ -157,4 +157,4 @@ private:
 #endif
 };
 
-#endif // BITGREEN_QT_PAYMENTSERVER_H
+#endif // CSPN_QT_PAYMENTSERVER_H

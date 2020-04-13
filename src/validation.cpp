@@ -62,7 +62,7 @@
 #include <boost/thread.hpp>
 
 #if defined(NDEBUG)
-# error "BitGreen cannot be compiled without assertions."
+# error "CSPN cannot be compiled without assertions."
 #endif
 
 #define MICRO 0.000001
@@ -850,7 +850,7 @@ static bool AcceptToMemoryPoolWorker(const CChainParams& chainparams, CTxMemPool
         // Remove conflicting transactions from the mempool
         for (CTxMemPool::txiter it : allConflicting)
         {
-            LogPrint(BCLog::MEMPOOL, "replacing tx %s with %s for %s BITG additional fees, %d delta bytes\n",
+            LogPrint(BCLog::MEMPOOL, "replacing tx %s with %s for %s CSPN additional fees, %d delta bytes\n",
                     it->GetTx().GetHash().ToString(),
                     hash.ToString(),
                     FormatMoney(nModifiedFees - nConflictingFees),
@@ -1073,9 +1073,11 @@ CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams, b
     /*
     1 - old chain supply: 9,851,721
     <= 7500 - zero rewards
-    <= 175000 - 10 BITG
+    <= 175000 - 10 CSPN
     > 175000 - halving every 525,600 blocks (~2 years)
     */
+
+    CAmount nSubsidy;
 
     // Supply on old chain
     if (Params().NetworkIDString() == "main") {
@@ -1765,7 +1767,7 @@ static int64_t nTimeConnect = 0;
 static int64_t nTimeIndex = 0;
 static int64_t nTimeCallbacks = 0;
 static int64_t nTimeTotal = 0;
-static int64_t nTimeBitgreenSpecific = 0;
+static int64_t nTimeBitcoinSpecific = 0;
 static int64_t nBlocksTotal = 0;
 
 
@@ -2172,7 +2174,7 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
         LogPrintf("%s: spork is off, skipping transaction locking checks\n", __func__);
     }
 
-    // BITGREEN: Check Proof-of-Stake, masternode payments and superblocks
+    // CSPN: Check Proof-of-Stake, masternode payments and superblocks
 
     // proof-of-stake: keep track of money supply and mint amount.
     CAmount nMoneySupplyPrev = pindex->pprev ? pindex->pprev->nMoneySupply : 0;
@@ -2211,10 +2213,10 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
     int64_t nTime4_3 = GetTimeMicros(); nTimeVerify += nTime4_3 - nTime4_2;
     LogPrint(BCLog::BENCHMARK, "      - ProcessSpecialTxsInBlock: %.2fms [%.2fs]\n", MILLI * (nTime4_3 - nTime4_2), nTimeVerify * MICRO);
 
-    int64_t nTime4_4 = GetTimeMicros(); nTimeBitgreenSpecific += nTime4_4 - nTime4_1;
-    LogPrint(BCLog::BENCHMARK, "    - Bitgreen specific: %.2fms [%.2fs]\n", MILLI * (nTime4_4 - nTime4_3), nTimeBitgreenSpecific * MICRO);
+    int64_t nTime4_4 = GetTimeMicros(); nTimeBitcoinSpecific += nTime4_4 - nTime4_1;
+    LogPrint(BCLog::BENCHMARK, "    - CSPN specific: %.2fms [%.2fs]\n", MILLI * (nTime4_4 - nTime4_3), nTimeBitcoinSpecific * MICRO);
 
-    // END BITGREEN
+    // END CSPN
 
     //IMPORTANT NOTE: Nothing before this point should actually store to disk (or even memory)
     if (fJustCheck)

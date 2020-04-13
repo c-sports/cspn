@@ -62,8 +62,8 @@
         <translation>Færslugildi sem þiggja til sín</translation>
     </message>
     <message>
-        <source>These are your BitGreen addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>Þetta eru BitGreen færslugildin sem senda greiðslur. Skoðið ævinlega vel upphæðina og færslugildin sem þiggja greiðslur áður en mynt er send.</translation>
+        <source>These are your CSPN addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <translation>Þetta eru CSPN færslugildin sem senda greiðslur. Skoðið ævinlega vel upphæðina og færslugildin sem þiggja greiðslur áður en mynt er send.</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -314,8 +314,8 @@
         <translation>Endurraða blokkum á drifi...</translation>
     </message>
     <message>
-        <source>Send coins to a BitGreen address</source>
-        <translation>Senda mynt í BitGreen færslugildi</translation>
+        <source>Send coins to a CSPN address</source>
+        <translation>Senda mynt í CSPN færslugildi</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -358,12 +358,12 @@
         <translation>Dulkóða einkalyklana sem tilheyra veskinu þínu</translation>
     </message>
     <message>
-        <source>Sign messages with your BitGreen addresses to prove you own them</source>
-        <translation>Kvitta undir skilaboð með BitGreen færslugildunum þínum til að sanna að þú eigir þau</translation>
+        <source>Sign messages with your CSPN addresses to prove you own them</source>
+        <translation>Kvitta undir skilaboð með CSPN færslugildunum þínum til að sanna að þú eigir þau</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified BitGreen addresses</source>
-        <translation>Yfirfara skilaboð til að tryggja að kvittað hafi verið fyrir þau með tilteknum BitGreen færslugildum</translation>
+        <source>Verify messages to ensure they were signed with specified CSPN addresses</source>
+        <translation>Yfirfara skilaboð til að tryggja að kvittað hafi verið fyrir þau með tilteknum CSPN færslugildum</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -382,8 +382,8 @@
         <translation>Tólaborð flipa</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and bitgreen: URIs)</source>
-        <translation>Óska eftir greiðslum (býr til QR kóða og bitgreen: URI)</translation>
+        <source>Request payments (generates QR codes and cspn: URIs)</source>
+        <translation>Óska eftir greiðslum (býr til QR kóða og cspn: URI)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -394,8 +394,8 @@
         <translation>Sýna færslugildi sem notuð hafa verið til að taka við mynt og merkingar þeirra</translation>
     </message>
     <message>
-        <source>Open a bitgreen: URI or payment request</source>
-        <translation>Opna bitgreen: URI eða greiðslubeiðni</translation>
+        <source>Open a cspn: URI or payment request</source>
+        <translation>Opna cspn: URI eða greiðslubeiðni</translation>
     </message>
     <message>
         <source>Indexing blocks on disk...</source>
@@ -434,8 +434,8 @@
         <translation>Uppfært</translation>
     </message>
     <message>
-        <source>Show the %1 help message to get a list with possible BitGreen command-line options</source>
-        <translation>Sýna %1 hjálparskilaboðin til að fá lista yfir valkosti BitGreen aðgerðir í skipanalínu</translation>
+        <source>Show the %1 help message to get a list with possible CSPN command-line options</source>
+        <translation>Sýna %1 hjálparskilaboðin til að fá lista yfir valkosti CSPN aðgerðir í skipanalínu</translation>
     </message>
     <message>
         <source>%1 client</source>
@@ -504,8 +504,8 @@
         <translation>Veskið er &lt;b&gt;dulkóðað&lt;/b&gt; and currently &lt;b&gt;locked&lt;/b&gt;</translation>
     </message>
     <message>
-        <source>A fatal error occurred. BitGreen can no longer continue safely and will quit.</source>
-        <translation>Alvarleg villa átti sér stað. BitGreen getur ekki haldið áfram með öruggum hætti og stoppar hér.</translation>
+        <source>A fatal error occurred. CSPN can no longer continue safely and will quit.</source>
+        <translation>Alvarleg villa átti sér stað. CSPN getur ekki haldið áfram með öruggum hætti og stoppar hér.</translation>
     </message>
 </context>
 <context>
@@ -618,8 +618,8 @@
         <translation>Breyta sendingarfærslugildi</translation>
     </message>
     <message>
-        <source>The entered address "%1" is not a valid BitGreen address.</source>
-        <translation>Færslugildið sem slegið var inn "%1" er ekki leyfilegt BitGreen færslugildi.</translation>
+        <source>The entered address "%1" is not a valid CSPN address.</source>
+        <translation>Færslugildið sem slegið var inn "%1" er ekki leyfilegt CSPN færslugildi.</translation>
     </message>
     </context>
 <context>
@@ -637,8 +637,8 @@
 <context>
     <name>Intro</name>
     <message>
-        <source>BitGreen</source>
-        <translation>BitGreen</translation>
+        <source>CSPN</source>
+        <translation>CSPN</translation>
     </message>
     <message>
         <source>Error</source>
@@ -937,7 +937,7 @@
     </message>
     </context>
 <context>
-    <name>bitgreen-core</name>
+    <name>cspn-core</name>
     <message>
         <source>Error reading %s! All keys read correctly, but transaction data or address book entries might be missing or incorrect.</source>
         <translation>Villa við lestur %s! Allir lyklar fóru inn á réttan hátt, en færslugögn eða færslugildi gætu verið röng eða horfin.</translation>

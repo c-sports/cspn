@@ -11,7 +11,7 @@
   </array>
 
   <key>CFBundleIconFile</key>
-  <string>bitgreen.icns</string>
+  <string>cspn.icns</string>
 
   <key>CFBundlePackageType</key>
   <string>APPL</string>
@@ -29,16 +29,16 @@
   <string>????</string>
 
   <key>CFBundleExecutable</key>
-  <string>BitGreen-Qt</string>
+  <string>CSPN-Qt</string>
 
   <key>CFBundleName</key>
-  <string>BitGreen-Qt</string>
+  <string>CSPN-Qt</string>
 
   <key>LSHasLocalizedDisplayName</key>
   <true/>
 
   <key>CFBundleIdentifier</key>
-  <string>org.bitg.BitGreen-Qt</string>
+  <string>org.bitg.CSPN-Qt</string>
 
   <key>CFBundleURLTypes</key>
   <array>
@@ -46,10 +46,10 @@
       <key>CFBundleTypeRole</key>
       <string>Editor</string>
       <key>CFBundleURLName</key>
-      <string>org.bitg.BitGreenPayment</string>
+      <string>org.bitg.CSPNPayment</string>
       <key>CFBundleURLSchemes</key>
       <array>
-        <string>bitgreen</string>
+        <string>cspn</string>
       </array>
     </dict>
   </array>
@@ -60,7 +60,7 @@
       <key>UTTypeIdentifier</key>
       <string>org.bitg.paymentrequest</string>
       <key>UTTypeDescription</key>
-      <string>BitGreen payment request</string>
+      <string>CSPN payment request</string>
       <key>UTTypeConformsTo</key>
       <array>
         <string>public.data</string>
@@ -68,10 +68,10 @@
       <key>UTTypeTagSpecification</key>
       <dict>
         <key>public.mime-type</key>
-        <string>application/x-bitgreen-payment-request</string>
+        <string>application/x-cspn-payment-request</string>
         <key>public.filename-extension</key>
         <array>
-          <string>bitgreenpaymentrequest</string>
+          <string>cspnpaymentrequest</string>
         </array>
       </dict>
     </dict>

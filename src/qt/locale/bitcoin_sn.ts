@@ -155,8 +155,8 @@
 <context>
     <name>Intro</name>
     <message>
-        <source>BitGreen</source>
-        <translation>BitGreen</translation>
+        <source>CSPN</source>
+        <translation>CSPN</translation>
     </message>
     </context>
 <context>
@@ -187,8 +187,8 @@
         <translation>Marii </translation>
     </message>
     <message>
-        <source>Enter a BitGreen address (e.g. %1)</source>
-        <translation>Nyora kero ye BitGreen (sekuti %1)</translation>
+        <source>Enter a CSPN address (e.g. %1)</source>
+        <translation>Nyora kero ye CSPN (sekuti %1)</translation>
     </message>
     <message>
         <source>%1 d</source>
@@ -347,6 +347,6 @@
     <name>WalletView</name>
     </context>
 <context>
-    <name>bitgreen-core</name>
+    <name>cspn-core</name>
     </context>
 </TS>

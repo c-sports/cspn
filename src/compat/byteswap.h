@@ -2,11 +2,11 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_COMPAT_BYTESWAP_H
-#define BITGREEN_COMPAT_BYTESWAP_H
+#ifndef CSPN_COMPAT_BYTESWAP_H
+#define CSPN_COMPAT_BYTESWAP_H
 
 #if defined(HAVE_CONFIG_H)
-#include <config/bitgreen-config.h>
+#include <config/cspn-config.h>
 #endif
 
 #include <stdint.h>
@@ -63,4 +63,4 @@ inline uint64_t bswap_64(uint64_t x)
 
 #endif // defined(MAC_OSX)
 
-#endif // BITGREEN_COMPAT_BYTESWAP_H
+#endif // CSPN_COMPAT_BYTESWAP_H

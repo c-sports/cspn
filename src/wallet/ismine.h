@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_WALLET_ISMINE_H
-#define BITGREEN_WALLET_ISMINE_H
+#ifndef CSPN_WALLET_ISMINE_H
+#define CSPN_WALLET_ISMINE_H
 
 #include <script/standard.h>
 
@@ -50,4 +50,4 @@ struct CachableAmount
     }
 };
 
-#endif // BITGREEN_WALLET_ISMINE_H
+#endif // CSPN_WALLET_ISMINE_H

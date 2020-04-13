@@ -1,5 +1,5 @@
 // Copyright (c) 2018 The Dash Core developers
-// Copyright (c) 2019 The BitGreen Core developers
+// Copyright (c) 2019 The BitTestForLaterSoICanUseReplaceGreen Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -38,7 +38,7 @@ RPCArg GetHelpArg(std::string strParamName)
 {
     static const std::map<std::string, RPCArg> mapParamHelp = {
         {"collateralAddress",
-            {"collateralAddress", RPCArg::Type::STR, RPCArg::Optional::NO, "The bitgreen address to send the collateral to"},
+            {"collateralAddress", RPCArg::Type::STR, RPCArg::Optional::NO, "The cspn address to send the collateral to"},
         },
         {"collateralHash",
             {"collateralHash", RPCArg::Type::STR, RPCArg::Optional::NO, "The collateral transaction hash."}
@@ -78,12 +78,12 @@ RPCArg GetHelpArg(std::string strParamName)
             "                              between 0.00 and 100.00."}
         },
         {"ownerAddress",
-            {"ownerAddress", RPCArg::Type::STR, RPCArg::Optional::NO, "The bitgreen address to use for payee updates and proposal voting.\n"
+            {"ownerAddress", RPCArg::Type::STR, RPCArg::Optional::NO, "The cspn address to use for payee updates and proposal voting.\n"
             "                              The private key belonging to this address must be known in your wallet. The address must\n"
             "                              be unused and must differ from the collateralAddress."}
         },
         {"payoutAddress",
-            {"payoutAddress", RPCArg::Type::STR, RPCArg::Optional::NO, "The bitgreen address to use for masternode reward payments."}
+            {"payoutAddress", RPCArg::Type::STR, RPCArg::Optional::NO, "The cspn address to use for masternode reward payments."}
         },
         {"proTxHash",
             {"proTxHash", RPCArg::Type::STR, RPCArg::Optional::NO, "The hash of the initial ProRegTx."}
@@ -105,7 +105,7 @@ RPCArg GetHelpArg(std::string strParamName)
     return it->second;
 }
 
-// Allows to specify BitGreen address or priv key. In case of BitGreen address, the priv key is taken from the wallet
+// Allows to specify CSPN address or priv key. In case of CSPN address, the priv key is taken from the wallet
 static CKey ParsePrivKey(const CWallet* pwallet, const std::string &strKeyOrAddress, bool allowAddresses = true) {
     CTxDestination address = DecodeDestination(strKeyOrAddress);
     if (allowAddresses && IsValidDestination(address)) {
@@ -307,7 +307,7 @@ void protx_register_fund_help(const CWallet* pwallet)
 {
     throw std::runtime_error(
         RPCHelpMan{"protx register_fund",
-            "\nCreates, funds and sends a ProTx to the network. The resulting transaction will move 2500 BITG\n"
+            "\nCreates, funds and sends a ProTx to the network. The resulting transaction will move 2500 CSPN\n"
             "to the address specified by collateralAddress and will then function as the collateral of your\n"
             "masternode.\n",
             {
@@ -511,7 +511,7 @@ UniValue protx_register(const JSONRPCRequest& request)
     if (request.params.size() > paramIdx + 6) {
         fundAddress = DecodeDestination(request.params[paramIdx + 6].get_str());
         if (!IsValidDestination(fundAddress))
-            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, std::string("Invalid BitGreen address: ") + request.params[paramIdx + 6].get_str());
+            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, std::string("Invalid CSPN address: ") + request.params[paramIdx + 6].get_str());
     }
 
     FundSpecialTx(pwallet, tx, ptx, fundAddress);
@@ -679,7 +679,7 @@ UniValue protx_update_service(const JSONRPCRequest& request)
     if (request.params.size() >= 6) {
         CTxDestination feeSourceAddress = DecodeDestination(request.params[5].get_str());
         if (!IsValidDestination(feeSourceAddress))
-            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, std::string("Invalid BitGreen address: ") + request.params[5].get_str());
+            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, std::string("Invalid CSPN address: ") + request.params[5].get_str());
         feeSource = feeSourceAddress;
     } else {
         if (ptx.scriptOperatorPayout != CScript()) {
@@ -775,7 +775,7 @@ UniValue protx_update_registrar(const JSONRPCRequest& request)
     if (request.params.size() > 5) {
         feeSourceAddress = DecodeDestination(request.params[5].get_str());
         if (!IsValidDestination(feeSourceAddress))
-            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, std::string("Invalid BitGreen address: ") + request.params[5].get_str());
+            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, std::string("Invalid CSPN address: ") + request.params[5].get_str());
     }
 
     FundSpecialTx(pwallet, tx, ptx, feeSourceAddress);
@@ -852,7 +852,7 @@ UniValue protx_revoke(const JSONRPCRequest& request)
     if (request.params.size() > 4) {
         CTxDestination feeSourceAddress = DecodeDestination(request.params[4].get_str());
         if (!IsValidDestination(feeSourceAddress))
-            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, std::string("Invalid BitGreen address: ") + request.params[4].get_str());
+            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, std::string("Invalid CSPN address: ") + request.params[4].get_str());
         FundSpecialTx(pwallet, tx, ptx, feeSourceAddress);
     // TODO:
     // } else if (dmn->pdmnState->scriptOperatorPayout != CScript()) {

@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_VERSION_H
-#define BITGREEN_VERSION_H
+#ifndef CSPN_VERSION_H
+#define CSPN_VERSION_H
 
 /**
  * network protocol versioning
@@ -47,7 +47,6 @@ static const int LLMQS_PROTO_VERSION = 70016;
 
 //! minimal proto version after fork block
 static const int MIN_PEER_PROTO_VERSION_V15 = 70216;
-static const int BLOCKHEIGHT_PROTO_VERSION_V15 = 116760;
+static const int BLOCKHEIGHT_PROTO_VERSION_V15 = 20000;
 
-
-#endif // BITGREEN_VERSION_H
+#endif // CSPN_VERSION_H

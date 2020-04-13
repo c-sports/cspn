@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_QT_TEST_PAYMENTSERVERTESTS_H
-#define BITGREEN_QT_TEST_PAYMENTSERVERTESTS_H
+#ifndef CSPN_QT_TEST_PAYMENTSERVERTESTS_H
+#define CSPN_QT_TEST_PAYMENTSERVERTESTS_H
 
 #include <qt/paymentserver.h>
 
@@ -32,4 +32,4 @@ public:
     SendCoinsRecipient recipient;
 };
 
-#endif // BITGREEN_QT_TEST_PAYMENTSERVERTESTS_H
+#endif // CSPN_QT_TEST_PAYMENTSERVERTESTS_H

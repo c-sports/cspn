@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITGREEN_ZMQ_ZMQPUBLISHNOTIFIER_H
-#define BITGREEN_ZMQ_ZMQPUBLISHNOTIFIER_H
+#ifndef CSPN_ZMQ_ZMQPUBLISHNOTIFIER_H
+#define CSPN_ZMQ_ZMQPUBLISHNOTIFIER_H
 
 #include <zmq/zmqabstractnotifier.h>
 
@@ -76,4 +76,4 @@ public:
     bool NotifyChainLock(const CBlockIndex *pindex) override;
 };
 
-#endif // BITGREEN_ZMQ_ZMQPUBLISHNOTIFIER_H
+#endif // CSPN_ZMQ_ZMQPUBLISHNOTIFIER_H
