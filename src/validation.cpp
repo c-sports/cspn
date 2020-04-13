@@ -1081,26 +1081,31 @@ CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams, b
     if (Params().NetworkIDString() == "main") {
         if (nHeight == 1)
             return 9851721 * COIN;
-
-        if (nHeight <= 7500)
-            return 0 * COIN;
-    }
-
-    if (Params().NetworkIDString() == "test") {
-        if (nHeight == 1)
-            return 10000 * COIN;
-    }
-
-    CAmount nSubsidy = 10 * COIN;
-    if (nHeight >= 175000) nSubsidy = 5 * COIN;
-
-    int halvings = (nHeight - 175000) / consensusParams.nSubsidyHalvingInterval;
-    // Force block reward to zero when right shift is undefined.
-    if (halvings >= 64)
-        return 0;
-
-    // Subsidy is cut in half every 525,600 blocks which will occur approximately every 2 years.
-    nSubsidy >>= halvings;
+        
+    if (nHeight <= 7500)
+        return 0 * COIN;
+    else if (nHeight > 7500 && nHeight <= 525600)
+        nSubsidy = 3.0 * COIN;
+    else if (nHeight > 525600 && nHeight <= 1051200)
+        nSubsidy = 2.8 * COIN;
+    else if (nHeight > 1051200 && nHeight <= 1576800)
+        nSubsidy = 2.61 * COIN;
+    else if (nHeight > 1576800 && nHeight <= 2102400)
+        nSubsidy = 2.44 * COIN;
+    else if (nHeight > 2102400 && nHeight <= 2628000)
+        nSubsidy = 2.27 * COIN;
+    else if (nHeight > 2628000 && nHeight <= 3153600)
+        nSubsidy = 2.12 * COIN;
+    else if (nHeight > 3153600 && nHeight <= 3679200)
+        nSubsidy = 1.98 * COIN;
+    else if (nHeight > 3679200 && nHeight <= 4204800)
+        nSubsidy = 1.85 * COIN;
+    else if (nHeight > 4204800 && nHeight <= 4730400)
+        nSubsidy = 1.72 * COIN;
+    else if (nHeight > 4730400 && nHeight <= 5256000)
+        nSubsidy = 1.61 * COIN;
+    else if (nHeight > 5256000)
+        nSubsidy = 1.5 * COIN;
 
     // Hard fork to reduce the block reward by 10 extra percent (allowing budget/superblocks)
     CAmount nSuperblockPart = (nHeight >= consensusParams.nBudgetPaymentsStartBlock) ? nSubsidy/10 : 0;
@@ -1114,7 +1119,7 @@ CAmount GetMasternodePayment(int nHeight, CAmount blockValue)
     if (nHeight < Params().GetConsensus().nLastPoWBlock || blockValue == 0)
         return 0;
 
-    CAmount ret = blockValue * 0.85; // 85% of block reward
+    CAmount ret = blockValue * 0.80; // 80% of block reward
     return ret;
 }
 

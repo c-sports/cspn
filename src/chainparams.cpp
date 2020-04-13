@@ -53,7 +53,7 @@ static CBlock CreateGenesisBlock(const char* pszTimestamp, const CScript& genesi
  */
 static CBlock CreateGenesisBlock(uint32_t nTime, uint32_t nNonce, uint32_t nBits, int32_t nVersion, const CAmount& genesisReward)
 {
-    const char* pszTimestamp = "Even With Energy Surplus, Canada Unable to Meet Electricity Demands of Bitcoin Miners";
+    const char* pszTimestamp = "112018 Bitcoin has hit below $4225 USD 12mo Low. BCH trying to recover from 51% attack. People balming BCH for crypto maket free fail.";
     const CScript genesisOutputScript = CScript() << ParseHex("04e5a8143f86ad8ac63791fbbdb8e0b91a8da88c8c693a95f6c2c13c063ea790f7960b8025a9047a7bc671d5cfe707a2dd2e13b86182e1064a0eea7bf863636363") << OP_CHECKSIG;
     return CreateGenesisBlock(pszTimestamp, genesisOutputScript, nTime, nNonce, nBits, nVersion, genesisReward);
 }
@@ -204,11 +204,11 @@ public:
          * The characters are rarely used upper ASCII, not valid as UTF-8, and produce
          * a large 32-bit integer with any alignment.
          */
-        pchMessageStart[0] = 0xe4;
-        pchMessageStart[1] = 0xa4;
-        pchMessageStart[2] = 0x06;
-        pchMessageStart[3] = 0x1f;
-        nDefaultPort = 9333;
+        pchMessageStart[0] = 0xd4;
+        pchMessageStart[1] = 0xf4;
+        pchMessageStart[2] = 0xa6;
+        pchMessageStart[3] = 0x12;
+        nDefaultPort = 13370;
         nPruneAfterHeight = 100000;
         m_assumed_blockchain_size = 1;
         m_assumed_chain_state_size = 0;
@@ -224,13 +224,13 @@ public:
         // service bits we want, but we should get them updated to support all service bits wanted by any
         // release ASAP to avoid it where possible.
 
-        base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1, 38);
+        base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1, 28); // Wallet address starts with "C"
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1, 6);
         base58Prefixes[SECRET_KEY] = std::vector<unsigned char>(1, 46);
         base58Prefixes[EXT_PUBLIC_KEY] = {0x04, 0x88, 0xB2, 0x1E};
         base58Prefixes[EXT_SECRET_KEY] = {0x04, 0x88, 0xAD, 0xE4};
 
-        bech32_hrp = "bg";
+        bech32_hrp = "cp";
 
         vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_main, pnSeed6_main + ARRAYLEN(pnSeed6_main));
 
@@ -253,17 +253,7 @@ public:
         nMinSporkKeys = 1;
 
         checkpointData = {
-            {
-                {      1, uint256S("0x0000062cf9ac97b1582474e313770e4609c338ed6fae01142da65722353465f3")},
-                {    100, uint256S("0x000005faf4d7d9dccd3a1986eb7150a22f21f80664d5deb91cb1ca38eb305e7e")},
-                {   6439, uint256S("0x7c6f9621fe18f22e57d042a3804be45a9ace2d17a305036242d7ba90b68345cb")},
-                {  70004, uint256S("0x2da7cf773e5032a76aa4480b033c1ac6978ff64531f168c92d022c90f5bf7996")},
-                {  80000, uint256S("0x1f6545f0cd4a07a02a5b0175f22b371fc1839839df8d835c04f6420a08d43877")},
-                {  90000, uint256S("0x1d4a1b059b96fa871e9aa09eca0e2ed18ef369556ef8ee88bacf3b3705812e26")},
-                { 100000, uint256S("0x8a58bc2b0d6b13229f4ec1d9733317a82e62dbc035e09384ee9e73b77a3e3c76")},
-                { 105000, uint256S("0xa9e075e368ebc428c223055d4c3db108106098237dc9f55af687f56781c4d932")},
-                { 110000, uint256S("0xfc62dddbd615c0c5d34fc24cb4f6d6b86f02465c036ac42d1bda585e1ac3d066")}
-            }};
+                {}};
 
         chainTxData = ChainTxData{
             // Data from rpc: getchaintxstats <nblock> <blockhash>
@@ -346,7 +336,7 @@ public:
         pchMessageStart[1] = 0x6b;
         pchMessageStart[2] = 0xb0;
         pchMessageStart[3] = 0x4b;
-        nDefaultPort = 19333;
+        nDefaultPort = 113370;
         nPruneAfterHeight = 1000;
         m_assumed_blockchain_size = 1;
         m_assumed_chain_state_size = 0;
@@ -462,7 +452,7 @@ public:
         pchMessageStart[1] = 0x90;
         pchMessageStart[2] = 0xb5;
         pchMessageStart[3] = 0x78;
-        nDefaultPort = 29333;
+        nDefaultPort = 213370;
         nPruneAfterHeight = 1000;
         m_assumed_blockchain_size = 0;
         m_assumed_chain_state_size = 0;
