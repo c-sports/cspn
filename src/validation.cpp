@@ -1108,7 +1108,7 @@ CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams, b
         nSubsidy = 1.5 * COIN;
 
     // Check if we reached the coin max supply.
-    int64_t nMoneySupply = chainActive.Tip()->nMoneySupply;
+    int64_t nMoneySupply = ChainActive().Tip()->nMoneySupply;
 
     if (nMoneySupply + nSubsidy >= MAX_MONEY)
         nSubsidy = MAX_MONEY - nMoneySupply;

@@ -290,7 +290,7 @@ void BitcoinApplication::startThread()
     connect(executor, &BitcoinCore::runawayException, this, &BitcoinApplication::handleRunawayException);
     connect(this, &BitcoinApplication::requestedInitialize, executor, &BitcoinCore::initialize);
     connect(this, &BitcoinApplication::requestedShutdown, executor, &BitcoinCore::shutdown);
-    connect(window, &BitcoinGUI::requestedRestart, executor, &BitGreenCore::restart);
+    connect(window, &BitcoinGUI::requestedRestart, executor, &BitcoinCore::restart);
     /*  make sure executor object is deleted in its own thread */
     connect(coreThread, &QThread::finished, executor, &QObject::deleteLater);
 

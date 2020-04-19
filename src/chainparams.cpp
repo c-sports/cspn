@@ -152,20 +152,20 @@ public:
         consensus.nPowTargetSpacing = 1 * 60;
         consensus.fPowAllowMinDifficultyBlocks = false;
         consensus.fPowNoRetargeting = false;
-        consensus.nPosTargetSpacing = 2 * 60; // PoS: 2 minutes
+        consensus.nPosTargetSpacing = 60; // PoS: 1 minutes
         consensus.nPosTargetTimespan = 60 * 40;
-        consensus.nStakeMinAge = 60 * 60 * 12; // 12 hours
-        consensus.nStakeMaxAge = 60 * 60 * 48; // 48 hours
+        consensus.nStakeMinAge = 60 * 60; // 1 hours
+        consensus.nStakeMaxAge = 60 * 60 * 24; // 24 hours
         consensus.nModifierInterval = 60;      // Modifier interval: time to elapse before new modifier is computed (60 seconds)
         consensus.nLastPoWBlock = 1500;
         consensus.nRuleChangeActivationThreshold = 1916; // 95% of 2016
         consensus.nMinerConfirmationWindow = 2016;       // nPowTargetTimespan / nPowTargetSpacing
-        consensus.nMasternodeMinimumConfirmations = 15;
+        consensus.nMasternodeMinimumConfirmations = 16;
 
         // Stake constants
-        consensus.nStakeEnforcement = 70000;
-        consensus.nMinStakeAmount = 200 * COIN;
-        consensus.nMinStakeHistory = 360;
+        consensus.nStakeEnforcement = 1501;
+        consensus.nMinStakeAmount = 150 * COIN;
+        consensus.nMinStakeHistory = 60;
 
         // Governance
         consensus.nSuperblockCycle = 20571; // ~(60*24*30)/2.1, actual number of blocks per month is 262800 / 12 = 21900
@@ -224,6 +224,8 @@ public:
         // This is fine at runtime as we'll fall back to using them as a oneshot if they don't support the
         // service bits we want, but we should get them updated to support all service bits wanted by any
         // release ASAP to avoid it where possible.
+        vSeeds.emplace_back("s1.cspn.io");
+        vSeeds.emplace_back("s2.cspn.io");
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1, 28); // Wallet address starts with "C"
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1, 6);
