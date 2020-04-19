@@ -1086,9 +1086,7 @@ CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams, b
         
     if (nHeight <= 7500)
         return 0 * COIN;
-    else if (nHeight > 7500 && nHeight <= 525600)
-        nSubsidy = 3.0 * COIN;
-    else if (nHeight > 525600 && nHeight <= 1051200)
+    else if (nHeight > 7500 && nHeight <= 1051200)
         nSubsidy = 2.8 * COIN;
     else if (nHeight > 1051200 && nHeight <= 1576800)
         nSubsidy = 2.61 * COIN;
@@ -1108,6 +1106,15 @@ CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams, b
         nSubsidy = 1.61 * COIN;
     else if (nHeight > 5256000)
         nSubsidy = 1.5 * COIN;
+
+    // Check if we reached the coin max supply.
+    int64_t nMoneySupply = chainActive.Tip()->nMoneySupply;
+
+    if (nMoneySupply + nSubsidy >= MAX_MONEY)
+        nSubsidy = MAX_MONEY - nMoneySupply;
+
+    if (nMoneySupply >= MAX_MONEY)
+        nSubsidy = 0.0001 * COIN;
 
     // Hard fork to reduce the block reward by 10 extra percent (allowing budget/superblocks)
     CAmount nSuperblockPart = (nHeight >= consensusParams.nBudgetPaymentsStartBlock) ? nSubsidy/10 : 0;
