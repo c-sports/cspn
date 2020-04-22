@@ -148,6 +148,7 @@ public:
     virtual bool commitTransaction(CTransactionRef tx,
         WalletValueMap value_map,
         WalletOrderForm order_form,
+        std::string from_account,
         std::string& reject_reason) = 0;
 
     //! Return whether transaction can be abandoned.

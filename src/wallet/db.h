@@ -349,12 +349,20 @@ public:
         return pcursor;
     }
 
-    int ReadAtCursor(Dbc* pcursor, CDataStream& ssKey, CDataStream& ssValue)
+    int ReadAtCursor(Dbc* pcursor, CDataStream& ssKey, CDataStream& ssValue, bool setRange = false)
     {
         // Read at cursor
-        SafeDbt datKey;
-        SafeDbt datValue;
-        int ret = pcursor->get(datKey, datValue, DB_NEXT);
+        Dbt datKey;
+        unsigned int fFlags = DB_NEXT;
+        if (setRange) {
+            datKey.set_data(ssKey.data());
+            datKey.set_size(ssKey.size());
+            fFlags = DB_SET_RANGE;
+        }
+        Dbt datValue;
+        datKey.set_flags(DB_DBT_MALLOC);
+        datValue.set_flags(DB_DBT_MALLOC);
+        int ret = pcursor->get(&datKey, &datValue, fFlags);
         if (ret != 0)
             return ret;
         else if (datKey.get_data() == nullptr || datValue.get_data() == nullptr)
@@ -367,6 +375,12 @@ public:
         ssValue.SetType(SER_DISK);
         ssValue.clear();
         ssValue.write((char*)datValue.get_data(), datValue.get_size());
+
+        // Clear and free memory
+        memory_cleanse(datKey.get_data(), datKey.get_size());
+        memory_cleanse(datValue.get_data(), datValue.get_size());
+        free(datKey.get_data());
+        free(datValue.get_data());
         return 0;
     }
 

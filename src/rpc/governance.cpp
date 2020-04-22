@@ -217,7 +217,7 @@ UniValue gobject_prepare(const JSONRPCRequest& request)
     // -- send the tx to the network
     CValidationState state;
     mapValue_t mapValue;
-    if (!pwallet->CommitTransaction(tx, std::move(mapValue), {}, state)) {
+    if (!pwallet->CommitTransaction(tx, std::move(mapValue), {}, {}, state)) {
         throw JSONRPCError(RPC_INTERNAL_ERROR, "CommitTransaction failed! Reason given: " + state.GetRejectReason());
     }
 

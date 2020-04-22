@@ -225,12 +225,13 @@ public:
     bool commitTransaction(CTransactionRef tx,
         WalletValueMap value_map,
         WalletOrderForm order_form,
+                           std::string from_account,
         std::string& reject_reason) override
     {
         auto locked_chain = m_wallet->chain().lock();
         LOCK(m_wallet->cs_wallet);
         CValidationState state;
-        if (!m_wallet->CommitTransaction(std::move(tx), std::move(value_map), std::move(order_form), state)) {
+        if (!m_wallet->CommitTransaction(std::move(tx), std::move(value_map), std::move(order_form), std::move(from_account), state)) {
             reject_reason = state.GetRejectReason();
             return false;
         }
@@ -350,16 +351,15 @@ public:
     }
     WalletBalances getBalances() override
     {
-        const auto bal = m_wallet->GetBalance();
         WalletBalances result;
-        result.balance = bal.m_mine_trusted;
-        result.unconfirmed_balance = bal.m_mine_untrusted_pending;
-        result.immature_balance = bal.m_mine_immature;
+        result.balance = m_wallet->GetBalance();
+        result.unconfirmed_balance = m_wallet->GetUnconfirmedBalance();
+        result.immature_balance = m_wallet->GetImmatureBalance();
         result.have_watch_only = m_wallet->HaveWatchOnly();
         if (result.have_watch_only) {
-            result.watch_only_balance = bal.m_watchonly_trusted;
-            result.unconfirmed_watch_only_balance = bal.m_watchonly_untrusted_pending;
-            result.immature_watch_only_balance = bal.m_watchonly_immature;
+            result.watch_only_balance = m_wallet->GetBalance(ISMINE_WATCH_ONLY);
+            result.unconfirmed_watch_only_balance = m_wallet->GetUnconfirmedWatchOnlyBalance();
+            result.immature_watch_only_balance = m_wallet->GetImmatureWatchOnlyBalance();
         }
         return result;
     }
@@ -375,7 +375,7 @@ public:
         num_blocks = locked_chain->getHeight().get_value_or(-1);
         return true;
     }
-    CAmount getBalance() override { return m_wallet->GetBalance().m_mine_trusted; }
+    CAmount getBalance() override { return m_wallet->GetBalance(); }
     CAmount getAvailableBalance(const CCoinControl& coin_control) override
     {
         return m_wallet->GetAvailableBalance(&coin_control);
