@@ -876,6 +876,14 @@ bool ArgsManager::ReadConfigFiles(std::string& error, bool ignore_invalid_keys)
     const std::string confPath = GetArg("-conf", CSPN_CONF_FILENAME);
     fsbridge::ifstream stream(GetConfigFile(confPath));
 
+    if (!stream.good()) {
+        // Create empty csports.conf if it does not exist
+        FILE* configFile = fopen(GetConfigFile(confPath).string().c_str(), "a");
+        if (configFile != NULL)
+            fclose(configFile);
+        return true; // Nothing to read, so just return
+    }
+
     // ok to not have a config file
     if (stream.good()) {
         if (!ReadConfigStream(stream, confPath, error, ignore_invalid_keys)) {
