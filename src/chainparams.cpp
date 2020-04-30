@@ -53,10 +53,11 @@ static CBlock CreateGenesisBlock(const char* pszTimestamp, const CScript& genesi
  */
 static CBlock CreateGenesisBlock(uint32_t nTime, uint32_t nNonce, uint32_t nBits, int32_t nVersion, const CAmount& genesisReward)
 {
-    const char* pszTimestamp = "112018 Bitcoin has hit below $4225 USD 12";
-    const CScript genesisOutputScript = CScript() << ParseHex("04e5a8143f86a111163791fbbdb8e0b91a8d22228c693a95f6c2c13c063ea790f7960b8025a9047a7bc671d5cfe707a2dd2e13b86182e1064a0eea7bf863636363") << OP_CHECKSIG;
+    const char* pszTimestamp = "112018 Bitcoin has hit below $4225 USD 12mo Low";
+    const CScript genesisOutputScript = CScript() << ParseHex("04e5a8143f86ad8ac63791fbbdb8e0b9111da88c8c693a2222c2c13c063ea790f7960b8025a9047a7bc671d5cfe707a2dd2e13b86182e1064a0eea7bf863636363") << OP_CHECKSIG;
     return CreateGenesisBlock(pszTimestamp, genesisOutputScript, nTime, nNonce, nBits, nVersion, genesisReward);
 }
+
 
 // this one is for testing only
 static Consensus::LLMQParams llmq5_60 = {
