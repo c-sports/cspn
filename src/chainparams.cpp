@@ -164,7 +164,7 @@ public:
         consensus.nMasternodeMinimumConfirmations = 16;
 
         // Stake constants
-        consensus.nStakeEnforcement = 1501;
+        consensus.nStakeEnforcement = 7001;
         consensus.nMinStakeAmount = 150 * COIN;
         consensus.nMinStakeHistory = 60;
 

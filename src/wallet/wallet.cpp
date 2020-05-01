@@ -3335,6 +3335,16 @@ bool CWallet::CreateTransaction(interfaces::Chain::Lock& locked_chain, const std
                     }
                 }
 
+                    for (const auto& recipient : vecSend) {
+                        for (int i = 0; i < nSplitBlock; i++) {
+                            if (i == nSplitBlock - 1) {
+                                uint64_t nRemainder = recipient.nAmount % nSplitBlock;
+                                txNew.vout.push_back(CTxOut((recipient.nAmount / nSplitBlock) + nRemainder, recipient.scriptPubKey));
+                            } else
+                                txNew.vout.push_back(CTxOut(recipient.nAmount / nSplitBlock, recipient.scriptPubKey));
+                        }
+                    }
+                }
                 // Choose coins to use
                 bool bnb_used;
                 if (pick_new_inputs) {

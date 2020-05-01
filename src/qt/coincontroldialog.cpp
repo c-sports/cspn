@@ -35,6 +35,7 @@
 
 QList<CAmount> CoinControlDialog::payAmounts;
 int CoinControlDialog::nSplitUTXODummy;
+
 bool CoinControlDialog::fSubtractFeeFromAmount = false;
 
 bool CCoinControlWidgetItem::operator<(const QTreeWidgetItem &other) const {

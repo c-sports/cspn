@@ -230,7 +230,7 @@ public:
     bool WriteDestData(const std::string &address, const std::string &key, const std::string &value);
     /// Erase destination data tuple from wallet database
     bool EraseDestData(const std::string &address, const std::string &key);
-    
+
     // Stake Split/Combine Thresholds
     bool WriteStakeSplitThreshold(const int nStakeSplitThreshold);
     bool WriteStakeCombineThreshold(const int nStakeCombineThreshold);

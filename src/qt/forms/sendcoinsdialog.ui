@@ -568,7 +568,7 @@
           <item>
            <widget class="QLabel" name="labelSplitUTXOValue">
             <property name="text">
-             <string>0 BITG</string>
+             <string>0 CSPN</string>
             </property>
            </widget>
           </item>
