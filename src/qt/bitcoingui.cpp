@@ -272,7 +272,7 @@ void BitcoinGUI::createActions()
     tabGroup->addAction(overviewAction);
 
     QPixmap sendIconInactive(":/icons/send");
-    QPixmap sendIconActive(":icons/send_active");
+    QPixmap sendIconActive(":icons/send");
     QIcon sendIcon(sendIconInactive);
 
     sendIcon.addPixmap(sendIconActive,QIcon::Selected,QIcon::On);
@@ -292,7 +292,7 @@ void BitcoinGUI::createActions()
     sendCoinsMenuAction->setToolTip(sendCoinsMenuAction->statusTip());
 
     QPixmap receiveIconInactive(":/icons/receiving_addresses");
-    QPixmap receiveIconActive(":icons/receiving_addresses_active");
+    QPixmap receiveIconActive(":icons/receiving_addresses");
     QIcon receiveIcon(receiveIconInactive);
 
     receiveIcon.addPixmap(receiveIconActive,QIcon::Selected,QIcon::On);
@@ -312,7 +312,7 @@ void BitcoinGUI::createActions()
     receiveCoinsMenuAction->setToolTip(receiveCoinsMenuAction->statusTip());
 
     QPixmap historyIconInactive(":/icons/history");
-    QPixmap historyIconActive(":icons/history_active");
+    QPixmap historyIconActive(":icons/history");
     QIcon historyIcon(historyIconInactive);
 
     historyIcon.addPixmap(historyIconActive,QIcon::Selected,QIcon::On);
@@ -328,7 +328,7 @@ void BitcoinGUI::createActions()
     tabGroup->addAction(historyAction);
 
     QPixmap masternodesIconInactive(":/icons/masternodes");
-    QPixmap masternodesIconActive(":icons/masternodes_active");
+    QPixmap masternodesIconActive(":icons/masternodes");
     QIcon masternodesIcon(masternodesIconInactive);
 
     masternodesIcon.addPixmap(masternodesIconActive,QIcon::Selected,QIcon::On);
@@ -1574,7 +1574,7 @@ UnitDisplayStatusBarControl::UnitDisplayStatusBarControl(const PlatformStyle *pl
     }
     setMinimumSize(max_width, 0);
     setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-    setStyleSheet(QString("QLabel { color : %1 }").arg(platformStyle->SingleColor().name()));
+    setStyleSheet(QString("QLabel { color : #c52e26 }").arg(platformStyle->SingleColor().name()));
 }
 
 /** So that it responds to button clicks */

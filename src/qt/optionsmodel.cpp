@@ -160,6 +160,8 @@ void OptionsModel::Init(bool resetSettings)
         addOverriddenOption("-onion");
 
     // Display
+    if (!settings.contains("digits"))
+        settings.setValue("digits", "2");
     if (!settings.contains("language"))
         settings.setValue("language", "");
     if (!m_node.softSetArg("-lang", settings.value("language").toString().toStdString()))
@@ -304,6 +306,8 @@ QVariant OptionsModel::data(const QModelIndex & index, int role) const
             return nDisplayUnit;
         case ThirdPartyTxUrls:
             return strThirdPartyTxUrls;
+        case Digits:
+            return settings.value("digits");
         case Language:
             return settings.value("language");
         case CoinControlFeatures:
@@ -422,6 +426,12 @@ bool OptionsModel::setData(const QModelIndex & index, const QVariant & value, in
             if (strThirdPartyTxUrls != value.toString()) {
                 strThirdPartyTxUrls = value.toString();
                 settings.setValue("strThirdPartyTxUrls", strThirdPartyTxUrls);
+                setRestartRequired(true);
+            }
+            break;
+        case Digits:
+            if (settings.value("digits") != value) {
+                settings.setValue("digits", value);
                 setRestartRequired(true);
             }
             break;

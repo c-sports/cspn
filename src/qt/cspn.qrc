@@ -1,4 +1,4 @@
-<!DOCTYPE RCC><RCC version="1.0">
+<RCC>
     <qresource prefix="/icons">
         <file alias="cspn">res/icons/cspn.png</file>
         <file alias="address-book">res/icons/address-book.png</file>
@@ -24,6 +24,7 @@
         <file alias="options">res/icons/configure.png</file>
         <file alias="governance">res/icons/governance.png</file>
         <file alias="receiving_addresses">res/icons/receive.png</file>
+        <file alias="receiving_addresses_dark">res/icons/receive_dark.png</file>
         <file alias="receiving_addresses_active">res/icons/receive_active.png</file>
         <file alias="editpaste">res/icons/editpaste.png</file>
         <file alias="editcopy">res/icons/editcopy.png</file>
@@ -61,7 +62,20 @@
         <file alias="staking_active">res/icons/staking_active.png</file>
         <file alias="staking_inactive">res/icons/staking_inactive.png</file>
         <file alias="masternodes">res/icons/masternodes.png</file>
+        <file alias="masternodes_dark">res/icons/masternodes_dark.png</file>
         <file alias="masternodes_active">res/icons/masternodes_active.png</file>
+        <file alias="blank">res/icons/blank.png</file>
+        <file alias="platform">res/icons/platform.png</file>
+        <file alias="web">res/icons/web.png</file>
+        <file alias="web_dark">res/icons/web_dark.png</file>
+        <file alias="discord">res/icons/discord.png</file>
+        <file alias="discord_dark">res/icons/discord_dark.png</file>
+        <file alias="telegram">res/icons/telegram.png</file>
+        <file alias="telegram_dark">res/icons/telegram_dark.png</file>
+        <file alias="twitter">res/icons/twitter.png</file>
+        <file alias="twitter_dark">res/icons/twitter_dark.png</file>
+        <file alias="facebook">res/icons/facebook.png</file>
+        <file alias="facebook_dark">res/icons/facebook_dark.png</file>
     </qresource>
     <qresource prefix="/images">
         <file alias="walletFrame">res/images/walletFrame.png</file>
@@ -72,6 +86,17 @@
         <file alias="leftArrow_small">res/images/leftArrow_small_dark.png</file>
         <file alias="rightArrow_small">res/images/rightArrow_small_dark.png</file>
         <file alias="about">res/images/about.png</file>
+        <file alias="about_dark">res/images/about_dark.png</file>
+        <file alias="walletFrame_bg">res/images/walletFrame_bg.png</file>
+        <file alias="walletFrame_bg_dark">res/images/walletFrame_bg_dark.png</file>
+        <file alias="splash">res/images/splash.png</file>
+        <file alias="splash_dark">res/images/splash_dark.png</file>
+        <file alias="splash_testnet">res/images/splash_testnet.png</file>
+        <file alias="splash_testnet_dark">res/images/splash_testnet_dark.png</file>
+        <file alias="csports_logo_icon">res/images/csports_logo_icon.png</file>
+        <file alias="csports_logo_icon_dark">res/images/csports_logo_icon_dark.png</file>
+        <file alias="csports_logo_horizontal">res/images/csports_logo_horizontal.png</file>
+        <file alias="csports_logo_horizontal_dark">res/images/csports_logo_horizontal_dark.png</file>
     </qresource>
     <qresource prefix="/movies">
         <file alias="spinner-000">res/movies/spinner-000.png</file>
@@ -104,12 +129,6 @@
         <file alias="spinner-027">res/movies/spinner-027.png</file>
         <file alias="spinner-028">res/movies/spinner-028.png</file>
         <file alias="spinner-029">res/movies/spinner-029.png</file>
-        <file alias="spinner-030">res/movies/spinner-030.png</file>
-        <file alias="spinner-031">res/movies/spinner-031.png</file>
-        <file alias="spinner-032">res/movies/spinner-032.png</file>
-        <file alias="spinner-033">res/movies/spinner-033.png</file>
-        <file alias="spinner-034">res/movies/spinner-034.png</file>
-        <file alias="spinner-035">res/movies/spinner-035.png</file>
     </qresource>
     <qresource prefix="/css">
         <file alias="style.css">res/css/style.css</file>
