@@ -5608,7 +5608,7 @@ bool CWallet::CreateCoinStake(unsigned int nBits,
     // get some info back to pass to getblocktemplate
     FillBlockPayments(txNew, pIndex0->nHeight+1, nReward, voutMasternodePayments, voutSuperblockPayments);
     LogPrintf("CreateNewBlock -- nBlockHeight %d blockReward %lld coinbaseTx %s",
-                pIndex0->nHeight+1, nReward, CTransaction(txNew).ToString());
+              pIndex0->nHeight+1, nReward, CTransaction(txNew).ToString());
 
     // Sign
     int nIn = 0;

@@ -154,11 +154,11 @@ public:
         consensus.fPowAllowMinDifficultyBlocks = false;
         consensus.fPowNoRetargeting = false;
         consensus.nPosTargetSpacing = 60; // PoS: 1 minutes
-        consensus.nPosTargetTimespan = 60 * 40;
-        consensus.nStakeMinAge = 60 * 60; // 1 hours
+        consensus.nPosTargetTimespan = 60 * 40; // change back to 40 instead of 5 later
+        consensus.nStakeMinAge = 60 * 60; // 1 hours /// change back to 1 hour later
         consensus.nStakeMaxAge = 60 * 60 * 24; // 24 hours
         consensus.nModifierInterval = 60;      // Modifier interval: time to elapse before new modifier is computed (60 seconds)
-        consensus.nLastPoWBlock = 1500;
+        consensus.nLastPoWBlock = 500; // change back to 1500 later
         consensus.nRuleChangeActivationThreshold = 1916; // 95% of 2016
         consensus.nMinerConfirmationWindow = 2016;       // nPowTargetTimespan / nPowTargetSpacing
         consensus.nMasternodeMinimumConfirmations = 16;
@@ -215,7 +215,7 @@ public:
         m_assumed_chain_state_size = 0;
 
 
-        genesis = CreateGenesisBlock(1588272510, 28272347, 0x1e0ffff0, 1, 0 * COIN);
+        genesis = CreateGenesisBlock(1589325396, 27964304, 0x1e0ffff0, 1, 0 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
         //assert(consensus.hashGenesisBlock == uint256S("0x0000025289d6b03cbda4950e825cd865185f34fbb3e098295534b63d78beba15"));
         //assert(genesis.hashMerkleRoot == uint256S("0x07cbcacfc822fba6bbeb05312258fa43b96a68fc310af8dfcec604591763f7cf"));
