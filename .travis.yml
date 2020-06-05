@@ -1,33 +1,8 @@
-# The test build matrix (stage: test) is constructed to test a wide range of
-# configurations, rather than a single pass/fail. This helps to catch build
-# failures and logic errors that present on platforms other than the ones the
-# author has tested.
-#
-# Some builders use the dependency-generator in `./depends`, rather than using
-# apt-get to install build dependencies. This guarantees that the tester is
-# using the same versions as Gitian, so the build results are nearly identical
-# to what would be found in a final release.
-#
-# In order to avoid rebuilding all dependencies for each build, the binaries
-# are cached and re-used when possible. Changes in the dependency-generator
-# will trigger cache-invalidation and rebuilds as necessary.
-#
-# These caches can be manually removed if necessary. This is one of the very
-# few manual operations that is possible with Travis, and it can be done by a
-# Bitcoin Core GitHub member via the Travis web interface [0].
-#
-# Travis CI uploads the cache after the script phase of the build [1].
-# However, the build is terminated without saving the chache if it takes over
-# 50 minutes [2]. Thus, if we spent too much time in early build stages, fail
-# with an error and save the cache.
-#
-# [0] https://travis-ci.org/bitcoin/bitcoin/caches
-# [1] https://docs.travis-ci.com/user/caching/#build-phases
-# [2] https://docs.travis-ci.com/user/customizing-the-build#build-timeouts
-
-dist: xenial
+sudo: required
+dist: bionic
 os: linux
 language: minimal
+arch: amd64
 cache:
   ccache: true
   directories:
@@ -41,6 +16,8 @@ stages:
 env:
   global:
     - MAKEJOBS=-j3
+    - CHECK_DOC=0
+    - CHECK_LOGPRINT=0
     - RUN_UNIT_TESTS=true
     - RUN_FUNCTIONAL_TESTS=true
     - RUN_FUZZ_TESTS=false
@@ -107,8 +84,6 @@ jobs:
         RUN_UNIT_TESTS=false
         RUN_FUNCTIONAL_TESTS=false
         GOAL="install"
-        # -Wno-psabi is to disable ABI warnings: "note: parameter passing for argument of type ... changed in GCC 7.1"
-        # This could be removed once the ABI change warning does not show up by default
         CSPN_CONFIG="--enable-glibc-back-compat --enable-reduce-exports CXXFLAGS=-Wno-psabi"
 
     - stage: test
@@ -121,15 +96,6 @@ jobs:
         CSPN_CONFIG="--enable-reduce-exports --disable-gui-tests"
 
     - stage: test
-      name: '32-bit + dash  [GOAL: install]  [GUI: no BIP70]'
-      env: >-
-        HOST=i686-pc-linux-gnu
-        PACKAGES="g++-multilib python3-zmq"
-        GOAL="install"
-        CSPN_CONFIG="--enable-zmq --with-gui=qt5 --disable-bip70 --enable-glibc-back-compat --enable-reduce-exports LDFLAGS=-static-libstdc++"
-        CONFIG_SHELL="/bin/dash"
-
-    - stage: test
       name: 'x86_64 Linux  [GOAL: install]  [bionic]  [uses qt5 dev package instead of depends Qt to speed up build and avoid timeout]'
       env: >-
         HOST=x86_64-unknown-linux-gnu
@@ -138,57 +104,6 @@ jobs:
         TEST_RUNNER_EXTRA="--coverage --extended --exclude feature_dbcrash"  # Run extended tests so that coverage does not fail, but exclude the very slow dbcrash
         GOAL="install"
         CSPN_CONFIG="--enable-zmq --with-gui=qt5 --enable-glibc-back-compat --enable-reduce-exports --enable-debug CXXFLAGS=\"-g0 -O2\""
-
-    - stage: test
-      name: 'x86_64 Linux  [GOAL: install]  [trusty]  [no functional tests, no depends, only system libs]'
-      env: >-
-        HOST=x86_64-unknown-linux-gnu
-        DOCKER_NAME_TAG=ubuntu:14.04
-        PACKAGES="python3-zmq qtbase5-dev qttools5-dev-tools libicu-dev libpng-dev libssl-dev libevent-dev bsdmainutils libboost-system-dev libboost-filesystem-dev libboost-chrono-dev libboost-test-dev libboost-thread-dev libdb5.1++-dev libzmq3-dev libprotobuf-dev protobuf-compiler libqrencode-dev"
-        NO_DEPENDS=1
-        RUN_FUNCTIONAL_TESTS=false
-        GOAL="install"
-        CSPN_CONFIG="--enable-zmq --with-incompatible-bdb --with-gui=no"
-
-    - stage: test
-      name: 'x86_64 Linux  [GOAL: install]  [xenial]  [no depends, only system libs, sanitizers: thread (TSan), no wallet]'
-      env: >-
-        HOST=x86_64-unknown-linux-gnu
-        DOCKER_NAME_TAG=ubuntu:16.04
-        PACKAGES="clang llvm python3-zmq qtbase5-dev qttools5-dev-tools libssl-dev libevent-dev bsdmainutils libboost-system-dev libboost-filesystem-dev libboost-chrono-dev libboost-test-dev libboost-thread-dev libdb5.3++-dev libminiupnpc-dev libzmq3-dev libprotobuf-dev protobuf-compiler libqrencode-dev"
-        NO_DEPENDS=1
-        GOAL="install"
-        CSPN_CONFIG="--enable-zmq --disable-wallet --with-gui=qt5 CPPFLAGS=-DDEBUG_LOCKORDER --with-sanitizers=thread --disable-hardening --disable-asm CC=clang CXX=clang++"
-
-    - stage: test
-      name: 'x86_64 Linux  [GOAL: install]  [bionic]  [no depends, only system libs, sanitizers: address/leak (ASan + LSan) + undefined (UBSan) + integer]'
-      env: >-
-        HOST=x86_64-unknown-linux-gnu
-        PACKAGES="clang llvm python3-zmq qtbase5-dev qttools5-dev-tools libssl1.0-dev libevent-dev bsdmainutils libboost-system-dev libboost-filesystem-dev libboost-chrono-dev libboost-test-dev libboost-thread-dev libdb5.3++-dev libminiupnpc-dev libzmq3-dev libprotobuf-dev protobuf-compiler libqrencode-dev"
-        NO_DEPENDS=1
-        GOAL="install"
-        CSPN_CONFIG="--enable-zmq --with-incompatible-bdb --with-gui=qt5 CPPFLAGS=-DDEBUG_LOCKORDER --with-sanitizers=address,integer,undefined CC=clang CXX=clang++"
-
-    - stage: test
-      name: 'x86_64 Linux  [GOAL: install]  [bionic]  [no depends, only system libs, sanitizers: fuzzer,address]'
-      env: >-
-        HOST=x86_64-unknown-linux-gnu
-        PACKAGES="clang llvm python3 libssl1.0-dev libevent-dev bsdmainutils libboost-system-dev libboost-filesystem-dev libboost-chrono-dev libboost-test-dev libboost-thread-dev"
-        NO_DEPENDS=1
-        RUN_UNIT_TESTS=false
-        RUN_FUNCTIONAL_TESTS=false
-        RUN_FUZZ_TESTS=true
-        GOAL="install"
-        CSPN_CONFIG="--enable-fuzz --with-sanitizers=fuzzer,address CC=clang CXX=clang++"
-
-    - stage: test
-      name: 'x86_64 Linux  [GOAL: install]  [bionic]  [no wallet]'
-      env: >-
-        HOST=x86_64-unknown-linux-gnu
-        PACKAGES="python3-zmq"
-        DEP_OPTS="NO_WALLET=1"
-        GOAL="install"
-        CSPN_CONFIG="--enable-glibc-back-compat --enable-reduce-exports"
 
     - stage: test
       name: 'macOS 10.10  [GOAL: deploy] [no functional tests]'
