@@ -53,7 +53,7 @@ static CBlock CreateGenesisBlock(const char* pszTimestamp, const CScript& genesi
  */
 static CBlock CreateGenesisBlock(uint32_t nTime, uint32_t nNonce, uint32_t nBits, int32_t nVersion, const CAmount& genesisReward)
 {
-    const char* pszTimestamp = "112018 Bitcoin has hit below $4225 USD 12mo Low";
+    const char* pszTimestamp = "06112020 Craig Wright Apparently Just Admitted to Hacking Mt. Gox";
     const CScript genesisOutputScript = CScript() << ParseHex("04e5a8143f86ad8ac63791fbbdb8e0b9111da88c8c693a2222c2c13c063ea790f7960b8025a9047a7bc671d5cfe707a2dd2e13b86182e1064a0eea7bf863636363") << OP_CHECKSIG;
     return CreateGenesisBlock(pszTimestamp, genesisOutputScript, nTime, nNonce, nBits, nVersion, genesisReward);
 }
@@ -158,7 +158,7 @@ public:
         consensus.nStakeMinAge = 60 * 60; // 1 hours /// change back to 1 hour later
         consensus.nStakeMaxAge = 60 * 60 * 24; // 24 hours
         consensus.nModifierInterval = 60;      // Modifier interval: time to elapse before new modifier is computed (60 seconds)
-        consensus.nLastPoWBlock = 500; // change back to 1500 later
+        consensus.nLastPoWBlock = 1500; // change back to 1500 later
         consensus.nRuleChangeActivationThreshold = 1916; // 95% of 2016
         consensus.nMinerConfirmationWindow = 2016;       // nPowTargetTimespan / nPowTargetSpacing
         consensus.nMasternodeMinimumConfirmations = 16;
@@ -215,7 +215,7 @@ public:
         m_assumed_chain_state_size = 0;
 
 
-        genesis = CreateGenesisBlock(1589325396, 27964304, 0x1e0ffff0, 1, 0 * COIN);
+        genesis = CreateGenesisBlock(1592001039 , 27964304, 0x1e0ffff0, 1, 0 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
         //assert(consensus.hashGenesisBlock == uint256S("0x0000025289d6b03cbda4950e825cd865185f34fbb3e098295534b63d78beba15"));
         //assert(genesis.hashMerkleRoot == uint256S("0x07cbcacfc822fba6bbeb05312258fa43b96a68fc310af8dfcec604591763f7cf"));
