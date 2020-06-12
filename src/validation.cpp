@@ -1071,7 +1071,7 @@ CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams, b
         return 50 * COIN;
 
 /*
-    1 - old chain supply: 3,092,990
+    1 - old chain supply: 3,093,000
     <= 7500 - zero rewards
     */
 
