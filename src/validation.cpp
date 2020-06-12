@@ -1113,8 +1113,8 @@ CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams, b
     if (nMoneySupply >= MAX_MONEY)
         nSubsidy = 0.0001 * COIN;
 
-    // Hard fork to reduce the block reward by 10 extra percent (allowing budget/superblocks)
-    CAmount nSuperblockPart = (nHeight >= consensusParams.nBudgetPaymentsStartBlock) ? nSubsidy/10/2 : 0;
+    // Hard fork to reduce the block reward by 5 extra percent (allowing budget/superblocks)
+    CAmount nSuperblockPart = (nHeight >= consensusParams.nBudgetPaymentsStartBlock) ? nSubsidy/20 : 0;
 
     return fSuperblockPartOnly ? nSuperblockPart : nSubsidy - nSuperblockPart;
 }
