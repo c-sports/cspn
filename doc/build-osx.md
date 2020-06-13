@@ -47,7 +47,7 @@ from the root of the repository.
 1. Clone the Bitcoin Core source code:
     ```shell
     git clone https://github.com/bitcoin/bitcoin
-    cd bitcoin
+    cd CSPN
     ```
 
 2.  Build Bitcoin Core:

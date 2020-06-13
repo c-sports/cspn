@@ -1,5 +1,5 @@
 ---
-name: "bitcoin-dmg-signer"
+name: "cspn-dmg-signer"
 distro: "ubuntu"
 suites:
 - "bionic"

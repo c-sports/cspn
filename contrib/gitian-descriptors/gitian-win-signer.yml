@@ -1,5 +1,5 @@
 ---
-name: "bitcoin-win-signer"
+name: "cspn-win-signer"
 distro: "ubuntu"
 suites:
 - "bionic"

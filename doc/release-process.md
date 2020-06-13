@@ -64,7 +64,7 @@ Check out the source code in the following directory hierarchy.
     git clone https://github.com/bitcoin-core/gitian.sigs.git
     git clone https://github.com/bitcoin-core/bitcoin-detached-sigs.git
     git clone https://github.com/devrandom/gitian-builder.git
-    git clone https://github.com/bitcoin/bitcoin.git
+    git clone https://github.com/c-sports/CSPN.git
 
 ### Write the release notes
 
@@ -149,17 +149,17 @@ The gbuild invocations below <b>DO NOT DO THIS</b> by default.
     pushd ./gitian-builder
     ./bin/gbuild --num-make 2 --memory 3000 --commit bitcoin=v${VERSION} ../bitcoin/contrib/gitian-descriptors/gitian-linux.yml
     ./bin/gsign --signer "$SIGNER" --release ${VERSION}-linux --destination ../gitian.sigs/ ../bitcoin/contrib/gitian-descriptors/gitian-linux.yml
-    mv build/out/bitcoin-*.tar.gz build/out/src/bitcoin-*.tar.gz ../
+    mv build/out/cspn-*.tar.gz build/out/src/cspn-*.tar.gz ../
 
     ./bin/gbuild --num-make 2 --memory 3000 --commit bitcoin=v${VERSION} ../bitcoin/contrib/gitian-descriptors/gitian-win.yml
     ./bin/gsign --signer "$SIGNER" --release ${VERSION}-win-unsigned --destination ../gitian.sigs/ ../bitcoin/contrib/gitian-descriptors/gitian-win.yml
     mv build/out/bitcoin-*-win-unsigned.tar.gz inputs/bitcoin-win-unsigned.tar.gz
-    mv build/out/bitcoin-*.zip build/out/bitcoin-*.exe ../
+    mv build/out/cspn-*.zip build/out/cspn-*.exe ../
 
     ./bin/gbuild --num-make 2 --memory 3000 --commit bitcoin=v${VERSION} ../bitcoin/contrib/gitian-descriptors/gitian-osx.yml
     ./bin/gsign --signer "$SIGNER" --release ${VERSION}-osx-unsigned --destination ../gitian.sigs/ ../bitcoin/contrib/gitian-descriptors/gitian-osx.yml
     mv build/out/bitcoin-*-osx-unsigned.tar.gz inputs/bitcoin-osx-unsigned.tar.gz
-    mv build/out/bitcoin-*.tar.gz build/out/bitcoin-*.dmg ../
+    mv build/out/cspn-*.tar.gz build/out/cspn-*.dmg ../
     popd
 
 Build output expected:
