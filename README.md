@@ -12,31 +12,30 @@ More information at [cspn.io](http://www.cspn.io)
 |----------|-------------|
 |**Name:** |Crypto Sports|
 |**Ticker:**| CSPN|
-|**Algo:**| Quark |
+|**Algo:**| SHA-256d |
 |**Type:**| MN / PoS |
-|**Reward split:**| 80% / 20%|
-|**Block reward:**| 3 CSPN (annually decreasing by 6.7%)| 
+|**Reward split:**| 76% / 19%|
+|**Superblock:**| 5% |
+|**Block reward:**| 2.8 CSPN (annually decreasing by 6.7%)| 
 |**Block time:**| 60s |
 |**MN collateral:**| 1337 CSPN (l33t)|
 |**Max supply:**| 13.37M |
-|**Premine:**| 850k|
+|**Premine (old supply):**| 3,093,000|
 
 
 ### Reward Distribution
 
-| **Block height** | **Block reward**  | **MN reward**  | **PoS reward**    |
-|------------------|------------------|------------------|------------------|
-| 1 (premine)      |850,000 CSPN| -                      | -                | 
-| 2 - 1,050 (PoW phase) |0.25 CSPN| -  | -     |
-| 1,051 - 4,999     |1 CSPN| 0.8 CSPN    | 0.2 CSPN     |
-| 5,000 - 525,599   |3 CSPN| 2.4 CSPN   | 0.6 CSPN     |
-| 525,600 - 1,051,199   |2.8 CSPN| 2.24 CSPN   | 0.56 CSPN     |
-| 1,051,200 - 1,576,799   |2.61 CSPN| 2.088 CSPN   | 0.522 CSPN     |
-| 1,576,800 - 2,102,399   |2.44 CSPN| 1.952 CSPN   | 0.488 CSPN     |
-| 2,102,400 - 2,627,999   |2.27 CSPN| 1.816 CSPN   | 0.454 CSPN     |
-| 2,628,000 - 3,153,599   |2.12 CSPN| 1.696 CSPN   | 0.424 CSPN     |
-| 3,153,600 - 3,679,199   |1.98 CSPN| 1.584 CSPN   | 0.396 CSPN     |
-| 3,679,200 - 4,204,799   |1.85 CSPN| 1.48 CSPN   | 0.37 CSPN     |
-| 4,204,800 - 4,730,399   |1.72 CSPN| 1.376 CSPN   | 0.344 CSPN     |
-| 4,730,400 - 5,255,999   |1.61 CSPN| 1.288 CSPN   | 0.322 CSPN     |
-| 5,256,000 - end         |1.5 CSPN| 1.2 CSPN   | 0.3 CSPN     |
+| **Block height** | **Block reward**  | **MN reward**  | **PoS reward**    | **Superblock**    |
+|------------------|------------------|------------------|------------------|------------------|
+| 1 (premine - old supply) |3,093,000 CSPN| -  | - | - | 
+| 2 - 7,500 (0 reward phase) |0 CSPN| -  | - | - |
+| 7,501 - 291,300   |2.8 CSPN| 2.128 CSPN   | 0.532 CSPN     | 0.14 |
+| 291,301 - 816,900   |2.61 CSPN| 1.9836 CSPN   | 0.4959 CSPN     | 0.1305 |
+| 816,901 - 1,342,500   |2.44 CSPN| 1.8544 CSPN   | 0.4636 CSPN     | 0.122 |
+| 1,342,501 - 1,868,100   |2.27 CSPN| 1.7252 CSPN   | 0.4313 CSPN     | 0.1135 |
+| 1,868,101 - 2,393,700   |2.12 CSPN| 1.6112 CSPN   | 0.4028 CSPN     | 0.106 |
+| 2,393,701 - 2,919,300   |1.98 CSPN| 1.5048 CSPN   | 0.3762 CSPN     | 0.099 |
+| 2,919,301 - 3,444,900   |1.85 CSPN| 1.406 CSPN   | 0.3515 CSPN     | 0.0925 |
+| 3,444,901 - 3,970,500   |1.72 CSPN| 1.3072 CSPN   | 0.3268 CSPN     | 0.086 |
+| 3,970,501 - 4,496,100   |1.61 CSPN| 1.2236 CSPN   | 0.3059 CSPN     | 0.0805 |
+| 4,496,101 - end         |1.5 CSPN| 1.14 CSPN   | 0.285 CSPN     | 0.075 |
