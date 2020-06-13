@@ -1,5 +1,5 @@
 ---
-name: "cspn-linux-2.0"
+name: "CSPN-linux-2.0"
 enable_cache: true
 distro: "ubuntu"
 suites:
@@ -28,10 +28,12 @@ packages:
 - "autoconf"
 - "libtool"
 - "automake"
+- "cmake"
 - "faketime"
 - "bsdmainutils"
 - "ca-certificates"
 - "python3"
+- "libxkbcommon0"
 remotes:
 - "url": "https://github.com/c-sports/CSPN.git"
   "dir": "CSPN"
@@ -143,13 +145,13 @@ script: |
   ./autogen.sh
   CONFIG_SITE=${BASEPREFIX}/`echo "${HOSTS}" | awk '{print $1;}'`/share/config.site ./configure --prefix=/
   make dist
-  SOURCEDIST=`echo cspn-*.tar.gz`
+  SOURCEDIST=`echo CSPN-*.tar.gz`
   DISTNAME=`echo ${SOURCEDIST} | sed 's/.tar.*//'`
   # Correct tar file order
   mkdir -p temp
   pushd temp
   tar -xf ../$SOURCEDIST
-  find cspn-* | sort | tar --mtime="$REFERENCE_DATETIME" --no-recursion --mode='u+rw,go+r-w,a+X' --owner=0 --group=0 -c -T - | gzip -9n > ../$SOURCEDIST
+  find CSPN-* | sort | tar --mtime="$REFERENCE_DATETIME" --no-recursion --mode='u+rw,go+r-w,a+X' --owner=0 --group=0 -c -T - | gzip -9n > ../$SOURCEDIST
   popd
 
   # Workaround for tarball not building with the bare tag version (prep)
