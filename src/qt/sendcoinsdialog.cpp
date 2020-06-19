@@ -764,7 +764,7 @@ void SendCoinsDialog::splitUTXOChecked(int state)
 
         // if unchecked, also reset the UTXO value
         if (state == Qt::Unchecked) {
-            int nDisplayUnit = BitcoinUnits::BITG;
+            int nDisplayUnit = BitcoinUnits::CSPN;
             if (model && model->getOptionsModel())
                 nDisplayUnit = model->getOptionsModel()->getDisplayUnit();
 
@@ -794,7 +794,7 @@ void SendCoinsDialog::splitUTXOValueEdited(const QString& text)
     CoinControlDialog::nSplitUTXODummy = nBlocks;
 
     // actually update labels
-    int nDisplayUnit = BitcoinUnits::BITG;
+    int nDisplayUnit = BitcoinUnits::CSPN;
     if (model && model->getOptionsModel())
         nDisplayUnit = model->getOptionsModel()->getDisplayUnit();
 
