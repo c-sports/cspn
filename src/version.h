@@ -9,7 +9,7 @@
  * network protocol versioning
  */
 
-static const int PROTOCOL_VERSION = 70216;
+static const int PROTOCOL_VERSION = 71001;
 
 //! initial proto version, to be increased after version/verack negotiation
 static const int INIT_PROTO_VERSION = 209;
@@ -43,7 +43,7 @@ static const int SHORT_IDS_BLOCKS_VERSION = 70014;
 static const int INVALID_CB_NO_BAN_VERSION = 71000;
 
 //! introduction of LLMQs
-static const int LLMQS_PROTO_VERSION = 71000;
+static const int LLMQS_PROTO_VERSION = 71001;
 
 //! minimal proto version after fork block
 static const int MIN_PEER_PROTO_VERSION_V15 = 70216;
