@@ -260,15 +260,17 @@ public:
                 {
                         { 1, uint256S("0x000000af1c83cdf16aba8e539aa86b90f8aa39afb1c9dcd489f02202c92b90a9")},
                         { 1000, uint256S("0x000000a687ae1b49630c53b78983bfa3e40248f811336480cc0454300b7ca0e4")},
-                        { 1500, uint256S("0x00000027336a6d7cb44105e66b19b7c357a128f12ec097138b783b082c15f075")}
+                        { 1500, uint256S("0x00000027336a6d7cb44105e66b19b7c357a128f12ec097138b783b082c15f075")},
+                        { 10000, uint256S("0xd4b13fe1ce11047cc04ef099bf85062a0bdc01913644a6e05ba4b6f44331bbc9")},
+                        { 12167, uint256S("0x6a5b1939de7f55943aa73c02e033e5326f52fa07446c78db62c513f2e9bddafb")}
                 }};
 
         chainTxData = ChainTxData{
             // Data from rpc: getchaintxstats <nblock> <blockhash>
             // Data from RPC: getchaintxstats 70004 2da7cf773e5032a76aa4480b033c1ac6978ff64531f168c92d022c90f5bf7996
-            /* nTime    */ 1592022705,
-            /* nTxCount */ 2398,
-            /* dTxRate  */ 0.1409363745498199};
+            /* nTime    */ 1592682533,
+            /* nTxCount */ 29677,
+            /* dTxRate  */ 0.04381794180445754};
     }
 };
 
