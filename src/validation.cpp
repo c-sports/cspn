@@ -159,7 +159,6 @@ namespace {
 
 CBlockIndex* LookupBlockIndex(const uint256& hash)
 {
-    AssertLockHeld(cs_main);
     BlockMap::const_iterator it = g_blockman.m_block_index.find(hash);
     return it == g_blockman.m_block_index.end() ? nullptr : it->second;
 }
@@ -4153,8 +4152,6 @@ fs::path GetBlockPosFilename(const FlatFilePos &pos)
 
 CBlockIndex * BlockManager::InsertBlockIndex(const uint256& hash)
 {
-    AssertLockHeld(cs_main);
-
     if (hash.IsNull())
         return nullptr;
 
@@ -4303,7 +4300,6 @@ bool static LoadBlockIndexDB(const CChainParams& chainparams) EXCLUSIVE_LOCKS_RE
 
 bool LoadChainTip(const CChainParams& chainparams)
 {
-    AssertLockHeld(cs_main);
     assert(!pcoinsTip->GetBestBlock().IsNull()); // Never called when the coins view is empty
 
     if (::ChainActive().Tip() && ::ChainActive().Tip()->GetBlockHash() == pcoinsTip->GetBestBlock()) return true;

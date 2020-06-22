@@ -121,9 +121,12 @@ void CMasternodeSync::ProcessTick(CConnman& connman)
     static int nTick = 0;
     nTick++;
 
+    const static int64_t nSyncStart = GetTimeMillis();
+    const static std::string strAllow = strprintf("allow-sync-%lld", nSyncStart);
+
     // reset the sync process if the last call to this function was more than 60 minutes ago (client was in sleep mode)
     static int64_t nTimeLastProcess = GetTime();
-    if (GetTime() - nTimeLastProcess > 60*60) {
+    if(GetTime() - nTimeLastProcess > 60*60 && !fMasternodeMode) {
         LogPrintf("CMasternodeSync::ProcessTick -- WARNING: no actions for too long, restarting sync...\n");
         Reset();
         SwitchToNextAsset(connman);
@@ -131,7 +134,7 @@ void CMasternodeSync::ProcessTick(CConnman& connman)
         return;
     }
 
-    if (GetTime() - nTimeLastProcess < MASTERNODE_SYNC_TICK_SECONDS) {
+    if(GetTime() - nTimeLastProcess < MASTERNODE_SYNC_TICK_SECONDS) {
         // too early, nothing to do here
         return;
     }
@@ -139,8 +142,8 @@ void CMasternodeSync::ProcessTick(CConnman& connman)
     nTimeLastProcess = GetTime();
 
     // reset sync status in case of any other sync failure
-    if (IsFailed()) {
-        if (nTimeLastFailure + (1*60) < GetTime()) { // 1 minute cooldown after failed sync
+    if(IsFailed()) {
+        if(nTimeLastFailure + (1*60) < GetTime()) { // 1 minute cooldown after failed sync
             LogPrintf("CMasternodeSync::ProcessTick -- WARNING: failed to sync, trying again...\n");
             Reset();
             SwitchToNextAsset(connman);
@@ -149,8 +152,10 @@ void CMasternodeSync::ProcessTick(CConnman& connman)
     }
 
     // gradually request the rest of the votes after sync finished
-    if (IsSynced()) {
-        governance.RequestGovernanceObjectVotes();
+    if(IsSynced()) {
+        std::vector<CNode*> vNodesCopy = connman.CopyNodeVector(CConnman::FullyConnectedOnly);
+        governance.RequestGovernanceObjectVotes(vNodesCopy, connman);
+        connman.ReleaseNodeVector(vNodesCopy);
         return;
     }
 
@@ -159,21 +164,37 @@ void CMasternodeSync::ProcessTick(CConnman& connman)
     LogPrintf("CMasternodeSync::ProcessTick -- nTick %d nCurrentAsset %d nTriedPeerCount %d nSyncProgress %f\n", nTick, nCurrentAsset, nTriedPeerCount, nSyncProgress);
     uiInterface.NotifyAdditionalDataSyncProgressChanged(nSyncProgress);
 
-    bool exitNodesLoop;
-    connman.ForEachNode([this, &connman, &exitNodesLoop](CNode* pnode) {
+    std::vector<CNode*> vNodesCopy = connman.CopyNodeVector(CConnman::FullyConnectedOnly);
 
+    for (auto& pnode : vNodesCopy)
+    {
         CNetMsgMaker msgMaker(pnode->GetSendVersion());
 
         // Don't try to sync any data from outbound "masternode" connections -
         // they are temporary and should be considered unreliable for a sync process.
         // Inbound connection this early is most likely a "masternode" connection
         // initiated from another node, so skip it too.
-        if (pnode->fMasternode || (fMasternodeMode && pnode->fInbound)) return;
+        if(pnode->fMasternode || (fMasternodeMode && pnode->fInbound)) continue;
 
         // NORMAL NETWORK MODE - TESTNET/MAINNET
         {
+            if ((pnode->fWhitelisted || pnode->m_manual_connection) && !netfulfilledman.HasFulfilledRequest(pnode->addr, strAllow)) {
+                netfulfilledman.RemoveAllFulfilledRequests(pnode->addr);
+                netfulfilledman.AddFulfilledRequest(pnode->addr, strAllow);
+                LogPrintf("CMasternodeSync::ProcessTick -- skipping mnsync restrictions for peer=%d\n", pnode->GetId());
+            }
+
+            if(netfulfilledman.HasFulfilledRequest(pnode->addr, "full-sync")) {
+                // We already fully synced from this node recently,
+                // disconnect to free this connection slot for another peer.
+                pnode->fDisconnect = true;
+                LogPrintf("CMasternodeSync::ProcessTick -- disconnecting from recently synced peer=%d\n", pnode->GetId());
+                continue;
+            }
+
             // SPORK : ALWAYS ASK FOR SPORKS AS WE SYNC
-            if (!netfulfilledman.HasFulfilledRequest(pnode->addr, "spork-sync")) {
+
+            if(!netfulfilledman.HasFulfilledRequest(pnode->addr, "spork-sync")) {
                 // always get sporks first, only request once from each peer
                 netfulfilledman.AddFulfilledRequest(pnode->addr, "spork-sync");
                 // get current network sporks
@@ -183,8 +204,14 @@ void CMasternodeSync::ProcessTick(CConnman& connman)
 
             // INITIAL TIMEOUT
 
-            if (nCurrentAsset == MASTERNODE_SYNC_WAITING) {
-                if (GetTime() - nTimeLastBumped > MASTERNODE_SYNC_TIMEOUT_SECONDS) {
+            if(nCurrentAsset == MASTERNODE_SYNC_WAITING) {
+                if(!pnode->fInbound && !netfulfilledman.HasFulfilledRequest(pnode->addr, "mempool-sync")) {
+                    netfulfilledman.AddFulfilledRequest(pnode->addr, "mempool-sync");
+                    connman.PushMessage(pnode, msgMaker.Make(NetMsgType::MEMPOOL));
+                    LogPrintf("CMasternodeSync::ProcessTick -- nTick %d nCurrentAsset %d -- syncing mempool from peer=%d\n", nTick, nCurrentAsset, pnode->GetId());
+                }
+
+                if(GetTime() - nTimeLastBumped > MASTERNODE_SYNC_TIMEOUT_SECONDS) {
                     // At this point we know that:
                     // a) there are peers (because we are looping on at least one of them);
                     // b) we waited for at least MASTERNODE_SYNC_TIMEOUT_SECONDS since we reached
@@ -200,6 +227,11 @@ void CMasternodeSync::ProcessTick(CConnman& connman)
             // GOVOBJ : SYNC GOVERNANCE ITEMS FROM OUR PEERS
 
             if(nCurrentAsset == MASTERNODE_SYNC_GOVERNANCE) {
+                if (fLiteMode) {
+                    SwitchToNextAsset(connman);
+                    connman.ReleaseNodeVector(vNodesCopy);
+                    return;
+                }
                 LogPrint(BCLog::GOBJECT, "CMasternodeSync::ProcessTick -- nTick %d nCurrentAsset %d nTimeLastBumped %lld GetTime() %lld diff %lld\n", nTick, nCurrentAsset, nTimeLastBumped, GetTime(), GetTime() - nTimeLastBumped);
 
                 // check for timeout first
@@ -210,13 +242,13 @@ void CMasternodeSync::ProcessTick(CConnman& connman)
                         // it's kind of ok to skip this for now, hopefully we'll catch up later?
                     }
                     SwitchToNextAsset(connman);
-                    exitNodesLoop = true;
+                    connman.ReleaseNodeVector(vNodesCopy);
                     return;
                 }
 
                 // only request obj sync once from each peer, then request votes on per-obj basis
                 if(netfulfilledman.HasFulfilledRequest(pnode->addr, "governance-sync")) {
-                    int nObjsLeftToAsk = governance.RequestGovernanceObjectVotes(pnode->GetId());
+                    int nObjsLeftToAsk = governance.RequestGovernanceObjectVotes(pnode, connman);
                     static int64_t nTimeNoObjectsLeft = 0;
                     // check for data
                     if(nObjsLeftToAsk == 0) {
@@ -227,7 +259,7 @@ void CMasternodeSync::ProcessTick(CConnman& connman)
                             nTimeNoObjectsLeft = GetTime();
                         }
                         // make sure the condition below is checked only once per tick
-                        if(nLastTick == nTick) return;
+                        if(nLastTick == nTick) continue;
                         if(GetTime() - nTimeNoObjectsLeft > MASTERNODE_SYNC_TIMEOUT_SECONDS &&
                             governance.GetVoteCount() - nLastVotes < std::max(int(0.0001 * nLastVotes), MASTERNODE_SYNC_TICK_SECONDS)
                         ) {
@@ -239,27 +271,31 @@ void CMasternodeSync::ProcessTick(CConnman& connman)
                             // reset nTimeNoObjectsLeft to be able to use the same condition on resync
                             nTimeNoObjectsLeft = 0;
                             SwitchToNextAsset(connman);
+                            connman.ReleaseNodeVector(vNodesCopy);
                             return;
                         }
                         nLastTick = nTick;
                         nLastVotes = governance.GetVoteCount();
                     }
-                    return;
+                    continue;
                 }
                 netfulfilledman.AddFulfilledRequest(pnode->addr, "governance-sync");
 
-                if (pnode->nVersion < MIN_GOVERNANCE_PEER_PROTO_VERSION) return;
+                if (pnode->nVersion < MIN_GOVERNANCE_PEER_PROTO_VERSION) continue;
                 nTriedPeerCount++;
 
-                SendGovernanceSyncRequest(pnode);
-                exitNodesLoop = true;
+                SendGovernanceSyncRequest(pnode, connman);
+
+                connman.ReleaseNodeVector(vNodesCopy);
                 return; //this will cause each peer to get one request each six seconds for the various assets we need
             }
         }
-    });
+    }
+    // looped through all nodes, release them
+    connman.ReleaseNodeVector(vNodesCopy);
 }
 
-void CMasternodeSync::SendGovernanceSyncRequest(CNode* pnode)
+void CMasternodeSync::SendGovernanceSyncRequest(CNode* pnode, CConnman& connman)
 {
     CNetMsgMaker msgMaker(pnode->GetSendVersion());
 
@@ -267,10 +303,10 @@ void CMasternodeSync::SendGovernanceSyncRequest(CNode* pnode)
         CBloomFilter filter;
         filter.clear();
 
-        g_connman->PushMessage(pnode, msgMaker.Make(NetMsgType::MNGOVERNANCESYNC, uint256(), filter));
+        connman.PushMessage(pnode, msgMaker.Make(NetMsgType::MNGOVERNANCESYNC, uint256(), filter));
     }
     else {
-        g_connman->PushMessage(pnode, msgMaker.Make(NetMsgType::MNGOVERNANCESYNC, uint256()));
+        connman.PushMessage(pnode, msgMaker.Make(NetMsgType::MNGOVERNANCESYNC, uint256()));
     }
 }
 

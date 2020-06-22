@@ -535,7 +535,7 @@ struct sortProposalsByVotes {
     }
 };
 
-void CGovernanceManager::DoMaintenance()
+void CGovernanceManager::DoMaintenance(CConnman& connman)
 {
     if (fLiteMode || !masternodeSync.IsSynced() || ShutdownRequested()) return;
 
@@ -543,7 +543,7 @@ void CGovernanceManager::DoMaintenance()
 
     CleanOrphanObjects();
 
-    RequestOrphanObjects();
+    RequestOrphanObjects(connman);
 
     // CHECK AND REMOVE - REPROCESS GOVERNANCE OBJECTS
 
@@ -822,7 +822,7 @@ bool CGovernanceManager::ProcessVote(CNode* pfrom, const CGovernanceVote& vote, 
         exception = CGovernanceException(ostr.str(), GOVERNANCE_EXCEPTION_WARNING);
         if (cmmapOrphanVotes.Insert(nHashGovobj, vote_time_pair_t(vote, GetAdjustedTime() + GOVERNANCE_ORPHAN_EXPIRATION_TIME))) {
             LEAVE_CRITICAL_SECTION(cs);
-            RequestGovernanceObject(pfrom, nHashGovobj);
+            RequestGovernanceObject(pfrom, nHashGovobj, connman);
             LogPrintf("%s\n", ostr.str());
             return false;
         }
@@ -910,7 +910,7 @@ void CGovernanceManager::CheckPostponedObjects(CConnman& connman)
     }
 }
 
-void CGovernanceManager::RequestGovernanceObject(CNode* pfrom, const uint256& nHash, bool fUseFilter)
+void CGovernanceManager::RequestGovernanceObject(CNode* pfrom, const uint256& nHash, CConnman& connman, bool fUseFilter)
 {
     if (!pfrom) {
         return;
@@ -921,7 +921,7 @@ void CGovernanceManager::RequestGovernanceObject(CNode* pfrom, const uint256& nH
     CNetMsgMaker msgMaker(pfrom->GetSendVersion());
 
     if (pfrom->nVersion < GOVERNANCE_FILTER_PROTO_VERSION) {
-        g_connman->PushMessage(pfrom, msgMaker.Make(NetMsgType::MNGOVERNANCESYNC, nHash));
+        connman.PushMessage(pfrom, msgMaker.Make(NetMsgType::MNGOVERNANCESYNC, nHash));
         return;
     }
 
@@ -944,12 +944,22 @@ void CGovernanceManager::RequestGovernanceObject(CNode* pfrom, const uint256& nH
     }
 
     LogPrint(BCLog::GOBJECT, "CGovernanceManager::RequestGovernanceObject -- nHash %s nVoteCount %d peer=%d\n", nHash.ToString(), nVoteCount, pfrom->GetId());
-    g_connman->PushMessage(pfrom, msgMaker.Make(NetMsgType::MNGOVERNANCESYNC, nHash, filter));
+    connman.PushMessage(pfrom, msgMaker.Make(NetMsgType::MNGOVERNANCESYNC, nHash, filter));
 }
 
-int CGovernanceManager::RequestGovernanceObjectVotes(NodeId id) // const std::vector<CNode*>& vNodesCopy, CConnman& connman
+int CGovernanceManager::RequestGovernanceObjectVotes(CNode* pnode, CConnman& connman)
+{
+    if (pnode->nVersion < MIN_GOVERNANCE_PEER_PROTO_VERSION) return -3;
+    std::vector<CNode*> vNodesCopy;
+    vNodesCopy.push_back(pnode);
+    return RequestGovernanceObjectVotes(vNodesCopy, connman);
+}
+
+int CGovernanceManager::RequestGovernanceObjectVotes(const std::vector<CNode*>& vNodesCopy, CConnman& connman)
 {
     static std::map<uint256, std::map<CService, int64_t> > mapAskedRecently;
+
+    if (vNodesCopy.empty()) return -1;
 
     int64_t nNow = GetTime();
     int nTimeout = 60 * 60;
@@ -970,8 +980,7 @@ int CGovernanceManager::RequestGovernanceObjectVotes(NodeId id) // const std::ve
     }
 
     {
-        // LOCK2(cs_main, cs);
-        LOCK(cs);
+        LOCK2(cs_main, cs);
 
         if (mapObjects.empty()) return -2;
 
@@ -1015,32 +1024,28 @@ int CGovernanceManager::RequestGovernanceObjectVotes(NodeId id) // const std::ve
             nHashGovobj = vOtherObjHashes.back();
         }
         bool fAsked = false;
-
-        g_connman->ForEachNode([&](CNode* pnode) {
-            // Request per node, exclude other nodes.
-            if (id > -1 && pnode->GetId() != id) return;
-
+        for (const auto& pnode : vNodesCopy) {
             // Only use regular peers, don't try to ask from outbound "masternode" connections -
             // they stay connected for a short period of time and it's possible that we won't get everything we should.
             // Only use outbound connections - inbound connection could be a "masternode" connection
             // initiated from another node, so skip it too.
-            if (pnode->fMasternode || (fMasternodeMode && pnode->fInbound)) return;
+            if (pnode->fMasternode || (fMasternodeMode && pnode->fInbound)) continue;
             // only use up to date peers
-            if (pnode->nVersion < MIN_GOVERNANCE_PEER_PROTO_VERSION) return;
+            if (pnode->nVersion < MIN_GOVERNANCE_PEER_PROTO_VERSION) continue;
             // stop early to prevent RequestData overflow
             {
                 LOCK(cs_main);
-                if (!RequestDataAvailable(pnode->GetId(), nProjectedVotes)) return;
+                if (!RequestDataAvailable(pnode->GetId(), nProjectedVotes)) continue;
                 // to early to ask the same node
-                if (mapAskedRecently[nHashGovobj].count(pnode->addr)) return;
+                if (mapAskedRecently[nHashGovobj].count(pnode->addr)) continue;
             }
 
-            RequestGovernanceObject(pnode, nHashGovobj, true);
+            RequestGovernanceObject(pnode, nHashGovobj, connman, true);
             mapAskedRecently[nHashGovobj][pnode->addr] = nNow + nTimeout;
             fAsked = true;
             // stop loop if max number of peers per obj was asked
-            if (mapAskedRecently[nHashGovobj].size() >= nPeersPerHashMax) return; // break
-        });
+            if (mapAskedRecently[nHashGovobj].size() >= nPeersPerHashMax) break;
+        }
         // NOTE: this should match `if` above (the one before `while`)
         if (vTriggerObjHashes.size()) {
             vTriggerObjHashes.pop_back();
@@ -1204,7 +1209,7 @@ void CGovernanceManager::UpdatedBlockTip(const CBlockIndex* pindex, CConnman& co
     CSuperblockManager::ExecuteBestSuperblock(pindex->nHeight);
 }
 
-void CGovernanceManager::RequestOrphanObjects()
+void CGovernanceManager::RequestOrphanObjects(CConnman& connman)
 {
     std::vector<uint256> vecHashesFiltered;
     {
@@ -1225,7 +1230,7 @@ void CGovernanceManager::RequestOrphanObjects()
             if (pnode->fMasternode) {
                 return;
             }
-            RequestGovernanceObject(pnode, nHash);
+            RequestGovernanceObject(pnode, nHash, connman);
         });
     }
 }
