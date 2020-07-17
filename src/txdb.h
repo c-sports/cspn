@@ -9,6 +9,8 @@
 #include <coins.h>
 #include <dbwrapper.h>
 #include <chain.h>
+#include <limitedmap.h>
+#include <index/txindex.h>
 #include <primitives/block.h>
 
 #include <map>
@@ -20,6 +22,7 @@
 class CBlockIndex;
 class CCoinsViewDBCursor;
 class uint256;
+class CDiskTxPos;
 
 //! No need to periodic flush if at least this much space still available.
 static constexpr int MAX_BLOCK_COINSDB_USAGE = 10;
@@ -87,14 +90,24 @@ private:
 /** Access to the block database (blocks/index/) */
 class CBlockTreeDB : public CDBWrapper
 {
+private:
+    CCriticalSection cs;
+    unordered_limitedmap<uint256, bool> mapHasTxIndexCache;
+
 public:
     explicit CBlockTreeDB(size_t nCacheSize, bool fMemory = false, bool fWipe = false);
+
+    CBlockTreeDB(const CBlockTreeDB&) = delete;
+    CBlockTreeDB& operator=(const CBlockTreeDB&) = delete;
 
     bool WriteBatchSync(const std::vector<std::pair<int, const CBlockFileInfo*> >& fileInfo, int nLastFile, const std::vector<const CBlockIndex*>& blockinfo);
     bool ReadBlockFileInfo(int nFile, CBlockFileInfo &info);
     bool ReadLastBlockFile(int &nFile);
     bool WriteReindexing(bool fReindexing);
     void ReadReindexing(bool &fReindexing);
+    bool HasTxIndex(const uint256 &txid);
+    bool ReadTxIndex(const uint256 &txid, CDiskTxPos &pos);
+    bool WriteTxIndex(const std::vector<std::pair<uint256, CDiskTxPos> > &vect);
     bool WriteFlag(const std::string &name, bool fValue);
     bool ReadFlag(const std::string &name, bool &fValue);
     bool LoadBlockIndexGuts(const Consensus::Params& consensusParams, std::function<CBlockIndex*(const uint256&)> insertBlockIndex);
