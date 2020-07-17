@@ -118,6 +118,11 @@ void CMasternodeSync::ProcessMessage(CNode* pfrom, const std::string& strCommand
 
 void CMasternodeSync::ProcessTick(CConnman& connman)
 {
+    //! do not bother unless chain is ready
+    if (::ChainstateActive().IsInitialBlockDownload()) {
+        return;
+    }
+
     static int nTick = 0;
     nTick++;
 
