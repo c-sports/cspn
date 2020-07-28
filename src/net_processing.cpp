@@ -93,7 +93,7 @@ static constexpr int64_t GETDATA_TX_INTERVAL = 60 * 1000000; // 1 minute
 /** Maximum delay (in microseconds) for transaction requests to avoid biasing some peers over others. */
 static constexpr int64_t MAX_GETDATA_RANDOM_DELAY = 2 * 1000000; // 2 seconds
 /** How long to wait (in microseconds) before expiring an in-flight getdata request to a peer */
-static constexpr int64_t TX_EXPIRY_INTERVAL = 10 * GETDATA_TX_INTERVAL;
+static constexpr int64_t TX_EXPIRY_INTERVAL = 50 * GETDATA_TX_INTERVAL;
 static_assert(INBOUND_PEER_TX_DELAY >= MAX_GETDATA_RANDOM_DELAY,
 "To preserve security, MAX_GETDATA_RANDOM_DELAY should not exceed INBOUND_PEER_DELAY");
 /** Limit to avoid sending big packets. Not used in processing incoming GETDATA for compatibility */
@@ -2219,18 +2219,6 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
         return false;
     }
 
-    //! GETDATA revlimiter
-    if (GetAdjustedTime() - pfrom->getDataTimer > 100) {
-        if (!::ChainstateActive().IsInitialBlockDownload()) {
-            if (pfrom->getDataInPastMinute > 60) {
-                Misbehaving(pfrom->GetId(), 25);
-                LogPrintf("%s - GETDATA counter: %d/req in past minute\n", __func__, pfrom->getDataInPastMinute);
-            }
-        }
-        pfrom->getDataInPastMinute = 0;
-        pfrom->getDataTimer = GetAdjustedTime();
-    }
-
     if (!(pfrom->GetLocalServices() & NODE_BLOOM) &&
               (strCommand == NetMsgType::FILTERLOAD ||
                strCommand == NetMsgType::FILTERADD))
@@ -2672,8 +2660,6 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
     if (strCommand == NetMsgType::GETDATA) {
         std::vector<CInv> vInv;
         vRecv >> vInv;
-
-	pfrom->getDataInPastMinute++;
 
         if (vInv.size() > MAX_INV_SZ)
         {
