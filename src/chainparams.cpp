@@ -258,25 +258,25 @@ public:
 
         checkpointData = {
                 {
-                        {      1, uint256S("0x000000af1c83cdf16aba8e539aa86b90f8aa39afb1c9dcd489f02202c92b90a9")}
-                        {   1000, uint256S("0x000000a687ae1b49630c53b78983bfa3e40248f811336480cc0454300b7ca0e4")}
-                        {   1500, uint256S("0x00000027336a6d7cb44105e66b19b7c357a128f12ec097138b783b082c15f075")}
-                        {  10000, uint256S("0xd4b13fe1ce11047cc04ef099bf85062a0bdc01913644a6e05ba4b6f44331bbc9")}
-                        {  12167, uint256S("0x6a5b1939de7f55943aa73c02e033e5326f52fa07446c78db62c513f2e9bddafb")}
-                        {  20000, uint256S("0xd2889eb5d03ae4cf77967c4f6dd5e0a3b25cd6c06b2ebe065b0399504b5f84ed")}
-                        {  40000, uint256S("0x0a8c530d9b7a2a92fdf1deeb26f62b91bad189c880af1e5d51aa1aa60b5a0ab4")}
-                        {  60000, uint256S("0xba66203533e488a13f7be8e8f459259a970997e921c337153aa6ab4498206094")}
-                        {  80000, uint256S("0xf6469b539bfa8da20404024284a11ed5400152e47d38484ecb7f065b7ec538f6")}
-                        { 100000, uint256S("0x9432475502579e22b27a93caf0314158159da4c979c0d75765944ed325588e9f")}
-                        { 120000, uint256S("0xa55f1dfcc9f499235493a2ace0a4708c33d6b8b4017c4e2f11a3f136023b5563")}
-                        { 140000, uint256S("0x098747dc5350c1b9c6dc00aa52d35383fbeb02539770873260e0b16b28b84ec8")}
-                        { 160000, uint256S("0xe63bcee630d93e501372beb62e565ef67cde0345a80b88bd5ee29d0d2b736eea")}
-                        { 180000, uint256S("0x3ade170816a5bd5a94980594e9e6c0974c6cf306cbf4f5f8a6e2bff7e06b1980")}
-                        { 200000, uint256S("0x88761a6b98dd3d2dd83f995db8035788a599a068e183913ac88165fcf7b42d62")}
-                        { 220000, uint256S("0x8b3ba3f0fa56d69272317630ffb352826bf3d1bbd6b00031d1a427d57e10e0df")}
-                        { 240000, uint256S("0xe2a53ce2246a7f4ff51b68a04ded11ed68f7dcb7f916daeb54f475d10dbebc7d")}
-                        { 260000, uint256S("0xf7bd7a739f08cd17a7be8fa3f378892bcfb56e553ba92b49f2b50c0542d6e3c4")}
-                        { 275000, uint256S("0x66d05fdce53d656e8d9288e5043056b3b7a9fd948dddb12716c6dc92d388359b")},
+                        {      1, uint256S("0x000000af1c83cdf16aba8e539aa86b90f8aa39afb1c9dcd489f02202c92b90a9")},
+                        {   1000, uint256S("0x000000a687ae1b49630c53b78983bfa3e40248f811336480cc0454300b7ca0e4")},
+                        {   1500, uint256S("0x00000027336a6d7cb44105e66b19b7c357a128f12ec097138b783b082c15f075")},
+                        {  10000, uint256S("0xd4b13fe1ce11047cc04ef099bf85062a0bdc01913644a6e05ba4b6f44331bbc9")},
+                        {  12167, uint256S("0x6a5b1939de7f55943aa73c02e033e5326f52fa07446c78db62c513f2e9bddafb")},
+                        {  20000, uint256S("0xd2889eb5d03ae4cf77967c4f6dd5e0a3b25cd6c06b2ebe065b0399504b5f84ed")},
+                        {  40000, uint256S("0x0a8c530d9b7a2a92fdf1deeb26f62b91bad189c880af1e5d51aa1aa60b5a0ab4")},
+                        {  60000, uint256S("0xba66203533e488a13f7be8e8f459259a970997e921c337153aa6ab4498206094")},
+                        {  80000, uint256S("0xf6469b539bfa8da20404024284a11ed5400152e47d38484ecb7f065b7ec538f6")},
+                        { 100000, uint256S("0x9432475502579e22b27a93caf0314158159da4c979c0d75765944ed325588e9f")},
+                        { 120000, uint256S("0xa55f1dfcc9f499235493a2ace0a4708c33d6b8b4017c4e2f11a3f136023b5563")},
+                        { 140000, uint256S("0x098747dc5350c1b9c6dc00aa52d35383fbeb02539770873260e0b16b28b84ec8")},
+                        { 160000, uint256S("0xe63bcee630d93e501372beb62e565ef67cde0345a80b88bd5ee29d0d2b736eea")},
+                        { 180000, uint256S("0x3ade170816a5bd5a94980594e9e6c0974c6cf306cbf4f5f8a6e2bff7e06b1980")},
+                        { 200000, uint256S("0x88761a6b98dd3d2dd83f995db8035788a599a068e183913ac88165fcf7b42d62")},
+                        { 220000, uint256S("0x8b3ba3f0fa56d69272317630ffb352826bf3d1bbd6b00031d1a427d57e10e0df")},
+                        { 240000, uint256S("0xe2a53ce2246a7f4ff51b68a04ded11ed68f7dcb7f916daeb54f475d10dbebc7d")},
+                        { 260000, uint256S("0xf7bd7a739f08cd17a7be8fa3f378892bcfb56e553ba92b49f2b50c0542d6e3c4")},
+                        { 275000, uint256S("0x66d05fdce53d656e8d9288e5043056b3b7a9fd948dddb12716c6dc92d388359b")}
                 }};
 
         chainTxData = ChainTxData{
