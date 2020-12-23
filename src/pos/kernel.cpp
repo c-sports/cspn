@@ -21,18 +21,18 @@ static std::map<int, unsigned int> mapStakeModifierCheckpoints = {
                                                                      { 10000, 0x5cfbce9d},
                                                                      { 20000, 0xc16b56d1},
                                                                      { 40000, 0xb9778a75},
-                                                                     { 60000, 0x5d49f9b4},
-                                                                     { 80000, 0x0c6dd4af},
-                                                                     {100000, 0xcc9b11c0},
-                                                                     {120000, 0xaa6c79a6},
-                                                                     {140000, 0x271c5b1a},
-                                                                     {160000, 0x603feee8},
-                                                                     {180000, 0x65eeb6cf},
-                                                                     {200000, 0xa5cb2e91},
-                                                                     {220000, 0xd2ff90f0},
-                                                                     {240000, 0xca4dfe2c},
-                                                                     {260000, 0x1c41d1ba},
-                                                                     {275000, 0x4bd13976}
+                                                                     { 60000, 0x20607fd3},
+                                                                     { 80000, 0x5ea04d7d},
+                                                                     {100000, 0x5cfbce9d},
+                                                                     {120000, 0x02f548e8},
+                                                                     {140000, 0xa6ce0a3c},
+                                                                     {160000, 0xfdb8036e},
+                                                                     {180000, 0xa0987af6},
+                                                                     {200000, 0x3ab8869c},
+                                                                     {220000, 0x06de4abd},
+                                                                     {240000, 0x28e3ebc5},
+                                                                     {260000, 0xd9fa2192},
+                                                                     {275000, 0xcb7aff48}
                                                                  };
 
 // Get the last stake modifier and its generation time from a given block
