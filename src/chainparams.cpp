@@ -1,6 +1,6 @@
 // Copyright (c) 2010 Satoshi Nakamoto
 // Copyright (c) 2009-2018 The Bitcoin Core developers
-// Copyright (c) 2019 The BitTestForLaterSoICanUseReplaceGreen Core developers
+// Copyright (c) 2019 The Bit Green Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -276,15 +276,15 @@ public:
                         { 220000, uint256S("0x8b3ba3f0fa56d69272317630ffb352826bf3d1bbd6b00031d1a427d57e10e0df")},
                         { 240000, uint256S("0xe2a53ce2246a7f4ff51b68a04ded11ed68f7dcb7f916daeb54f475d10dbebc7d")},
                         { 260000, uint256S("0xf7bd7a739f08cd17a7be8fa3f378892bcfb56e553ba92b49f2b50c0542d6e3c4")},
-                        { 275000, uint256S("0x66d05fdce53d656e8d9288e5043056b3b7a9fd948dddb12716c6dc92d388359b")}
+                        { 280000, uint256S("0x12ea41d7c1d7e3d2b15ae5b58d65343948d5540a6ca5cd648719fdb45e0789f5")}
                 }};
 
         chainTxData = ChainTxData{
             // Data from rpc: getchaintxstats <nblock> <blockhash>
             // Data from RPC: getchaintxstats 70004 2da7cf773e5032a76aa4480b033c1ac6978ff64531f168c92d022c90f5bf7996
-            /* nTime    */ 1592682533,
-            /* nTxCount */ 29677,
-            /* dTxRate  */ 0.04381794180445754};
+            /* nTime    */ 1597981950,
+            /* nTxCount */ 259455,
+            /* dTxRate  */ 0.04402295173015624};
     }
 };
 
