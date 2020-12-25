@@ -1,4 +1,5 @@
 # Copyright (c) 2019 Pieter Wuille
+# Copyright (c) 2018-2021 The CSPN Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test-only secp256k1 elliptic curve implementation

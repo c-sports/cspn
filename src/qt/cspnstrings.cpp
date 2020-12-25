@@ -26,6 +26,7 @@ static const char UNUSED *cspn_strings[] = {
                                            "keypool. Please use -upgradewallet=169900 or -upgradewallet with no version "
                                            "specified."),
         QT_TRANSLATE_NOOP("cspn-core", ""
+// Copyright (c) 2018-2021 The CSPN Core developers
                                            "Distributed under the MIT software license, see the accompanying file %s or "
                                            "%s"),
         QT_TRANSLATE_NOOP("cspn-core", ""
