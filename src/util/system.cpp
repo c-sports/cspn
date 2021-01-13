@@ -1202,6 +1202,9 @@ std::string CopyrightHolders(const std::string& strPrefix)
 {
     const auto copyright_devs = strprintf(_(COPYRIGHT_HOLDERS).translated, COPYRIGHT_HOLDERS_SUBSTITUTION);
     std::string strCopyrightHolders = strPrefix + copyright_devs;
+	
+    // Add Bit Green copyright
+    strCopyrightHolders += "\n" + strPrefix + "The BitGreen Core developers";
 
     // Add Dash copyright
     strCopyrightHolders += "\n" + strPrefix + "The Dash Core developers";
