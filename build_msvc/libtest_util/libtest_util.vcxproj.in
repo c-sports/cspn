@@ -2,16 +2,13 @@
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\common.init.vcxproj" />
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{5724BA7D-A09A-4BA8-800B-C4C1561B3D69}</ProjectGuid>
+    <ProjectGuid>{868474FD-35F6-4400-8EED-30A33E7521D4}</ProjectGuid>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
   </PropertyGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\univalue\lib\univalue.cpp" />
-    <ClCompile Include="..\..\src\univalue\lib\univalue_get.cpp" />
-    <ClCompile Include="..\..\src\univalue\lib\univalue_read.cpp" />
-    <ClCompile Include="..\..\src\univalue\lib\univalue_write.cpp" />
+@SOURCE_FILES@
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

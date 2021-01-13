@@ -1,6 +1,10 @@
+// Copyright (c) 2018-2020 The Bitcoin Core developers
+// Distributed under the MIT software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
+
 #include <iostream>
 
-// cspn includes.
+// bitcoin includes.
 #include <..\src\script\bitcoinconsensus.h>
 #include <..\src\primitives\transaction.h>
 #include <..\src\script\script.h>
@@ -27,7 +31,7 @@ CMutableTransaction BuildSpendingTransaction(const CScript& scriptSig, const CSc
 
 int main()
 {
-    std::cout << "cspnconsensus version: " << bitcoinconsensus_version() << std::endl;
+    std::cout << "bitcoinconsensus version: " << bitcoinconsensus_version() << std::endl;
 
     CScript pubKeyScript;
     pubKeyScript << OP_1 << OP_0 << OP_1;
