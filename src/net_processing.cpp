@@ -3005,8 +3005,15 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
         return true;
     }
 
-    if (strCommand == NetMsgType::CMPCTBLOCK && !fImporting && !fReindex)
-    {
+    if (strCommand == NetMsgType::CMPCTBLOCK) {
+        // Ignore cmpctblock received while importing
+        if (fImporting || fReindex) {
+            LogPrint(BCLog::NET,
+                     "Unexpected cmpctblock message received from peer %d\n",
+                     pfrom->GetId());
+            return true;
+        }
+
         CBlockHeaderAndShortTxIDs cmpctblock;
         vRecv >> cmpctblock;
 
@@ -3221,11 +3228,12 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
         return true;
     }
 
-    if (strCommand == NetMsgType::BLOCKTXN)
-    {
+    if (strCommand == NetMsgType::BLOCKTXN) {
         // Ignore blocktxn received while importing
         if (fImporting || fReindex) {
-            LogPrint(BCLog::NET, "Unexpected blocktxn message received from peer %d\n", pfrom->GetId());
+            LogPrint(BCLog::NET,
+                         "Unexpected blocktxn message received from peer %d\n",
+                        pfrom->GetId());
             return true;
         }
 
@@ -3302,11 +3310,12 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
         return true;
     }
 
-    if (strCommand == NetMsgType::HEADERS)
-    {
+    if (strCommand == NetMsgType::HEADERS) {
         // Ignore headers received while importing
         if (fImporting || fReindex) {
-            LogPrint(BCLog::NET, "Unexpected headers message received from peer %d\n", pfrom->GetId());
+            LogPrint(BCLog::NET,
+            "Unexpected headers message received from peer %d\n",
+            pfrom->GetId());
             return true;
         }
 
@@ -3328,11 +3337,11 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
         return ProcessHeadersMessage(pfrom, connman, headers, chainparams, /*via_compact_block=*/false);
     }
 
-    if (strCommand == NetMsgType::BLOCK)
-    {
+    if (strCommand == NetMsgType::BLOCK) {
         // Ignore block received while importing
         if (fImporting || fReindex) {
-            LogPrint(BCLog::NET, "Unexpected block message received from peer %d\n", pfrom->GetId());
+            LogPrint(BCLog::NET, "Unexpected block message received from peer %d\n",
+            pfrom->GetId());
             return true;
         }
 
