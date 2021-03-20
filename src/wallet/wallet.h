@@ -80,6 +80,8 @@ static const int64_t TIMESTAMP_MIN = 0;
 //! if set, all keys will be derived by using BIP39/BIP44
 static const bool DEFAULT_USE_HD_WALLET = false;
 
+extern bool fWalletUnlockStakingOnly;
+
 class CBlockIndex;
 class CCoinControl;
 class COutput;
@@ -271,6 +273,8 @@ public:
 
     const uint256& GetHash() const { return tx->GetHash(); }
     bool IsCoinBase() const { return tx->IsCoinBase(); }
+    // proof-of-stake:
+    bool IsCoinStake() const { return tx->IsCoinStake(); }
 };
 
 /**
@@ -486,7 +490,6 @@ public:
     CAmount GetImmatureWatchOnlyCredit(const bool fUseCache=true) const;
     CAmount GetAvailableWatchOnlyCredit(const bool fUseCache=true) const;
     CAmount GetChange() const;
-
     CAmount GetAnonymizedCredit(const CCoinControl* coinControl = nullptr) const;
     CAmount GetDenominatedCredit(bool unconfirmed, bool fUseCache=true) const;
 
@@ -1260,6 +1263,16 @@ public:
     bool SetCryptedHDChainSingle(const CHDChain& chain, bool memonly);
 
     bool GetDecryptedHDChain(CHDChain& hdChainRet);
+
+    /** proof-of-stake */
+    bool fWalletUnlockStakingOnly = false;
+    int nStakeSetUpdateTime = 300; // 5 minutes
+    uint64_t nStakeSplitThreshold = 2000;
+    int nStakeCombineThreshold = 0;
+    using StakeCoinsSet = std::vector<COutput>;
+    bool MintableCoins();
+    bool SelectStakeCoins(StakeCoinsSet& setCoins, CAmount nTargetAmount) const;
+    bool CreateCoinStake(unsigned int nBits, int64_t nSearchInterval, CMutableTransaction& txNew, uint32_t& nTxNewTime, CAmount nFees);
 
     void NotifyTransactionLock(const CTransaction &tx, const llmq::CInstantSendLock& islock) override;
     void NotifyChainLock(const CBlockIndex* pindexChainLock, const llmq::CChainLockSig& clsig) override;

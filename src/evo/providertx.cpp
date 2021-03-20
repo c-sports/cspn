@@ -29,10 +29,10 @@ static bool CheckService(const uint256& proTxHash, const ProTx& proTx, CValidati
 
     static int mainnetDefaultPort = CreateChainParams(CBaseChainParams::MAIN)->GetDefaultPort();
     if (Params().NetworkIDString() == CBaseChainParams::MAIN) {
-        if (proTx.addr.GetPort() != mainnetDefaultPort) {
+        if (proTx.addr.GetPort() != mainnetDefaultPort && !Params().AllowMultiplePorts()) {
             return state.DoS(10, false, REJECT_INVALID, "bad-protx-ipaddr-port");
         }
-    } else if (proTx.addr.GetPort() == mainnetDefaultPort) {
+    } else if (proTx.addr.GetPort() == mainnetDefaultPort && !Params().AllowMultiplePorts()) {
         return state.DoS(10, false, REJECT_INVALID, "bad-protx-ipaddr-port");
     }
 
@@ -138,9 +138,11 @@ bool CheckProRegTx(const CTransaction& tx, const CBlockIndex* pindexPrev, CValid
 
     if (!ptx.collateralOutpoint.hash.IsNull()) {
         Coin coin;
-        if (!GetUTXOCoin(ptx.collateralOutpoint, coin) || coin.out.nValue != 1000 * COIN) {
+        if (!GetUTXOCoin(ptx.collateralOutpoint, coin) || coin.out.nValue != 1337 * COIN) {
             return state.DoS(10, false, REJECT_INVALID, "bad-protx-collateral");
         }
+
+        LogPrintf("collateralOutpoint %s scriptpubkey %s nHeight %s testest\n", ptx.collateralOutpoint.ToStringShort(), ScriptToAsmStr(coin.out.scriptPubKey), pindexPrev->nHeight);
 
         if (!ExtractDestination(coin.out.scriptPubKey, collateralTxDest)) {
             return state.DoS(10, false, REJECT_INVALID, "bad-protx-collateral-dest");
@@ -158,7 +160,7 @@ bool CheckProRegTx(const CTransaction& tx, const CBlockIndex* pindexPrev, CValid
         if (ptx.collateralOutpoint.n >= tx.vout.size()) {
             return state.DoS(10, false, REJECT_INVALID, "bad-protx-collateral-index");
         }
-        if (tx.vout[ptx.collateralOutpoint.n].nValue != 1000 * COIN) {
+        if (tx.vout[ptx.collateralOutpoint.n].nValue != 1337 * COIN) {
             return state.DoS(10, false, REJECT_INVALID, "bad-protx-collateral");
         }
 
@@ -186,12 +188,6 @@ bool CheckProRegTx(const CTransaction& tx, const CBlockIndex* pindexPrev, CValid
         // never allow duplicate keys, even if this ProTx would replace an existing MN
         if (mnList.HasUniqueProperty(ptx.keyIDOwner) || mnList.HasUniqueProperty(ptx.pubKeyOperator)) {
             return state.DoS(10, false, REJECT_DUPLICATE, "bad-protx-dup-key");
-        }
-
-        if (!deterministicMNManager->IsDIP3Enforced(pindexPrev->nHeight)) {
-            if (ptx.keyIDOwner != ptx.keyIDVoting) {
-                return state.DoS(10, false, REJECT_INVALID, "bad-protx-key-not-same");
-            }
         }
     }
 
@@ -333,12 +329,6 @@ bool CheckProUpRegTx(const CTransaction& tx, const CBlockIndex* pindexPrev, CVal
             auto otherDmn = mnList.GetUniquePropertyMN(ptx.pubKeyOperator);
             if (ptx.proTxHash != otherDmn->proTxHash) {
                 return state.DoS(10, false, REJECT_DUPLICATE, "bad-protx-dup-key");
-            }
-        }
-
-        if (!deterministicMNManager->IsDIP3Enforced(pindexPrev->nHeight)) {
-            if (dmn->pdmnState->keyIDOwner != ptx.keyIDVoting) {
-                return state.DoS(10, false, REJECT_INVALID, "bad-protx-key-not-same");
             }
         }
 

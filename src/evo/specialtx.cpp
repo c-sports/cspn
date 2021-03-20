@@ -19,12 +19,8 @@
 
 bool CheckSpecialTx(const CTransaction& tx, const CBlockIndex* pindexPrev, CValidationState& state)
 {
-    if (tx.nVersion != 3 || tx.nType == TRANSACTION_NORMAL)
+    if (tx.nVersion < 2 || tx.nType == TRANSACTION_NORMAL || tx.nType == TRANSACTION_STAKE)
         return true;
-
-    if (pindexPrev && pindexPrev->nHeight + 1 < Params().GetConsensus().DIP0003Height) {
-        return state.DoS(10, false, REJECT_INVALID, "bad-tx-type");
-    }
 
     try {
         switch (tx.nType) {
@@ -51,7 +47,7 @@ bool CheckSpecialTx(const CTransaction& tx, const CBlockIndex* pindexPrev, CVali
 
 bool ProcessSpecialTx(const CTransaction& tx, const CBlockIndex* pindex, CValidationState& state)
 {
-    if (tx.nVersion != 3 || tx.nType == TRANSACTION_NORMAL) {
+    if (tx.nVersion < 2 || tx.nType == TRANSACTION_NORMAL || tx.nType == TRANSACTION_STAKE) {
         return true;
     }
 
@@ -72,7 +68,7 @@ bool ProcessSpecialTx(const CTransaction& tx, const CBlockIndex* pindex, CValida
 
 bool UndoSpecialTx(const CTransaction& tx, const CBlockIndex* pindex)
 {
-    if (tx.nVersion != 3 || tx.nType == TRANSACTION_NORMAL) {
+    if (tx.nVersion < 2 || tx.nType == TRANSACTION_NORMAL || tx.nType == TRANSACTION_STAKE) {
         return true;
     }
 
@@ -132,7 +128,8 @@ bool ProcessSpecialTxsInBlock(const CBlock& block, const CBlockIndex* pindex, CV
         int64_t nTime4 = GetTimeMicros(); nTimeDMN += nTime4 - nTime3;
         LogPrint(BCLog::BENCHMARK, "        - deterministicMNManager: %.2fms [%.2fs]\n", 0.001 * (nTime4 - nTime3), nTimeDMN * 0.000001);
 
-        if (fCheckCbTxMerleRoots && !CheckCbTxMerkleRoots(block, pindex, state)) {
+        LogPrintf("test go %s", block.ToString());
+        if (fCheckCbTxMerleRoots && block.IsProofOfStake() && !CheckCbTxMerkleRoots(block, pindex, state)) {
             // pass the state returned by the function above
             return false;
         }

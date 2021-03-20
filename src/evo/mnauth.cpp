@@ -71,19 +71,25 @@ void CMNAuth::ProcessMessage(CNode* pnode, const std::string& strCommand, CDataS
             LOCK(pnode->cs_mnauth);
             fAlreadyHaveMNAUTH = !pnode->verifiedProRegTxHash.IsNull();
         }
+
         if (fAlreadyHaveMNAUTH) {
             LOCK(cs_main);
             Misbehaving(pnode->GetId(), 100, "duplicate mnauth");
             return;
         }
 
-        if ((~pnode->nServices) & (NODE_NETWORK | NODE_BLOOM)) {
-            // either NODE_NETWORK or NODE_BLOOM bit is missing in node's services
-            LOCK(cs_main);
-            Misbehaving(pnode->GetId(), 100, "mnauth from a node with invalid services");
-            return;
+        // bitg removed this
+        // bitg nodes does node_network and witness not network and bloom only activate this once we fork off
+        if (chainActive.Tip()->nHeight >= Params().GetConsensus().nForkOffOldNodes) {
+            if ((~pnode->nServices) & (NODE_NETWORK | NODE_BLOOM)) {
+                // either NODE_NETWORK or NODE_BLOOM bit is missing in node's services
+                LOCK(cs_main);
+                Misbehaving(pnode->GetId(), 100, "mnauth from a node with invalid services");
+                return;
+            }
         }
 
+        // bitg removed this END
         if (mnauth.proRegTxHash.IsNull()) {
             LOCK(cs_main);
             Misbehaving(pnode->GetId(), 100, "empty mnauth proRegTxHash");
@@ -95,6 +101,8 @@ void CMNAuth::ProcessMessage(CNode* pnode, const std::string& strCommand, CDataS
             Misbehaving(pnode->GetId(), 100, "invalid mnauth signature");
             return;
         }
+
+
 
         auto mnList = deterministicMNManager->GetListAtChainTip();
         auto dmn = mnList.GetMN(mnauth.proRegTxHash);
@@ -115,7 +123,7 @@ void CMNAuth::ProcessMessage(CNode* pnode, const std::string& strCommand, CDataS
                 nOurNodeVersion = gArgs.GetArg("-pushversion", PROTOCOL_VERSION);
             }
             // See comment in PushMNAUTH (fInbound is negated here as we're on the other side of the connection)
-            if (pnode->nVersion < MNAUTH_NODE_VER_VERSION || nOurNodeVersion < MNAUTH_NODE_VER_VERSION) {
+            if (!(chainActive.Tip()->nHeight >= Params().GetConsensus().nForkOffOldNodes)) {
                 signHash = ::SerializeHash(std::make_tuple(dmn->pdmnState->pubKeyOperator, pnode->sentMNAuthChallenge, !pnode->fInbound));
             } else {
                 signHash = ::SerializeHash(std::make_tuple(dmn->pdmnState->pubKeyOperator, pnode->sentMNAuthChallenge, !pnode->fInbound, pnode->nVersion.load()));

@@ -13,13 +13,14 @@
 
 /** Transaction types */
 enum {
-    TRANSACTION_NORMAL = 0,
-    TRANSACTION_PROVIDER_REGISTER = 1,
-    TRANSACTION_PROVIDER_UPDATE_SERVICE = 2,
-    TRANSACTION_PROVIDER_UPDATE_REGISTRAR = 3,
-    TRANSACTION_PROVIDER_UPDATE_REVOKE = 4,
-    TRANSACTION_COINBASE = 5,
+    TRANSACTION_COINBASE = 0,
+    TRANSACTION_NORMAL = 1,
+    TRANSACTION_PROVIDER_REGISTER = 2,
+    TRANSACTION_PROVIDER_UPDATE_SERVICE = 3,
+    TRANSACTION_PROVIDER_UPDATE_REGISTRAR = 4,
+    TRANSACTION_PROVIDER_UPDATE_REVOKE = 5,
     TRANSACTION_QUORUM_COMMITMENT = 6,
+    TRANSACTION_STAKE = 7
 };
 
 /** An outpoint - a combination of a transaction hash and an index n into its vout */
@@ -175,6 +176,17 @@ public:
         return (nValue == -1);
     }
 
+    void SetEmpty()
+    {
+        nValue = 0;
+        scriptPubKey.clear();
+    }
+
+    bool IsEmpty() const
+    {
+        return (nValue == 0 && scriptPubKey.empty());
+    }
+
     friend bool operator==(const CTxOut& a, const CTxOut& b)
     {
         return (a.nValue       == b.nValue &&
@@ -240,7 +252,7 @@ public:
         s << vin;
         s << vout;
         s << nLockTime;
-        if (this->nVersion == 3 && this->nType != TRANSACTION_NORMAL)
+        if (this->nVersion >= 2 && this->nType != TRANSACTION_NORMAL)
             s << vExtraPayload;
     }
 
@@ -271,7 +283,13 @@ public:
 
     bool IsCoinBase() const
     {
-        return (vin.size() == 1 && vin[0].prevout.IsNull());
+        return (vin.size() == 1 && vin[0].prevout.IsNull() && vout.size() >= 1);
+    }
+
+    bool IsCoinStake() const
+    {
+        // proof-of-stake: the coin stake transaction is marked with the first output empty
+        return (vin.size() > 0 && (!vin[0].prevout.IsNull()) && vout.size() >= 2 && vout[0].IsEmpty());
     }
 
     friend bool operator==(const CTransaction& a, const CTransaction& b)
@@ -313,7 +331,7 @@ struct CMutableTransaction
         READWRITE(vin);
         READWRITE(vout);
         READWRITE(nLockTime);
-        if (this->nVersion == 3 && this->nType != TRANSACTION_NORMAL) {
+        if (this->nVersion >= 2 && this->nType != TRANSACTION_NORMAL) {
             READWRITE(vExtraPayload);
         }
     }

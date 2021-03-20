@@ -682,7 +682,7 @@ bool CDeterministicMNManager::BuildNewListFromBlock(const CBlock& block, const C
     for (int i = 1; i < (int)block.vtx.size(); i++) {
         const CTransaction& tx = *block.vtx[i];
 
-        if (tx.nVersion != 3) {
+        if (tx.nVersion != 2) {
             // only interested in special TXs
             continue;
         }
@@ -704,7 +704,7 @@ bool CDeterministicMNManager::BuildNewListFromBlock(const CBlock& block, const C
             }
 
             Coin coin;
-            if (!proTx.collateralOutpoint.hash.IsNull() && (!GetUTXOCoin(dmn->collateralOutpoint, coin) || coin.out.nValue != 1000 * COIN)) {
+            if (!proTx.collateralOutpoint.hash.IsNull() && (!GetUTXOCoin(dmn->collateralOutpoint, coin) || coin.out.nValue != 1337 * COIN)) {
                 // should actually never get to this point as CheckProRegTx should have handled this case.
                 // We do this additional check nevertheless to be 100% sure
                 return _state.DoS(100, false, REJECT_INVALID, "bad-protx-collateral");
@@ -856,11 +856,21 @@ bool CDeterministicMNManager::BuildNewListFromBlock(const CBlock& block, const C
         for (const auto& in : tx.vin) {
             auto dmn = newList.GetMNByCollateral(in.prevout);
             if (dmn && dmn->collateralOutpoint == in.prevout) {
-                newList.RemoveMN(dmn->proTxHash);
+                auto old_dmn = oldList.GetMNByCollateral(in.prevout);
+                if (old_dmn) {
+                    newList.RemoveMN(old_dmn->proTxHash);
+                } else {
+                    auto newState = std::make_shared<CDeterministicMNState>(*dmn->pdmnState);
+                    newState->ResetOperatorFields();
+                    newState->BanIfNotBanned(nHeight);
+                    newState->nRevocationReason = CProUpRevTx::REASON_NOT_SPECIFIED;
+
+                    newList.UpdateMN(dmn->proTxHash, newState);
+                }
 
                 if (debugLogs) {
                     LogPrintf("CDeterministicMNManager::%s -- MN %s removed from list because collateral was spent. collateralOutpoint=%s, nHeight=%d, mapCurMNs.allMNsCount=%d\n",
-                              __func__, dmn->proTxHash.ToString(), dmn->collateralOutpoint.ToStringShort(), nHeight, newList.GetAllMNsCount());
+                              __func__, dmn->proTxHash.ToString(), dmn->collateralOutpoint.ToString(), nHeight, newList.GetAllMNsCount());
                 }
             }
         }
@@ -997,7 +1007,7 @@ CDeterministicMNList CDeterministicMNManager::GetListAtChainTip()
 
 bool CDeterministicMNManager::IsProTxWithCollateral(const CTransactionRef& tx, uint32_t n)
 {
-    if (tx->nVersion != 3 || tx->nType != TRANSACTION_PROVIDER_REGISTER) {
+    if (tx->nVersion != 2 || tx->nType != TRANSACTION_PROVIDER_REGISTER) {
         return false;
     }
     CProRegTx proTx;
@@ -1011,21 +1021,10 @@ bool CDeterministicMNManager::IsProTxWithCollateral(const CTransactionRef& tx, u
     if (proTx.collateralOutpoint.n >= tx->vout.size() || proTx.collateralOutpoint.n != n) {
         return false;
     }
-    if (tx->vout[n].nValue != 1000 * COIN) {
+    if (tx->vout[n].nValue != 1337 * COIN) {
         return false;
     }
     return true;
-}
-
-bool CDeterministicMNManager::IsDIP3Enforced(int nHeight)
-{
-    LOCK(cs);
-
-    if (nHeight == -1) {
-        nHeight = tipIndex->nHeight;
-    }
-
-    return nHeight >= Params().GetConsensus().DIP0003EnforcementHeight;
 }
 
 void CDeterministicMNManager::CleanupCache(int nHeight)

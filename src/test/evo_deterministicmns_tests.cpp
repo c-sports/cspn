@@ -96,7 +96,7 @@ static CMutableTransaction CreateProRegTx(SimpleUTXOMap& utxos, int port, const 
     operatorKeyRet.MakeNewKey();
 
     CAmount change;
-    auto inputs = SelectUTXOs(utxos, 1000 * COIN, change);
+    auto inputs = SelectUTXOs(utxos, 1337 * COIN, change);
 
     CProRegTx proTx;
     proTx.collateralOutpoint.n = 0;
@@ -109,7 +109,7 @@ static CMutableTransaction CreateProRegTx(SimpleUTXOMap& utxos, int port, const 
     CMutableTransaction tx;
     tx.nVersion = 3;
     tx.nType = TRANSACTION_PROVIDER_REGISTER;
-    FundTransaction(tx, utxos, scriptPayout, 1000 * COIN, coinbaseKey);
+    FundTransaction(tx, utxos, scriptPayout, 1337 * COIN, coinbaseKey);
     proTx.inputsHash = CalcTxInputsHash(tx);
     SetTxPayload(tx, proTx);
     SignTransaction(tx, coinbaseKey);
@@ -320,8 +320,6 @@ BOOST_FIXTURE_TEST_CASE(dip3_protx, TestChainDIP3Setup)
         nHeight++;
     }
 
-    int DIP0003EnforcementHeightBackup = Params().GetConsensus().DIP0003EnforcementHeight;
-    const_cast<Consensus::Params&>(Params().GetConsensus()).DIP0003EnforcementHeight = chainActive.Height() + 1;
     CreateAndProcessBlock({}, coinbaseKey);
     deterministicMNManager->UpdatedBlockTip(chainActive.Tip());
     nHeight++;
@@ -447,7 +445,5 @@ BOOST_FIXTURE_TEST_CASE(dip3_protx, TestChainDIP3Setup)
         nHeight++;
     }
     BOOST_ASSERT(foundRevived);
-
-    const_cast<Consensus::Params&>(Params().GetConsensus()).DIP0003EnforcementHeight = DIP0003EnforcementHeightBackup;
 }
 BOOST_AUTO_TEST_SUITE_END()

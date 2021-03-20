@@ -13,22 +13,29 @@
 
 uint256 CBlockHeader::GetHash() const
 {
-    std::vector<unsigned char> vch(80);
-    CVectorWriter ss(SER_NETWORK, PROTOCOL_VERSION, vch, 0);
-    ss << *this;
-    return HashX11((const char *)vch.data(), (const char *)vch.data() + vch.size());
+    return SerializeHash(*this);
+}
+
+bool CBlock::IsProofOfStake() const
+{
+    return (vtx.size() > 1 && vtx[1]->IsCoinStake()) || nNonce == 0;
+}
+
+bool CBlock::IsProofOfWork() const
+{
+    return !IsProofOfStake();
 }
 
 std::string CBlock::ToString() const
 {
     std::stringstream s;
-    s << strprintf("CBlock(hash=%s, ver=0x%08x, hashPrevBlock=%s, hashMerkleRoot=%s, nTime=%u, nBits=%08x, nNonce=%u, vtx=%u)\n",
+    s << strprintf("CBlock(hash=%s, ver=0x%08x, hashPrevBlock=%s, hashMerkleRoot=%s, nTime=%u, nBits=%08x, nNonce=%u, nFlags=%08x, vtx=%u)\n",
         GetHash().ToString(),
         nVersion,
         hashPrevBlock.ToString(),
         hashMerkleRoot.ToString(),
-        nTime, nBits, nNonce,
-        vtx.size());
+        nTime, nBits, nNonce, nFlags,
+                   vtx.size());
     for (const auto& tx : vtx) {
         s << "  " << tx->ToString() << "\n";
     }

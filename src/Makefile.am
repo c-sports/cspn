@@ -206,6 +206,8 @@ BITCOIN_CORE_H = \
   policy/fees.h \
   policy/policy.h \
   pow.h \
+  kernel.h \
+  sign.h \
   protocol.h \
   random.h \
   reverse_iterator.h \
@@ -330,6 +332,8 @@ libdash_server_a_SOURCES = \
   policy/fees.cpp \
   policy/policy.cpp \
   pow.cpp \
+  kernel.cpp \
+  sign.cpp \
   privatesend/privatesend.cpp \
   privatesend/privatesend-server.cpp \
   rest.cpp \
@@ -374,6 +378,8 @@ libdash_wallet_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 libdash_wallet_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libdash_wallet_a_SOURCES = \
   keepass.cpp \
+  kernel.cpp \
+  sign.cpp \
   privatesend/privatesend-client.cpp \
   privatesend/privatesend-util.cpp \
   wallet/crypter.cpp \

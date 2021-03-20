@@ -45,6 +45,7 @@
 #include <util.h>
 #include <utilmoneystr.h>
 #include <validationinterface.h>
+#include <wallet/wallet.h>
 
 #include <masternode/activemasternode.h>
 #include <dsnotificationinterface.h>
@@ -86,6 +87,10 @@
 
 #if ENABLE_ZMQ
 #include <zmq/zmqnotificationinterface.h>
+#endif
+
+#ifdef USE_SSE2
+#include <crypto/scrypt.h>
 #endif
 
 bool fFeeEstimatesInitialized = false;
@@ -471,6 +476,7 @@ std::string HelpMessage(HelpMessageMode mode)
         strUsage += HelpMessageOpt("-daemon", _("Run in the background as a daemon and accept commands"));
 #endif
     }
+
     strUsage += HelpMessageOpt("-datadir=<dir>", _("Specify data directory"));
     if (showDebug) {
         strUsage += HelpMessageOpt("-dbbatchsize", strprintf("Maximum database write batch size in bytes (default: %u)", nDefaultDbBatchSize));
@@ -658,6 +664,7 @@ std::string HelpMessage(HelpMessageMode mode)
     strUsage += HelpMessageOpt("-rpcport=<port>", strprintf(_("Listen for JSON-RPC connections on <port> (default: %u or testnet: %u)"), defaultBaseParams->RPCPort(), testnetBaseParams->RPCPort()));
     strUsage += HelpMessageOpt("-rpcallowip=<ip>", _("Allow JSON-RPC connections from specified source. Valid for <ip> are a single IP (e.g. 1.2.3.4), a network/netmask (e.g. 1.2.3.4/255.255.255.0) or a network/CIDR (e.g. 1.2.3.4/24). This option can be specified multiple times"));
     strUsage += HelpMessageOpt("-rpcthreads=<n>", strprintf(_("Set the number of threads to service RPC calls (default: %d)"), DEFAULT_HTTP_THREADS));
+    strUsage += HelpMessageOpt("-staking", "Enable staking while working with wallet, default is 1");
     if (showDebug) {
         strUsage += HelpMessageOpt("-rpcworkqueue=<n>", strprintf("Set the depth of the work queue to service RPC calls (default: %d)", DEFAULT_HTTP_WORKQUEUE));
         strUsage += HelpMessageOpt("-rpcservertimeout=<n>", strprintf("Timeout during HTTP requests (default: %d)", DEFAULT_HTTP_SERVER_TIMEOUT));
@@ -981,7 +988,6 @@ void InitParameterInteraction()
         if (gArgs.SoftSetBoolArg("-whitelistrelay", true))
             LogPrintf("%s: parameter interaction: -whitelistforcerelay=1 -> setting -whitelistrelay=1\n", __func__);
     }
-
     if (gArgs.GetBoolArg("-litemode", false)) {
         if (gArgs.SoftSetBoolArg("-disablegovernance", true)) {
             LogPrintf("%s: parameter interaction: -litemode=true -> setting -disablegovernance=true\n", __func__);
@@ -2334,6 +2340,11 @@ bool AppInitMain()
     uiInterface.InitMessage(_("Done loading"));
 
     g_wallet_init_interface->Start(scheduler);
+
+#ifdef ENABLE_WALLET
+    //if (gArgs.GetBoolArg("-staking", true))
+    //   threadGroup.create_thread(std::bind(&PoSMiner, nullptr));
+#endif
 
     return true;
 }

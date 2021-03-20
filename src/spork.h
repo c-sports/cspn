@@ -21,15 +21,18 @@ class CSporkManager;
     - This would result in old clients getting confused about which spork is for what
 */
 enum SporkId : int32_t {
-    SPORK_2_INSTANTSEND_ENABLED                            = 10001,
-    SPORK_3_INSTANTSEND_BLOCK_FILTERING                    = 10002,
-    SPORK_9_SUPERBLOCKS_ENABLED                            = 10008,
-    SPORK_17_QUORUM_DKG_ENABLED                            = 10016,
-    SPORK_19_CHAINLOCKS_ENABLED                            = 10018,
-    SPORK_21_QUORUM_ALL_CONNECTED                          = 10020,
-    SPORK_22_PS_MORE_PARTICIPANTS                          = 10021,
 
-    SPORK_INVALID                                          = -1,
+    SPORK_1_SUPERBLOCKS_ENABLED                   = 10001,
+    SPORK_2_RECONSIDER_BLOCKS                     = 10002,
+    SPORK_3_QUORUM_DKG_ENABLED                    = 10003,
+    SPORK_4_CHAINLOCKS_ENABLED                    = 10004,
+    SPORK_5_INSTANTSEND_ENABLED                   = 10005,
+    SPORK_6_INSTANTSEND_BLOCK_FILTERING           = 10006,
+    SPORK_7_INSTANTSEND_AUTOLOCKS                 = 10007,
+    SPORK_21_QUORUM_ALL_CONNECTED                 = 10008,
+    SPORK_22_PS_MORE_PARTICIPANTS                 = 10009,
+
+    SPORK_INVALID                                 = -1,
 };
 template<> struct is_serializable_enum<SporkId> : std::true_type {};
 

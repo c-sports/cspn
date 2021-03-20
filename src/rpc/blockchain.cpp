@@ -181,6 +181,15 @@ UniValue blockToJSON(const CBlock& block, const CBlockIndex* blockindex, bool tx
     if (pnext)
         result.push_back(Pair("nextblockhash", pnext->GetBlockHash().GetHex()));
 
+    result.pushKV("mint", ValueFromAmount(blockindex->nMint));
+    result.pushKV("moneysupply",ValueFromAmount(blockindex->nMoneySupply));
+    result.pushKV("flags", strprintf("%s%s", blockindex->IsProofOfStake() ? "proof-of-stake" : "proof-of-work", blockindex->GeneratedStakeModifier() ? " stake-modifier": ""));
+    result.pushKV("proofhash", blockindex->IsProofOfStake() ? blockindex->hashProofOfStake.GetHex() : blockindex->GetBlockHash().GetHex());
+    result.pushKV("entropybit", (int)blockindex->GetStakeEntropyBit());
+    result.pushKV("modifier", strprintf("%016llx", blockindex->nStakeModifier));
+    result.pushKV("modifierchecksum", strprintf("%08x", blockindex->nStakeModifierChecksum));
+    result.pushKV("blocksignature", HexStr(block.vchBlockSig));
+
     result.push_back(Pair("chainlock", chainLock));
 
     return result;
@@ -2107,7 +2116,7 @@ static UniValue getblockstats(const JSONRPCRequest& request)
     ret_all.pushKV("minfeerate", (minfeerate == MAX_MONEY) ? 0 : minfeerate);
     ret_all.pushKV("mintxsize", mintxsize == MaxBlockSize(true) ? 0 : mintxsize);
     ret_all.pushKV("outs", outputs);
-    ret_all.pushKV("subsidy", pindex->pprev ? GetBlockSubsidy(pindex->pprev->nBits, pindex->pprev->nHeight, Params().GetConsensus()) : 50 * COIN);
+    ret_all.pushKV("subsidy", pindex ? GetBlockSubsidy(pindex->nHeight, Params().GetConsensus()) : 50 * COIN);
     ret_all.pushKV("time", pindex->GetBlockTime());
     ret_all.pushKV("total_out", total_out);
     ret_all.pushKV("total_size", total_size);

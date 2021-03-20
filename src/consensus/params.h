@@ -7,6 +7,7 @@
 #define BITCOIN_CONSENSUS_PARAMS_H
 
 #include <uint256.h>
+#include <amount.h>
 #include <map>
 #include <string>
 
@@ -18,9 +19,6 @@ enum DeploymentPos
     DEPLOYMENT_CSV, // Deployment of BIP68, BIP112, and BIP113.
     DEPLOYMENT_DIP0001, // Deployment of DIP0001 and lower transaction fees.
     DEPLOYMENT_BIP147, // Deployment of BIP147 (NULLDUMMY)
-    DEPLOYMENT_DIP0003, // Deployment of DIP0002 and DIP0003 (txv3 and deterministic MN lists)
-    DEPLOYMENT_DIP0008, // Deployment of ChainLock enforcement
-    DEPLOYMENT_REALLOC, // Deployment of Block Reward Reallocation
     // NOTE: Also add new deployments to VersionBitsDeploymentInfo in versionbits.cpp
     MAX_VERSION_BITS_DEPLOYMENTS
 };
@@ -189,6 +187,31 @@ struct Params {
     std::map<LLMQType, LLMQParams> llmqs;
     LLMQType llmqTypeChainLocks;
     LLMQType llmqTypeInstantSend{LLMQ_NONE};
+
+    // proof-of-stake
+    int nLastPoWBlock;
+    int64_t nPosTargetSpacing;
+    int64_t nPosTargetTimespan;
+    int nStakeMinAge;
+    int nStakeMaxAge;
+    int nCoinbaseMaturity;
+    int nModifierInterval;
+
+    // prevent unfair stakes
+    CAmount nMinStakeAmount;
+    int nMinStakeHistory;
+    int nStakeEnforcement;
+    int StakeEnforcement() const { return nStakeEnforcement; }
+    CAmount MinStakeAmount() const { return nMinStakeAmount; }
+    int MinStakeHistory() const { return nMinStakeHistory; }
+
+    bool HasStakeMinDepth(int contextHeight, int utxoFromBlockHeight) const
+    {
+        return (contextHeight - utxoFromBlockHeight >= nMinStakeHistory);
+    }
+
+    int nStartQuorums;
+    int nForkOffOldNodes;
 };
 } // namespace Consensus
 

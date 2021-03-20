@@ -165,7 +165,7 @@ bool CDKGSessionHandler::InitNewQuorum(const CBlockIndex* pindexQuorum)
 
     curSession = std::make_shared<CDKGSession>(params, blsWorker, dkgManager);
 
-    if (!deterministicMNManager->IsDIP3Enforced(pindexQuorum->nHeight)) {
+    if (pindexQuorum->nHeight < consensus.DIP0003Height) {
         return false;
     }
 

@@ -17,6 +17,9 @@
 
 bool CheckCbTx(const CTransaction& tx, const CBlockIndex* pindexPrev, CValidationState& state)
 {
+    if (tx.nVersion < 2)
+        return true;
+
     if (tx.nType != TRANSACTION_COINBASE) {
         return state.DoS(100, false, REJECT_INVALID, "bad-cbtx-type");
     }
@@ -36,13 +39,6 @@ bool CheckCbTx(const CTransaction& tx, const CBlockIndex* pindexPrev, CValidatio
 
     if (pindexPrev && pindexPrev->nHeight + 1 != cbTx.nHeight) {
         return state.DoS(100, false, REJECT_INVALID, "bad-cbtx-height");
-    }
-
-    if (pindexPrev) {
-        bool fDIP0008Active = VersionBitsState(pindexPrev, Params().GetConsensus(), Consensus::DEPLOYMENT_DIP0008, versionbitscache) == THRESHOLD_ACTIVE;
-        if (fDIP0008Active && cbTx.nVersion < 2) {
-            return state.DoS(100, false, REJECT_INVALID, "bad-cbtx-version");
-        }
     }
 
     return true;
@@ -75,6 +71,7 @@ bool CheckCbTxMerkleRoots(const CBlock& block, const CBlockIndex* pindex, CValid
             // pass the state returned by the function above
             return false;
         }
+        LogPrintf("merkle mn 1 %s : 2 %s", calculatedMerkleRoot.ToString(), cbTx.merkleRootMNList.ToString());
         if (calculatedMerkleRoot != cbTx.merkleRootMNList) {
             return state.DoS(100, false, REJECT_INVALID, "bad-cbtx-mnmerkleroot");
         }
@@ -82,19 +79,19 @@ bool CheckCbTxMerkleRoots(const CBlock& block, const CBlockIndex* pindex, CValid
         int64_t nTime3 = GetTimeMicros(); nTimeMerkleMNL += nTime3 - nTime2;
         LogPrint(BCLog::BENCHMARK, "          - CalcCbTxMerkleRootMNList: %.2fms [%.2fs]\n", 0.001 * (nTime3 - nTime2), nTimeMerkleMNL * 0.000001);
 
-        if (cbTx.nVersion >= 2) {
+        if (pindex->nHeight >= Params().GetConsensus().nStartQuorums) {
             if (!CalcCbTxMerkleRootQuorums(block, pindex->pprev, calculatedMerkleRoot, state)) {
                 // pass the state returned by the function above
                 return false;
             }
+            LogPrintf("merkle quorums 1 %s : 2 %s", calculatedMerkleRoot.ToString(), cbTx.merkleRootQuorums.ToString());
             if (calculatedMerkleRoot != cbTx.merkleRootQuorums) {
                 return state.DoS(100, false, REJECT_INVALID, "bad-cbtx-quorummerkleroot");
             }
+
+            int64_t nTime4 = GetTimeMicros(); nTimeMerkleQuorum += nTime4 - nTime3;
+            LogPrint(BCLog::BENCHMARK, "          - CalcCbTxMerkleRootQuorums: %.2fms [%.2fs]\n", 0.001 * (nTime4 - nTime3), nTimeMerkleQuorum * 0.000001);
         }
-
-        int64_t nTime4 = GetTimeMicros(); nTimeMerkleQuorum += nTime4 - nTime3;
-        LogPrint(BCLog::BENCHMARK, "          - CalcCbTxMerkleRootQuorums: %.2fms [%.2fs]\n", 0.001 * (nTime4 - nTime3), nTimeMerkleQuorum * 0.000001);
-
     }
 
     return true;
@@ -205,7 +202,7 @@ bool CalcCbTxMerkleRootQuorums(const CBlock& block, const CBlockIndex* pindexPre
     for (size_t i = 1; i < block.vtx.size(); i++) {
         auto& tx = block.vtx[i];
 
-        if (tx->nVersion == 3 && tx->nType == TRANSACTION_QUORUM_COMMITMENT) {
+        if (tx->nVersion == 2 && tx->nType == TRANSACTION_QUORUM_COMMITMENT) {
             llmq::CFinalCommitmentTxPayload qc;
             if (!GetTxPayload(*tx, qc)) {
                 return state.DoS(100, false, REJECT_INVALID, "bad-qc-payload-calc-cbtx-quorummerkleroot");
