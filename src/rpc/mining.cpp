@@ -28,6 +28,9 @@
 #include <validationinterface.h>
 #include <warnings.h>
 
+#include <wallet/wallet.h>
+#include <wallet/rpcwallet.h>
+
 #include <governance/governance-classes.h>
 #include <masternode/masternode-payments.h>
 #include <masternode/masternode-sync.h>
@@ -998,6 +1001,25 @@ UniValue estimaterawfee(const JSONRPCRequest& request)
     return result;
 }
 
+static UniValue getstakingstatus(const JSONRPCRequest& request)
+{
+    CWallet* const pwallet = GetWalletForJSONRPCRequest(request);
+
+    LOCK(pwallet->cs_wallet);
+
+    LOCK(cs_main);
+
+    UniValue obj(UniValue::VOBJ);
+    obj.pushKV("validtime",          chainActive.Tip()->nTime > Params().GenesisBlock().nTime);
+    obj.pushKV("haveconnections",    g_connman->GetNodeCount(CConnman::CONNECTIONS_ALL) > 0);
+    if (pwallet) {
+        obj.pushKV("walletunlocked", !pwallet->IsLocked());
+        obj.pushKV("mintablecoins",  pwallet->MintableCoins());
+    }
+    obj.pushKV("staking status",     pwallet && nLastCoinStakeSearchInterval > 0);
+    return obj;
+}
+
 static const CRPCCommand commands[] =
 { //  category              name                      actor (function)         argNames
   //  --------------------- ------------------------  -----------------------  ----------
@@ -1006,6 +1028,7 @@ static const CRPCCommand commands[] =
     { "mining",             "prioritisetransaction",  &prioritisetransaction,  {"txid","fee_delta"} },
     { "mining",             "getblocktemplate",       &getblocktemplate,       {"template_request"} },
     { "mining",             "submitblock",            &submitblock,            {"hexdata","dummy"} },
+    { "util",               "getstakingstatus",       &getstakingstatus,       {} },
 
 #if ENABLE_MINER
     { "generating",         "generatetoaddress",      &generatetoaddress,      {"nblocks","address","maxtries"} },

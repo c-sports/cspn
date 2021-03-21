@@ -80,7 +80,7 @@ bool IsBlockValueValid(const CBlock& block, int nBlockHeight, CAmount blockRewar
     bool isBlockRewardValueMet = (block.vtx[0]->GetValueOut() <= blockReward);
 
     strErrorRet = "";
-
+    // todo: add pos
     if (nBlockHeight < consensusParams.nBudgetPaymentsStartBlock) {
         // old budget system is not activated yet, just make sure we do not exceed the regular block reward
         if(!isBlockRewardValueMet) {

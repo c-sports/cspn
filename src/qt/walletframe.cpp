@@ -224,3 +224,10 @@ void WalletFrame::outOfSyncWarningClicked()
 {
     Q_EMIT requestedSyncWarningInfo();
 }
+
+void WalletFrame::decryptForStaking(bool status)
+{
+    WalletView *walletView = currentWalletView();
+    if (walletView)
+        walletView->decryptForStaking(status);
+}

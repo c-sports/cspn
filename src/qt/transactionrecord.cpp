@@ -38,8 +38,19 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
     uint256 hash = wtx.GetHash();
     std::map<std::string, std::string> mapValue = wtx.mapValue;
 
-    if (nNet > 0 || wtx.IsCoinBase())
-    {
+    if(wtx.IsCoinStake()) {
+
+        TransactionRecord sub(hash, nTime);
+        CTxDestination address;
+        if (!ExtractDestination(wtx.tx->vout[1].scriptPubKey, address))
+            return parts;
+
+        isminetype mine = IsMine(*wallet, address);
+        sub.involvesWatchAddress = mine & ISMINE_WATCH_ONLY;
+        sub.credit = nCredit - nDebit;
+        sub.type = TransactionRecord::StakeMint;
+    }
+    if (nNet > 0 || wtx.IsCoinBase()) {
         //
         // Credit
         //
@@ -313,7 +324,7 @@ void TransactionRecord::updateStatus(const CWalletTx &wtx, int chainLockHeight)
         }
     }
     // For generated transactions, determine maturity
-    else if(type == TransactionRecord::Generated)
+    else if(type == TransactionRecord::Generated || type == TransactionRecord::StakeMint)
     {
         if (wtx.GetBlocksToMaturity() > 0)
         {

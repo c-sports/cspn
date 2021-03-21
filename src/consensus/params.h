@@ -7,6 +7,7 @@
 #define BITCOIN_CONSENSUS_PARAMS_H
 
 #include <uint256.h>
+#include <amount.h>
 #include <map>
 #include <string>
 
@@ -189,6 +190,23 @@ struct Params {
     std::map<LLMQType, LLMQParams> llmqs;
     LLMQType llmqTypeChainLocks;
     LLMQType llmqTypeInstantSend{LLMQ_NONE};
+
+    // proof-of-stake
+    int nLastPoWBlock;
+    int64_t nPosTargetSpacing;
+    int64_t nPosTargetTimespan;
+    int nStakeMinAge;
+    int nStakeMaxAge;
+    int nCoinbaseMaturity;
+    int nModifierInterval;
+
+    // prevent unfair stakes
+    CAmount nMinStakeAmount;
+    int nMinStakeHistory;
+    int nStakeEnforcement;
+    int StakeEnforcement() const { return nStakeEnforcement; }
+    CAmount MinStakeAmount() const { return nMinStakeAmount; }
+    int MinStakeHistory() const { return nMinStakeHistory; }
 };
 } // namespace Consensus
 

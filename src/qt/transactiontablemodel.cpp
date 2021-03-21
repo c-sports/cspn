@@ -411,6 +411,8 @@ QString TransactionTableModel::formatTxType(const TransactionRecord *wtx) const
         return tr("Payment to yourself");
     case TransactionRecord::Generated:
         return tr("Mined");
+    case TransactionRecord::StakeMint:
+        return tr("Mint by stake");
 
     case TransactionRecord::PrivateSendDenominate:
         return tr("PrivateSend Denominate");
@@ -470,6 +472,7 @@ QVariant TransactionTableModel::addressColor(const TransactionRecord *wtx) const
     case TransactionRecord::RecvWithAddress:
     case TransactionRecord::SendToAddress:
     case TransactionRecord::Generated:
+    case TransactionRecord::StakeMint:
     case TransactionRecord::PrivateSend:
     case TransactionRecord::RecvWithPrivateSend:
         {

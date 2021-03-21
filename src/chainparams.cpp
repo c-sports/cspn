@@ -312,6 +312,20 @@ public:
         consensus.nPowDGWHeight = 34140;
         consensus.nRuleChangeActivationThreshold = 1512; // 95% of 2016
         consensus.nMinerConfirmationWindow = 2016; // nPowTargetTimespan / nPowTargetSpacing
+
+        // POS
+        consensus.nPosTargetSpacing = 60; // PoS: 1 minutes
+        consensus.nPosTargetTimespan = 60 * 40; // change back to 40 instead of 5 later
+        consensus.nStakeMinAge = 60 * 60; // 1 hours /// change back to 1 hour later
+        consensus.nStakeMaxAge = 60 * 60 * 24; // 24 hours
+        consensus.nModifierInterval = 60;      // Modifier interval: time to elapse before new modifier is computed (60 seconds)
+        consensus.nLastPoWBlock = 1500; // change back to 1500 later
+
+        // Stake constants
+        consensus.nStakeEnforcement = 7001;
+        consensus.nMinStakeAmount = 150 * COIN;
+        consensus.nMinStakeHistory = 60;
+
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = 1199145601; // January 1, 2008
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = 1230767999; // December 31, 2008
@@ -412,6 +426,7 @@ public:
         consensus.llmqTypeChainLocks = Consensus::LLMQ_400_60;
         consensus.llmqTypeInstantSend = Consensus::LLMQ_50_60;
 
+        fMiningRequiresPeers = true;
         fDefaultConsistencyChecks = false;
         fRequireStandard = true;
         fRequireRoutableExternalIP = true;

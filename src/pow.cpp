@@ -167,41 +167,77 @@ unsigned int GetNextWorkRequiredBTC(const CBlockIndex* pindexLast, const CBlockH
 
 unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHeader *pblock, const Consensus::Params& params)
 {
+    // check if we already passed the PoW phase.
+    if (pindexLast->nHeight + 1 >= params.nLastPoWBlock)
+        return GetNextRequiredPoS(pindexLast, params);
+
+    return GetNextRequiredPoW(pindexLast, pblock, params);
+}
+
+// proof-of-stake
+unsigned int GetNextRequiredPoS(const CBlockIndex* pindexLast, const Consensus::Params& params)
+{
+    if (pindexLast == nullptr)
+        return UintToArith256(params.powLimit).GetCompact(); // genesis block
+
+    int64_t nActualSpacing = 0;
+    if (pindexLast->nHeight != 0)
+        nActualSpacing = pindexLast->GetBlockTime() - pindexLast->pprev->GetBlockTime();
+
+    if (nActualSpacing < 0)
+        nActualSpacing = 1;
+
+    // target change every block
+    // retarget with exponential moving toward target spacing
+    const arith_uint256 bnTargetLimit = UintToArith256(params.powLimit);
+    arith_uint256 bnNew;
+    bnNew.SetCompact(pindexLast->nBits);
+
+    int64_t nTargetSpacing = params.nPosTargetSpacing;
+    int64_t nInterval = params.nPosTargetTimespan / nTargetSpacing;
+    bnNew *= ((nInterval - 1) * nTargetSpacing + nActualSpacing + nActualSpacing);
+    bnNew /= ((nInterval + 1) * nTargetSpacing);
+
+    if (bnNew <= 0 || bnNew > bnTargetLimit)
+        bnNew = bnTargetLimit;
+
+    return bnNew.GetCompact();
+}
+
+unsigned int GetNextRequiredPoW(const CBlockIndex* pindexLast, const CBlockHeader *pblock, const Consensus::Params& params)
+{
     assert(pindexLast != nullptr);
-    assert(pblock != nullptr);
-    const arith_uint256 bnPowLimit = UintToArith256(params.powLimit);
+    unsigned int nProofOfWorkLimit = UintToArith256(params.powLimit).GetCompact();
 
-    // this is only active on devnets
-    if (pindexLast->nHeight < params.nMinimumDifficultyBlocks) {
-        return bnPowLimit.GetCompact();
-    }
-
-    if (pindexLast->nHeight + 1 < params.nPowKGWHeight) {
-        return GetNextWorkRequiredBTC(pindexLast, pblock, params);
-    }
-
-    // Note: GetNextWorkRequiredBTC has it's own special difficulty rule,
-    // so we only apply this to post-BTC algos.
-    if (params.fPowAllowMinDifficultyBlocks) {
-        // recent block is more than 2 hours old
-        if (pblock->GetBlockTime() > pindexLast->GetBlockTime() + 2 * 60 * 60) {
-            return bnPowLimit.GetCompact();
-        }
-        // recent block is more than 10 minutes old
-        if (pblock->GetBlockTime() > pindexLast->GetBlockTime() + params.nPowTargetSpacing * 4) {
-            arith_uint256 bnNew = arith_uint256().SetCompact(pindexLast->nBits) * 10;
-            if (bnNew > bnPowLimit) {
-                return bnPowLimit.GetCompact();
+    // Only change once per difficulty adjustment interval
+    if ((pindexLast->nHeight+1) % params.DifficultyAdjustmentInterval() != 0)
+    {
+        if (params.fPowAllowMinDifficultyBlocks)
+        {
+            // Special difficulty rule for testnet:
+            // If the new block's timestamp is more than 2* 10 minutes
+            // then allow mining of a min-difficulty block.
+            if (pblock->GetBlockTime() > pindexLast->GetBlockTime() + params.nPowTargetSpacing*2)
+                return nProofOfWorkLimit;
+            else
+            {
+                // Return the last non-special-min-difficulty-rules-block
+                const CBlockIndex* pindex = pindexLast;
+                while (pindex->pprev && pindex->nHeight % params.DifficultyAdjustmentInterval() != 0 && pindex->nBits == nProofOfWorkLimit)
+                    pindex = pindex->pprev;
+                return pindex->nBits;
             }
-            return bnNew.GetCompact();
         }
+        return pindexLast->nBits;
     }
 
-    if (pindexLast->nHeight + 1 < params.nPowDGWHeight) {
-        return KimotoGravityWell(pindexLast, params);
-    }
+    // Go back by what we want to be 14 days worth of blocks
+    int nHeightFirst = pindexLast->nHeight - (params.DifficultyAdjustmentInterval()-1);
+    assert(nHeightFirst >= 0);
+    const CBlockIndex* pindexFirst = pindexLast->GetAncestor(nHeightFirst);
+    assert(pindexFirst);
 
-    return DarkGravityWave(pindexLast, params);
+    return CalculateNextWorkRequired(pindexLast, pindexFirst->GetBlockTime(), params);
 }
 
 // for DIFF_BTC only!

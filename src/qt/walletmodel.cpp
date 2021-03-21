@@ -647,7 +647,11 @@ WalletModel::UnlockContext WalletModel::requestUnlock(bool fForMixingOnly)
     bool was_mixing = (encStatusOld == UnlockedForMixingOnly);
     // Wallet was unlocked for mixing and now user requested to fully unlock it
     bool fMixingToFullRequested = !fForMixingOnly && was_mixing;
-
+    if (!was_locked && fWalletUnlockStakingOnly)
+    {
+        setWalletLocked(true);
+        was_locked = getEncryptionStatus() == Locked;
+    }
     if(was_locked || fMixingToFullRequested) {
         // Request UI to unlock wallet
         Q_EMIT requireUnlock(fForMixingOnly);
@@ -664,7 +668,7 @@ WalletModel::UnlockContext WalletModel::requestUnlock(bool fForMixingOnly)
     // Wallet was not locked in any way or user tried to unlock it for mixing only and succeeded, keep it unlocked
     bool fKeepUnlocked = !was_locked || (fForMixingOnly && !fMixingUnlockFailed);
 
-    return UnlockContext(this, !fInvalid, !fKeepUnlocked, was_mixing);
+    return UnlockContext(this, !fInvalid, !fKeepUnlocked, was_mixing && !fWalletUnlockStakingOnly);
 }
 
 WalletModel::UnlockContext::UnlockContext(WalletModel *_wallet, bool _valid, bool _was_locked, bool _was_mixing):

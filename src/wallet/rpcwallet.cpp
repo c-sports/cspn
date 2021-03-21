@@ -85,6 +85,10 @@ void EnsureWalletIsUnlocked(CWallet * const pwallet)
     if (pwallet->IsLocked()) {
         throw JSONRPCError(RPC_WALLET_UNLOCK_NEEDED, "Error: Please enter the wallet passphrase with walletpassphrase first.");
     }
+
+    if (fWalletUnlockStakingOnly)
+        throw JSONRPCError(RPC_WALLET_UNLOCK_NEEDED, "Error: Wallet unlocked for staking only.");
+
 }
 
 void WalletTxToJSON(const CWalletTx& wtx, UniValue& entry)
@@ -396,6 +400,9 @@ static void SendMoney(CWallet * const pwallet, const CTxDestination &address, CA
     if (pwallet->GetBroadcastTransactions() && !g_connman) {
         throw JSONRPCError(RPC_CLIENT_P2P_DISABLED, "Error: Peer-to-peer functionality missing or disabled");
     }
+
+    if (fWalletUnlockStakingOnly)
+        throw JSONRPCError(RPC_WALLET_ERROR, "Error: Wallet unlocked for staking only, unable to create transaction.");
 
     // Parse Dash address
     CScript scriptPubKey = GetScriptForDestination(address);
@@ -744,10 +751,11 @@ UniValue getreceivedbyaddress(const JSONRPCRequest& request)
         if (wtx.IsCoinBase() || !CheckFinalTx(*wtx.tx))
             continue;
 
-        for (const CTxOut& txout : wtx.tx->vout)
-            if (txout.scriptPubKey == scriptPubKey)
-                if ((wtx.GetDepthInMainChain() >= nMinDepth) || (fAddLocked && wtx.IsLockedByInstantSend()))
+        for (const CTxOut& txout : wtx.tx->vout) {
+            CTxDestination address;
+                if (ExtractDestination(txout.scriptPubKey, address) && GetScriptForDestination(address) == scriptPubKey && ((wtx.GetDepthInMainChain() >= nMinDepth) || (fAddLocked && wtx.IsLockedByInstantSend())))
                     nAmount += txout.nValue;
+        }
     }
 
     return  ValueFromAmount(nAmount);
@@ -2250,6 +2258,7 @@ UniValue walletpassphrase(const JSONRPCRequest& request)
             "1. \"passphrase\"        (string, required) The wallet passphrase\n"
             "2. timeout             (numeric, required) The time to keep the decryption key in seconds; capped at 100000000 (~3 years).\n"
             "3. mixingonly          (boolean, optional, default=false) If is true sending functions are disabled.\n"
+            "4. stakingonly          (boolean, optional, default=false) If is true sending functions are disabled.\n"
             "\nNote:\n"
             "Issuing the walletpassphrase command while the wallet is already unlocked will set a new unlock\n"
             "time that overrides the old one.\n"
@@ -2311,7 +2320,16 @@ UniValue walletpassphrase(const JSONRPCRequest& request)
     pwallet->nRelockTime = GetTime() + nSleepTime;
     RPCRunLater(strprintf("lockwallet(%s)", pwallet->GetName()), std::bind(LockWallet, pwallet), nSleepTime);
 
-    return NullUniValue;
+    // peercoin: if user OS account compromised prevent trivial sendmoney commands
+    if (request.params.size() > 2)
+        fWalletUnlockStakingOnly = request.params[2].get_bool();
+    else
+        fWalletUnlockStakingOnly = false;
+
+    UniValue ret(UniValue::VOBJ);
+    ret.pushKV("unlocked_staking", fWalletUnlockStakingOnly);
+
+    return ret;
 }
 
 
@@ -2757,6 +2775,7 @@ UniValue getwalletinfo(const JSONRPCRequest& request)
             "  \"keypoolsize_hd_internal\": xxxx, (numeric) how many new keys are pre-generated for internal use (used for change outputs, only appears if the wallet is using this feature, otherwise external keys are used)\n"
             "  \"keys_left\": xxxx,          (numeric) how many new keys are left since last automatic backup\n"
             "  \"unlocked_until\": ttt,      (numeric) the timestamp in seconds since epoch (midnight Jan 1 1970 GMT) that the wallet is unlocked for transfers, or 0 if the wallet is locked\n"
+            "  \"unlocked_staking\": true|false     (boolean) whether the wallet is unlocked for staking only\n"
             "  \"paytxfee\": x.xxxx,         (numeric) the transaction fee configuration, set in " + CURRENCY_UNIT + "/kB\n"
             "  \"hdchainid\": \"<hash>\",      (string) the ID of the HD chain\n"
             "  \"hdaccountcount\": xxx,      (numeric) how many accounts of the HD chain are in this wallet\n"
@@ -2804,8 +2823,10 @@ UniValue getwalletinfo(const JSONRPCRequest& request)
         obj.push_back(Pair("keypoolsize_hd_internal",   (int64_t)(pwallet->KeypoolCountInternalKeys())));
     }
     obj.push_back(Pair("keys_left",     pwallet->nKeysLeftSinceAutoBackup));
-    if (pwallet->IsCrypted())
+    if (pwallet->IsCrypted()) {
         obj.push_back(Pair("unlocked_until", pwallet->nRelockTime));
+        obj.pushKV("unlocked_staking", fWalletUnlockStakingOnly);
+    }
     obj.push_back(Pair("paytxfee",      ValueFromAmount(payTxFee.GetFeePerK())));
     if (fHDEnabled) {
         obj.push_back(Pair("hdchainid", hdChainCurrent.GetID().GetHex()));
