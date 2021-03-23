@@ -48,7 +48,4 @@ static const int MAX_URI_LENGTH = 255;
 #define QAPP_APP_NAME_DEVNET "Dash-Qt-%s"
 #define QAPP_APP_NAME_REGTEST "Dash-Qt-regtest"
 
-/* Staking label update frequency (in seconds) */
-static const int STAKING_LABEL_REFRESH = 10;
-
 #endif // BITCOIN_QT_GUICONSTANTS_H

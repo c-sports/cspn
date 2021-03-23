@@ -402,38 +402,6 @@ void WalletView::requestedSyncWarningInfo()
     Q_EMIT outOfSyncWarningClicked();
 }
 
-void WalletView::decryptForStaking(bool status)
-{
-    if (!walletModel)
-        return;
-
-    if (status)
-    {
-        if (walletModel->getEncryptionStatus() != WalletModel::Locked)
-            return;
-
-        AskPassphraseDialog dlg(AskPassphraseDialog::Unlock, this);
-        dlg.setModel(walletModel);
-        dlg.exec();
-
-        if(walletModel->getEncryptionStatus() != WalletModel::Unlocked)
-            return;
-
-        fWalletUnlockStakingOnly = true;
-    }
-    else
-    {
-        if(walletModel->getEncryptionStatus() != WalletModel::Unlocked)
-            return;
-
-        if (!fWalletUnlockStakingOnly)
-            return;
-
-        walletModel->setWalletLocked(true);
-        fWalletUnlockStakingOnly = false;
-    }
-}
-
 /** Update wallet with the sum of the selected transactions */
 void WalletView::trxAmount(QString amount)
 {

@@ -125,7 +125,6 @@ public:
         Locked,                 // wallet->IsCrypted() && wallet->IsLocked(true)
         UnlockedForMixingOnly,  // wallet->IsCrypted() && !wallet->IsLocked(true) && wallet->IsLocked()
         Unlocked,               // wallet->IsCrypted() && !wallet->IsLocked()
-        UnlockedForStakingOnly, // wallet->IsCrypted() && !wallet->IsLocked() && wallet->fWalletUnlockStakingOnly
     };
 
     OptionsModel *getOptionsModel();

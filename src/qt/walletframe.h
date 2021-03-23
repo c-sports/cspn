@@ -80,8 +80,6 @@ public Q_SLOTS:
 
     /** Encrypt the wallet */
     void encryptWallet();
-    /** Decrypt wallet for staking only */
-    void decryptForStaking(bool status);
     /** Backup the wallet */
     void backupWallet();
     /** Change encrypted wallet passphrase */

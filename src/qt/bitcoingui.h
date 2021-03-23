@@ -72,7 +72,6 @@ public:
     /** Set the UI status indicators based on the currently selected wallet.
     */
     void updateWalletStatus();
-    void updateStakingStatus();
     void removeAllWallets();
 #endif // ENABLE_WALLET
     bool enableWallet;
@@ -92,7 +91,6 @@ private:
     UnitDisplayStatusBarControl *unitDisplayControl;
     QLabel *labelWalletEncryptionIcon;
     QLabel *labelWalletHDStatusIcon;
-    QLabel *labelStakingIcon;
     QLabel *labelConnectionsIcon;
     QLabel *labelBlocksIcon;
     QLabel *progressBarLabel;
@@ -118,7 +116,6 @@ private:
     QAction *optionsAction;
     QAction *toggleHideAction;
     QAction *encryptWalletAction;
-    QAction *decryptForStakingAction;
     QAction *backupWalletAction;
     QAction *changePassphraseAction;
     QAction *unlockWalletAction;

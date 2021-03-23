@@ -89,7 +89,6 @@ public:
         RecvWithAddress,
         RecvFromOther,
         SendToSelf,
-        StakeMint,
         RecvWithPrivateSend,
         PrivateSendDenominate,
         PrivateSendCollateralPayment,
