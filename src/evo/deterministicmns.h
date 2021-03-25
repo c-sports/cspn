@@ -669,13 +669,6 @@ public:
     // Test if given TX is a ProRegTx which also contains the collateral at index n
     bool IsProTxWithCollateral(const CTransactionRef& tx, uint32_t n);
 
-    bool IsDIP3Enforced(int nHeight = -1);
-
-public:
-    // TODO these can all be removed in a future version
-    void UpgradeDiff(CDBBatch& batch, const CBlockIndex* pindexNext, const CDeterministicMNList& curMNList, CDeterministicMNList& newMNList);
-    bool UpgradeDBIfNeeded();
-
 private:
     void CleanupCache(int nHeight);
 };

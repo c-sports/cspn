@@ -120,8 +120,7 @@ bool CQuorumBlockProcessor::ProcessBlock(const CBlock& block, const CBlockIndex*
 {
     AssertLockHeld(cs_main);
 
-    bool fDIP0003Active = pindex->nHeight >= Params().GetConsensus().DIP0003Height;
-    if (!fDIP0003Active) {
+    if (pindex->nHeight < Params().GetConsensus().DIP0003HeightAndDIP0008Height) {
         evoDb.Write(DB_BEST_BLOCK_UPGRADE, block.GetHash());
         return true;
     }
@@ -269,57 +268,11 @@ bool CQuorumBlockProcessor::UndoBlock(const CBlock& block, const CBlockIndex* pi
     return true;
 }
 
-// TODO remove this with 0.15.0
-void CQuorumBlockProcessor::UpgradeDB()
-{
-    LOCK(cs_main);
-    uint256 bestBlock;
-    if (evoDb.GetRawDB().Read(DB_BEST_BLOCK_UPGRADE, bestBlock) && bestBlock == chainActive.Tip()->GetBlockHash()) {
-        return;
-    }
-
-    LogPrintf("CQuorumBlockProcessor::%s -- Upgrading DB...\n", __func__);
-
-    if (chainActive.Height() >= Params().GetConsensus().DIP0003EnforcementHeight) {
-        auto pindex = chainActive[Params().GetConsensus().DIP0003EnforcementHeight];
-        while (pindex) {
-            if (fPruneMode && !(pindex->nStatus & BLOCK_HAVE_DATA)) {
-                // Too late, we already pruned blocks we needed to reprocess commitments
-                throw std::runtime_error(std::string(__func__) + ": Quorum Commitments DB upgrade failed, you need to re-download the blockchain");
-            }
-            CBlock block;
-            bool r = ReadBlockFromDisk(block, pindex, Params().GetConsensus());
-            assert(r);
-
-            std::map<Consensus::LLMQType, CFinalCommitment> qcs;
-            CValidationState dummyState;
-            GetCommitmentsFromBlock(block, pindex, qcs, dummyState);
-
-            for (const auto& p : qcs) {
-                const auto& qc = p.second;
-                if (qc.IsNull()) {
-                    continue;
-                }
-                auto quorumIndex = mapBlockIndex.at(qc.quorumHash);
-                evoDb.GetRawDB().Write(std::make_pair(DB_MINED_COMMITMENT, std::make_pair(qc.llmqType, qc.quorumHash)), std::make_pair(qc, pindex->GetBlockHash()));
-                evoDb.GetRawDB().Write(BuildInversedHeightKey((Consensus::LLMQType)qc.llmqType, pindex->nHeight), quorumIndex->nHeight);
-            }
-
-            evoDb.GetRawDB().Write(DB_BEST_BLOCK_UPGRADE, pindex->GetBlockHash());
-
-            pindex = chainActive.Next(pindex);
-        }
-    }
-
-    LogPrintf("CQuorumBlockProcessor::%s -- Upgrade done...\n", __func__);
-}
-
 bool CQuorumBlockProcessor::GetCommitmentsFromBlock(const CBlock& block, const CBlockIndex* pindex, std::map<Consensus::LLMQType, CFinalCommitment>& ret, CValidationState& state)
 {
     AssertLockHeld(cs_main);
 
     auto& consensus = Params().GetConsensus();
-    bool fDIP0003Active = pindex->nHeight >= consensus.DIP0003Height;
 
     ret.clear();
 
@@ -340,7 +293,7 @@ bool CQuorumBlockProcessor::GetCommitmentsFromBlock(const CBlock& block, const C
         }
     }
 
-    if (!fDIP0003Active && !ret.empty()) {
+    if (pindex->nHeight < Params().GetConsensus().DIP0003HeightAndDIP0008Height && !ret.empty()) {
         return state.DoS(100, false, REJECT_INVALID, "bad-qc-premature");
     }
 
