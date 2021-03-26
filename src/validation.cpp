@@ -1938,7 +1938,7 @@ bool PoSContextualBlockChecks(const CBlock& block, CValidationState& state, CBlo
 {
     uint256 hashProofOfStake = uint256();
     // verify hash target and signature of coinstake tx
-    if (block.IsProofOfStake() && !CheckProofOfStake(block, hashProofOfStake, pindex->pprev)) {
+    if (block.IsProofOfStake() && !CheckProofOfStake(block, pindex->pprev, hashProofOfStake)) {
         LogPrintf("%s: check proof-of-stake failed for block %s\n", __func__, block.GetHash().ToString());
         return false; // do not error here as we expect this during initial block download
     }
