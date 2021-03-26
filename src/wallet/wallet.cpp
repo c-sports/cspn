@@ -5763,7 +5763,6 @@ bool CWallet::CreateCoinStake(unsigned int nBits,
         return false;
 
     // try to add more inputs from the same key/address.
-    /*
     if (nStakeCombineThreshold > 0) {
         for (const COutput& out : setStakeCoins) {
             if (out.tx->tx->vout[out.i].scriptPubKey == scriptPubKeyKernel
@@ -5786,12 +5785,12 @@ bool CWallet::CreateCoinStake(unsigned int nBits,
                 LogPrintf("%s: combine %s:%d value=%s\n", __func__, out.tx->GetHash().ToString(), out.i, FormatMoney(out.tx->tx->vout[out.i].nValue));
             }
         }
-    }*/
+    }
 
     // Calculate reward
     CAmount nReward;
     const CBlockIndex* pIndex0 = chainActive.Tip();
-    nReward = nFees + GetBlockSubsidy(pIndex0->nHeight+1, Params().GetConsensus(), false);
+    nReward = nFees + GetBlockSubsidy(pIndex0->nHeight+1, Params().GetConsensus());
     nCredit += nReward;
 
     // Set output amount
