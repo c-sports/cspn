@@ -64,6 +64,8 @@ void DestroyLLMQSystem()
 
 void StartLLMQSystem()
 {
+    quorumBlockProcessor->UpgradeDB();
+
     if (blsWorker) {
         blsWorker->Start();
     }

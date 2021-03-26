@@ -19,8 +19,12 @@
 
 bool CheckSpecialTx(const CTransaction& tx, const CBlockIndex* pindexPrev, CValidationState& state)
 {
-    if (tx.nVersion < 2 || tx.nType == TRANSACTION_NORMAL || tx.nType == TRANSACTION_STAKE)
+    if (tx.nVersion != 3 || tx.nType == TRANSACTION_NORMAL)
         return true;
+
+    if (pindexPrev && pindexPrev->nHeight + 1 < Params().GetConsensus().DIP0003Height) {
+        return state.DoS(10, false, REJECT_INVALID, "bad-tx-type");
+    }
 
     try {
         switch (tx.nType) {
@@ -47,7 +51,7 @@ bool CheckSpecialTx(const CTransaction& tx, const CBlockIndex* pindexPrev, CVali
 
 bool ProcessSpecialTx(const CTransaction& tx, const CBlockIndex* pindex, CValidationState& state)
 {
-    if (tx.nVersion < 2 || tx.nType == TRANSACTION_NORMAL || tx.nType == TRANSACTION_STAKE) {
+    if (tx.nVersion != 3 || tx.nType == TRANSACTION_NORMAL) {
         return true;
     }
 
@@ -68,8 +72,9 @@ bool ProcessSpecialTx(const CTransaction& tx, const CBlockIndex* pindex, CValida
 
 bool UndoSpecialTx(const CTransaction& tx, const CBlockIndex* pindex)
 {
-    if (tx.nVersion < 2 || tx.nType == TRANSACTION_NORMAL || tx.nType == TRANSACTION_STAKE)
+    if (tx.nVersion != 3 || tx.nType == TRANSACTION_NORMAL) {
         return true;
+    }
 
     switch (tx.nType) {
     case TRANSACTION_PROVIDER_REGISTER:

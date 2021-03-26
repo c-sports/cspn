@@ -58,7 +58,7 @@ void CDKGSessionManager::UpdatedBlockTip(const CBlockIndex* pindexNew, bool fIni
 
     if (fInitialDownload)
         return;
-    if (pindexNew->nHeight < consensus.DIP0003HeightAndDIP0008Height)
+    if (!deterministicMNManager->IsDIP3Enforced(pindexNew->nHeight))
         return;
     if (!sporkManager.IsSporkActive(SPORK_17_QUORUM_DKG_ENABLED))
         return;

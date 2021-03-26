@@ -320,9 +320,20 @@ bool CMasternodePayments::GetBlockTxOuts(int nBlockHeight, CAmount blockReward, 
     voutMasternodePaymentsRet.clear();
 
     const CBlockIndex* pindex;
+    int nReallocActivationHeight{std::numeric_limits<int>::max()};
+
+    {
+        LOCK(cs_main);
+        pindex = chainActive[nBlockHeight - 1];
+
+        const Consensus::Params& consensusParams = Params().GetConsensus();
+        if (VersionBitsState(pindex, consensusParams, Consensus::DEPLOYMENT_REALLOC, versionbitscache) == THRESHOLD_ACTIVE) {
+            nReallocActivationHeight = VersionBitsStateSinceHeight(pindex, consensusParams, Consensus::DEPLOYMENT_REALLOC, versionbitscache);
+        }
+    }
     uint256 proTxHash;
 
-    CAmount masternodeReward = GetMasternodePayment(nBlockHeight, blockReward);
+    CAmount masternodeReward = GetMasternodePayment(nBlockHeight, blockReward, nReallocActivationHeight);
 
     auto dmnPayee = deterministicMNManager->GetListForBlock(pindex).GetMNPayee();
     if (!dmnPayee) {
@@ -351,6 +362,11 @@ bool CMasternodePayments::IsTransactionValid(const CTransaction& txNew, int nBlo
 {
     if (nBlockHeight < Params().GetConsensus().nLastPoWBlock)
         return true;
+
+    if (!deterministicMNManager->IsDIP3Enforced(nBlockHeight)) {
+        // can't verify historical blocks here
+        return true;
+    }
 
     std::vector<CTxOut> voutMasternodePayments;
     if (!GetBlockTxOuts(nBlockHeight, blockReward, voutMasternodePayments)) {

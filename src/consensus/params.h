@@ -19,6 +19,9 @@ enum DeploymentPos
     DEPLOYMENT_CSV, // Deployment of BIP68, BIP112, and BIP113.
     DEPLOYMENT_DIP0001, // Deployment of DIP0001 and lower transaction fees.
     DEPLOYMENT_BIP147, // Deployment of BIP147 (NULLDUMMY)
+    DEPLOYMENT_DIP0003, // Deployment of DIP0002 and DIP0003 (txv3 and deterministic MN lists)
+    DEPLOYMENT_DIP0008, // Deployment of ChainLock enforcement
+    DEPLOYMENT_REALLOC, // Deployment of Block Reward Reallocation
     // NOTE: Also add new deployments to VersionBitsDeploymentInfo in versionbits.cpp
     MAX_VERSION_BITS_DEPLOYMENTS
 };
@@ -152,8 +155,11 @@ struct Params {
     int BIP66Height;
     /** Block height at which DIP0001 becomes active */
     int DIP0001Height;
-    /** Block height at which DIP0003 and DIP0008 becomes active */
-    int DIP0003HeightAndDIP0008Height;
+    /** Block height at which DIP0003 becomes active */
+    int DIP0003Height;
+    /** Block height at which DIP0003 becomes enforced */
+    int DIP0003EnforcementHeight;
+    uint256 DIP0003EnforcementHash;
     /**
      * Minimum blocks including miner confirmation of the total of nMinerConfirmationWindow blocks in a retargeting period,
      * (nPowTargetTimespan / nPowTargetSpacing) which is also used for BIP9 deployments.
