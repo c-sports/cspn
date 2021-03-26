@@ -682,7 +682,7 @@ bool CDeterministicMNManager::BuildNewListFromBlock(const CBlock& block, const C
     for (int i = 1; i < (int)block.vtx.size(); i++) {
         const CTransaction& tx = *block.vtx[i];
 
-        if (tx.nVersion != 3) {
+        if (tx.nVersion != 2) {
             // only interested in special TXs
             continue;
         }
@@ -997,7 +997,7 @@ CDeterministicMNList CDeterministicMNManager::GetListAtChainTip()
 
 bool CDeterministicMNManager::IsProTxWithCollateral(const CTransactionRef& tx, uint32_t n)
 {
-    if (tx->nVersion != 3 || tx->nType != TRANSACTION_PROVIDER_REGISTER) {
+    if (tx->nVersion != 2 || tx->nType != TRANSACTION_PROVIDER_REGISTER) {
         return false;
     }
     CProRegTx proTx;

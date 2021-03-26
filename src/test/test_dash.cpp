@@ -176,7 +176,7 @@ CBlock TestChainSetup::CreateBlock(const std::vector<CMutableTransaction>& txns,
 
     std::vector<CTransactionRef> llmqCommitments;
     for (const auto& tx : block.vtx) {
-        if (tx->nVersion == 3 && tx->nType == TRANSACTION_QUORUM_COMMITMENT) {
+        if (tx->nVersion == 2 && tx->nType == TRANSACTION_QUORUM_COMMITMENT) {
             llmqCommitments.emplace_back(tx);
         }
     }

@@ -3311,7 +3311,7 @@ bool CWallet::FundTransaction(CMutableTransaction& tx, CAmount& nFeeRet, int& nC
     LOCK(cs_wallet);
 
     int nExtraPayloadSize = 0;
-    if (tx.nVersion == 3 && tx.nType != TRANSACTION_NORMAL)
+    if (tx.nVersion >= 2 && tx.nType != TRANSACTION_NORMAL && tx.nType != TRANSACTION_COINBASE)
         nExtraPayloadSize = (int)tx.vExtraPayload.size();
 
     CReserveKey reservekey(this);

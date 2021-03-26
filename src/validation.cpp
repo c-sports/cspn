@@ -471,7 +471,7 @@ bool ContextualCheckTransaction(const CTransaction& tx, CValidationState &state,
     bool fDIP0003Active_context = nHeight >= consensusParams.DIP0003Height;
 
     // check version 3 transaction types
-    if (tx.nVersion > 2) {
+    if (tx.nVersion >= 2) {
         if (tx.nType != TRANSACTION_NORMAL &&
             tx.nType != TRANSACTION_PROVIDER_REGISTER &&
             tx.nType != TRANSACTION_PROVIDER_UPDATE_SERVICE &&
@@ -636,7 +636,7 @@ static bool AcceptToMemoryPoolWorker(const CChainParams& chainparams, CTxMemPool
     if (!ContextualCheckTransaction(tx, state, chainparams.GetConsensus(), chainActive.Tip()))
         return error("%s: ContextualCheckTransaction: %s, %s", __func__, hash.ToString(), FormatStateMessage(state));
 
-    if (tx.nVersion == 3 && tx.nType == TRANSACTION_QUORUM_COMMITMENT) {
+    if (tx.nVersion >= 2 && tx.nType == TRANSACTION_QUORUM_COMMITMENT) {
         // quorum commitment is not allowed outside of blocks
         return state.DoS(100, false, REJECT_INVALID, "qc-not-allowed");
     }
