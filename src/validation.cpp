@@ -1162,7 +1162,7 @@ CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams, b
 
 }
 
-CAmount GetMasternodePayment(int nHeight, CAmount blockValue, int nReallocActivationHeight)
+CAmount GetMasternodePayment(int nHeight, CAmount blockValue)
 {
     // No rewards till masternode activation.
     if (nHeight < Params().GetConsensus().nLastPoWBlock || blockValue == 0)
