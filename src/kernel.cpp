@@ -287,6 +287,13 @@ static bool GetKernelStakeModifier(const CBlockIndex* pindexPrev, uint256 hashBl
     return GetKernelStakeModifierV03(pindexPrev, hashBlockFrom, nStakeModifier, nStakeModifierHeight, nStakeModifierTime, fPrintProofOfStake);
 }
 
+bool StakeKernelMode(const CBlockIndex* pindexPrev)
+{
+    if (pindexPrev->nHeight < Params().GetConsensus().nHardenedStakeCheckHeight)
+        return false;
+    return true;
+}
+
 bool CheckStakeKernelHash(unsigned int nBits, const CBlockIndex* pindexPrev, const CBlockHeader& blockFrom, unsigned int nTxPrevOffset, const CTransactionRef& txPrev, const COutPoint& prevout, unsigned int nTimeTx, uint256& hashProofOfStake, bool fMinting, bool fValidate)
 {
     // sanity checks
