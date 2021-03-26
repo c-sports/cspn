@@ -84,7 +84,8 @@ bool IsBlockValueValid(const CBlock& block, int nBlockHeight, CAmount blockRewar
     }
 
     const Consensus::Params& consensusParams = Params().GetConsensus();
-    bool isBlockRewardValueMet = (block.vtx[n]->GetValueOut() <= blockReward);
+    CAmount blockValue = block.vtx[n]->GetValueOut() - nValueIn;
+    bool isBlockRewardValueMet = (blockValue <= blockReward);
 
     strErrorRet = "";
     // todo: add pos
