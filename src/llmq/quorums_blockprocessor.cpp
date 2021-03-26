@@ -120,8 +120,7 @@ bool CQuorumBlockProcessor::ProcessBlock(const CBlock& block, const CBlockIndex*
 {
     AssertLockHeld(cs_main);
 
-    bool fDIP0003Active = pindex->nHeight >= Params().GetConsensus().DIP0003Height;
-    if (!fDIP0003Active) {
+    if (pindex->nHeight < Params().GetConsensus().DIP0003Height) {
         evoDb.Write(DB_BEST_BLOCK_UPGRADE, block.GetHash());
         return true;
     }
@@ -274,7 +273,6 @@ bool CQuorumBlockProcessor::GetCommitmentsFromBlock(const CBlock& block, const C
     AssertLockHeld(cs_main);
 
     auto& consensus = Params().GetConsensus();
-    bool fDIP0003Active = pindex->nHeight >= consensus.DIP0003Height;
 
     ret.clear();
 
@@ -295,7 +293,7 @@ bool CQuorumBlockProcessor::GetCommitmentsFromBlock(const CBlock& block, const C
         }
     }
 
-    if (!fDIP0003Active && !ret.empty()) {
+    if (pindex->nHeight < Params().GetConsensus().DIP0003Height && !ret.empty()) {
         return state.DoS(100, false, REJECT_INVALID, "bad-qc-premature");
     }
 
