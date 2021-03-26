@@ -1017,17 +1017,6 @@ bool CDeterministicMNManager::IsProTxWithCollateral(const CTransactionRef& tx, u
     return true;
 }
 
-bool CDeterministicMNManager::IsDIP3Enforced(int nHeight)
-{
-    LOCK(cs);
-
-    if (nHeight == -1) {
-        nHeight = tipIndex->nHeight;
-    }
-
-    return nHeight >= Params().GetConsensus().DIP0003EnforcementHeight;
-}
-
 void CDeterministicMNManager::CleanupCache(int nHeight)
 {
     AssertLockHeld(cs);

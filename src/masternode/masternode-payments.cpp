@@ -352,11 +352,6 @@ bool CMasternodePayments::IsTransactionValid(const CTransaction& txNew, int nBlo
     if (nBlockHeight < Params().GetConsensus().nLastPoWBlock)
         return true;
 
-    if (!deterministicMNManager->IsDIP3Enforced(nBlockHeight)) {
-        // can't verify historical blocks here
-        return true;
-    }
-
     std::vector<CTxOut> voutMasternodePayments;
     if (!GetBlockTxOuts(nBlockHeight, blockReward, voutMasternodePayments)) {
         LogPrintf("CMasternodePayments::%s -- ERROR failed to get payees for block at height %s\n", __func__, nBlockHeight);
