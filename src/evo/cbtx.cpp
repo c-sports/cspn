@@ -17,6 +17,9 @@
 
 bool CheckCbTx(const CTransaction& tx, const CBlockIndex* pindexPrev, CValidationState& state)
 {
+    if (tx.nVersion < 2)
+        return true;
+
     if (tx.nType != TRANSACTION_COINBASE) {
         return state.DoS(100, false, REJECT_INVALID, "bad-cbtx-type");
     }
