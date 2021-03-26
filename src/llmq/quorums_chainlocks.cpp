@@ -92,7 +92,7 @@ CChainLockSig CChainLocksHandler::GetBestChainLock()
 
 void CChainLocksHandler::ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStream& vRecv, CConnman& connman)
 {
-    if (!sporkManager.IsSporkActive(SPORK_19_CHAINLOCKS_ENABLED)) {
+    if (!sporkManager.IsSporkActive(SPORK_4_CHAINLOCKS_ENABLED)) {
         return;
     }
 
@@ -290,7 +290,7 @@ void CChainLocksHandler::TrySignChainTip()
     // considered safe when it is ixlocked or at least known since 10 minutes (from mempool or block). These checks are
     // performed for the tip (which we try to sign) and the previous 5 blocks. If a ChainLocked block is found on the
     // way down, we consider all TXs to be safe.
-    if (IsInstantSendEnabled() && sporkManager.IsSporkActive(SPORK_3_INSTANTSEND_BLOCK_FILTERING)) {
+    if (IsInstantSendEnabled() && sporkManager.IsSporkActive(SPORK_6_INSTANTSEND_BLOCK_FILTERING)) {
         auto pindexWalk = pindex;
         while (pindexWalk) {
             if (pindex->nHeight - pindexWalk->nHeight > 5) {
@@ -449,7 +449,7 @@ CChainLocksHandler::BlockTxs::mapped_type CChainLocksHandler::GetBlockTxs(const 
 
 bool CChainLocksHandler::IsTxSafeForMining(const uint256& txid)
 {
-    if (!sporkManager.IsSporkActive(SPORK_3_INSTANTSEND_BLOCK_FILTERING)) {
+    if (!sporkManager.IsSporkActive(SPORK_6_INSTANTSEND_BLOCK_FILTERING)) {
         return true;
     }
     if (!IsInstantSendEnabled()) {

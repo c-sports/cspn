@@ -480,7 +480,7 @@ UniValue getblocktemplate(const JSONRPCRequest& request)
     mnpayments.GetBlockTxOuts(chainActive.Height() + 1, 0, voutMasternodePayments);
 
     // next bock is a superblock and we need governance info to correctly construct it
-    if (sporkManager.IsSporkActive(SPORK_9_SUPERBLOCKS_ENABLED)
+    if (sporkManager.IsSporkActive(SPORK_1_SUPERBLOCKS_ENABLED)
         && !masternodeSync.IsSynced()
         && CSuperblock::IsValidBlockHeight(chainActive.Height() + 1))
             throw JSONRPCError(RPC_CLIENT_IN_INITIAL_DOWNLOAD, "Dash Core is syncing with network...");
@@ -712,7 +712,7 @@ UniValue getblocktemplate(const JSONRPCRequest& request)
     }
     result.push_back(Pair("superblock", superblockObjArray));
     result.push_back(Pair("superblocks_started", pindexPrev->nHeight + 1 > consensusParams.nSuperblockStartBlock));
-    result.push_back(Pair("superblocks_enabled", sporkManager.IsSporkActive(SPORK_9_SUPERBLOCKS_ENABLED)));
+    result.push_back(Pair("superblocks_enabled", sporkManager.IsSporkActive(SPORK_1_SUPERBLOCKS_ENABLED)));
 
     result.push_back(Pair("coinbase_payload", HexStr(pblock->vtx[0]->vExtraPayload)));
 

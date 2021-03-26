@@ -1139,7 +1139,7 @@ void CInstantSendManager::NotifyChainLock(const CBlockIndex* pindexChainLock)
 
 void CInstantSendManager::UpdatedBlockTip(const CBlockIndex* pindexNew)
 {
-    if (sporkManager.IsSporkActive(SPORK_19_CHAINLOCKS_ENABLED)) {
+    if (sporkManager.IsSporkActive(SPORK_4_CHAINLOCKS_ENABLED)) {
         // Nothing to do here. We should keep all islocks and let chainlocks handle them.
         return;
     }
@@ -1516,7 +1516,7 @@ void CInstantSendManager::WorkThreadMain()
 
 bool IsInstantSendEnabled()
 {
-    return sporkManager.IsSporkActive(SPORK_2_INSTANTSEND_ENABLED);
+    return sporkManager.IsSporkActive(SPORK_5_INSTANTSEND_ENABLED);
 }
 
 } // namespace llmq
