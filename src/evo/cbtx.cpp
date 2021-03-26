@@ -71,6 +71,7 @@ bool CheckCbTxMerkleRoots(const CBlock& block, const CBlockIndex* pindex, CValid
             // pass the state returned by the function above
             return false;
         }
+        LogPrintf("merkle mn 1 %s : 2 %s", calculatedMerkleRoot.ToString(), cbTx.merkleRootMNList.ToString());
         if (calculatedMerkleRoot != cbTx.merkleRootMNList) {
             return state.DoS(100, false, REJECT_INVALID, "bad-cbtx-mnmerkleroot");
         }
