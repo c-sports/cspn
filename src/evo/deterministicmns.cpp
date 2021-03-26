@@ -856,11 +856,21 @@ bool CDeterministicMNManager::BuildNewListFromBlock(const CBlock& block, const C
         for (const auto& in : tx.vin) {
             auto dmn = newList.GetMNByCollateral(in.prevout);
             if (dmn && dmn->collateralOutpoint == in.prevout) {
-                newList.RemoveMN(dmn->proTxHash);
+                auto old_dmn = oldList.GetMNByCollateral(in.prevout);
+                if (old_dmn) {
+                    newList.RemoveMN(old_dmn->proTxHash);
+                } else {
+                    auto newState = std::make_shared<CDeterministicMNState>(*dmn->pdmnState);
+                    newState->ResetOperatorFields();
+                    newState->BanIfNotBanned(nHeight);
+                    newState->nRevocationReason = CProUpRevTx::REASON_NOT_SPECIFIED;
+
+                    newList.UpdateMN(dmn->proTxHash, newState);
+                }
 
                 if (debugLogs) {
                     LogPrintf("CDeterministicMNManager::%s -- MN %s removed from list because collateral was spent. collateralOutpoint=%s, nHeight=%d, mapCurMNs.allMNsCount=%d\n",
-                              __func__, dmn->proTxHash.ToString(), dmn->collateralOutpoint.ToStringShort(), nHeight, newList.GetAllMNsCount());
+                              __func__, dmn->proTxHash.ToString(), dmn->collateralOutpoint.ToString(), nHeight, newList.GetAllMNsCount());
                 }
             }
         }
