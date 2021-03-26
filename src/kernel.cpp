@@ -238,7 +238,7 @@ static bool GetKernelStakeModifierV03(CBlockIndex* pindexPrev, uint256 hashBlock
     nStakeModifierTime = pindexFrom->GetBlockTime();
     int64_t nStakeModifierSelectionInterval = GetStakeModifierSelectionInterval();
 
-    // we need to iterate index forward but we cannot depend on ChainActive().Next()
+    // we need to iterate index forward but we cannot depend on chainActive.Next()
     // because there is no guarantee that we are checking blocks in active chain.
     // So, we construct a temporary chain that we will iterate over.
     // pindexFrom - this block contains coins that are used to generate PoS
@@ -247,7 +247,7 @@ static bool GetKernelStakeModifierV03(CBlockIndex* pindexPrev, uint256 hashBlock
     int32_t nDepth = pindexPrev->nHeight - (pindexFrom->nHeight-1); // -1 is used to also include pindexFrom
     tmpChain.reserve(nDepth);
     CBlockIndex* it = pindexPrev;
-    for (int i=1; i<=nDepth && !ChainActive().Contains(it); i++) {
+    for (int i=1; i<=nDepth && !chainActive.Contains(it); i++) {
         tmpChain.push_back(it);
         it = it->pprev;
     }
@@ -259,7 +259,7 @@ static bool GetKernelStakeModifierV03(CBlockIndex* pindexPrev, uint256 hashBlock
     while (nStakeModifierTime < pindexFrom->GetBlockTime() + nStakeModifierSelectionInterval)
     {
         const CBlockIndex* old_pindex = pindex;
-        pindex = (!tmpChain.empty() && pindex->nHeight >= tmpChain[0]->nHeight - 1)? tmpChain[n++] : ChainActive().Next(pindex);
+        pindex = (!tmpChain.empty() && pindex->nHeight >= tmpChain[0]->nHeight - 1)? tmpChain[n++] : chainActive.Next(pindex);
         if (n > tmpChain.size() || pindex == nullptr) // check if tmpChain[n+1] exists
         {   // reached best block; may happen if node is behind on block chain
             if (fPrintProofOfStake || (old_pindex->GetBlockTime() + params.nStakeMinAge - nStakeModifierSelectionInterval > GetAdjustedTime()))
