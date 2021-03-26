@@ -1266,8 +1266,6 @@ public:
 
     /** proof-of-stake */
     bool fWalletUnlockStakingOnly = false;
-    unsigned int nHashDrift = 45;
-    unsigned int nHashInterval = 22;
     int nStakeSetUpdateTime = 300; // 5 minutes
     uint64_t nStakeSplitThreshold = 2000;
     int nStakeCombineThreshold = 0;
