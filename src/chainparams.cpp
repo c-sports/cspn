@@ -301,7 +301,7 @@ public:
         consensus.BIP66Height = 1; // 00000000000b1fa2dfa312863570e13fae9ca7b5566cb27e55422620b469aefa
         consensus.DIP0001Height = 782208;
         consensus.DIP0003Height = 1028160;
-        consensus.DIP0003EnforcementHeight = 1047200;
+        consensus.DIP0003EnforcementHeight = 50;
         consensus.DIP0003EnforcementHash = uint256();
         consensus.powLimit = uint256S("00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"); // ~uint256(0) >> 20
         consensus.nPowTargetTimespan = 24 * 60 * 60; // Dash: 1 day
