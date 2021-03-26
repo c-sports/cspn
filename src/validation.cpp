@@ -1981,6 +1981,7 @@ bool PoSContextualBlockChecks(const CBlock& block, CValidationState& state, CBlo
     // write everything to index
     if (block.IsProofOfStake())
     {
+        pindex->SetProofOfStake();
         pindex->prevoutStake = block.vtx[1]->vin[0].prevout;
         pindex->nStakeTime = block.nTime;
         pindex->hashProofOfStake = hashProofOfStake;
@@ -3290,7 +3291,8 @@ CBlockIndex* CChainState::AddToBlockIndex(const CBlockHeader& block, bool fProof
         pindexNew->nHeight = pindexNew->pprev->nHeight + 1;
         pindexNew->BuildSkip();
     }
-    if (fProofOfStake)
+    // set pos flag if it wasnt set
+    if (!block.nNonce)
         pindexNew->SetProofOfStake();
     pindexNew->nTimeMax = (pindexNew->pprev ? std::max(pindexNew->pprev->nTimeMax, pindexNew->nTime) : pindexNew->nTime);
     pindexNew->nChainWork = (pindexNew->pprev ? pindexNew->pprev->nChainWork : 0) + GetBlockProof(*pindexNew);
