@@ -3843,11 +3843,10 @@ bool CChainState::AcceptBlock(const std::shared_ptr<const CBlock>& pblock, CVali
         return error("%s: %s", __func__, FormatStateMessage(state));
     }
 
-    // proof-of-stake: check PoS
     if (block.nNonce == 0 && !PoSContextualBlockChecks(block, state, pindex, false)) {
         pindex->nStatus |= BLOCK_FAILED_VALID;
         setDirtyBlockIndex.insert(pindex);
-        return state.DoS(100, false, REJECT_INVALID, "bad-pos", "proof-of-stake is incorrect");
+        return error("%s: proof of stake is incorrect", __func__);
     }
 
     // Header is valid/has work, merkle tree is good...RELAY NOW
