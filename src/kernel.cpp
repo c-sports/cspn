@@ -373,9 +373,9 @@ bool CheckStakeKernelHash(unsigned int nBits, CBlockIndex* pindexPrev, const CBl
 
     LogPrint(BCLog::KERNEL, "%s: using modifier 0x%016x at height=%d timestamp=%s for block from height=%d timestamp=%s\n",
              __func__, nStakeModifier, nStakeModifierHeight,
-             FormatISO8601DateTime(nStakeModifierTime),
-             ::BlockIndex()[blockFrom.GetHash()]->nHeight,
-             FormatISO8601DateTime(blockFrom.GetBlockTime()));
+             DateTimeStrFormat("%Y-%m-%d %H:%M:%S", nStakeModifierTime).c_str(),
+             mapBlockIndex[blockFrom.GetHash()]->nHeight,
+             DateTimeStrFormat("%Y-%m-%d %H:%M:%S", blockFrom.GetBlockTime()).c_str());
 
     LogPrint(BCLog::KERNEL, "%s: modifier=0x%016x nTimeBlockFrom=%u nTimeTxPrev=%u nPrevout=%u nTimeTx=%u hashProof=%s\n",
              __func__,
