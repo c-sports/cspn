@@ -2386,7 +2386,7 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
     int64_t nTime5_3 = GetTimeMicros(); nTimeValueValid += nTime5_3 - nTime5_2;
     LogPrint(BCLog::BENCHMARK, "      - IsBlockValueValid: %.2fms [%.2fs (%.2fms/blk)]\n", MICRO * (nTime5_3 - nTime5_2), nTimeValueValid * MICRO, nTimeValueValid * MILLI / nBlocksTotal);
 
-    if (!IsBlockPayeeValid(*block.vtx[0], pindex->nHeight, blockReward)) {
+    if (block.IsProofOfStake() && !IsBlockPayeeValid(*block.vtx[1], pindex->nHeight, blockReward)) {
         return state.DoS(0, error("ConnectBlock(DASH): couldn't find masternode or superblock payments"),
                                 REJECT_INVALID, "bad-cb-payee");
     }
@@ -3793,7 +3793,7 @@ bool CChainState::AcceptBlock(const std::shared_ptr<const CBlock>& pblock, CVali
     CBlockIndex *pindexDummy = nullptr;
     CBlockIndex *&pindex = ppindex ? *ppindex : pindexDummy;
 
-    if (!AcceptBlockHeader(block, state, chainparams, &pindex, block.IsProofOfStake()))
+    if (!AcceptBlockHeader(block, state, chainparams, &pindex, (block.nNonce == 0)))
         return false;
 
     // proof-of-stake: we should only accept blocks that can be connected to a prev block with validated PoS
@@ -3844,7 +3844,7 @@ bool CChainState::AcceptBlock(const std::shared_ptr<const CBlock>& pblock, CVali
     }
 
     // proof-of-stake: check PoS
-    if (fCheckPoS && !PoSContextualBlockChecks(block, state, pindex, false)) {
+    if (block.nNonce == 0 && !PoSContextualBlockChecks(block, state, pindex, false)) {
         pindex->nStatus |= BLOCK_FAILED_VALID;
         setDirtyBlockIndex.insert(pindex);
         return state.DoS(100, false, REJECT_INVALID, "bad-pos", "proof-of-stake is incorrect");
