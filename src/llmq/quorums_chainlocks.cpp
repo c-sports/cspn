@@ -224,25 +224,13 @@ void CChainLocksHandler::UpdatedBlockTip(const CBlockIndex* pindexNew)
 
 void CChainLocksHandler::CheckActiveState()
 {
-    bool fDIP0008Active;
-    {
-        LOCK(cs_main);
-        fDIP0008Active = chainActive.Tip() && VersionBitsState(chainActive.Tip()->pprev, Params().GetConsensus(), Consensus::DEPLOYMENT_DIP0008, versionbitscache) == THRESHOLD_ACTIVE;
-    }
-
     LOCK(cs);
-    bool oldIsEnforced = isEnforced;
-    isSporkActive = sporkManager.IsSporkActive(SPORK_19_CHAINLOCKS_ENABLED);
-    isEnforced = (fDIP0008Active && isSporkActive);
-
-    if (!oldIsEnforced && isEnforced) {
-        // ChainLocks got activated just recently, but it's possible that it was already running before, leaving
-        // us with some stale values which we should not try to enforce anymore (there probably was a good reason
-        // to disable spork19)
-        bestChainLockHash = uint256();
-        bestChainLock = bestChainLockWithKnownBlock = CChainLockSig();
-        bestChainLockBlockIndex = lastNotifyChainLockBlockIndex = nullptr;
-    }
+    // ChainLocks got activated just recently, but it's possible that it was already running before, leaving
+    // us with some stale values which we should not try to enforce anymore (there probably was a good reason
+    // to disable spork19)
+    bestChainLockHash = uint256();
+    bestChainLock = bestChainLockWithKnownBlock = CChainLockSig();
+    bestChainLockBlockIndex = lastNotifyChainLockBlockIndex = nullptr;
 }
 
 void CChainLocksHandler::TrySignChainTip()
