@@ -471,21 +471,19 @@ bool ContextualCheckTransaction(const CTransaction& tx, CValidationState &state,
     bool fDIP0003Active_context = nHeight >= consensusParams.DIP0003Height;
 
     // check version 3 transaction types
-    if (tx.nVersion >= 2) {
-        if (tx.nType != TRANSACTION_NORMAL &&
-            tx.nType != TRANSACTION_PROVIDER_REGISTER &&
-            tx.nType != TRANSACTION_PROVIDER_UPDATE_SERVICE &&
-            tx.nType != TRANSACTION_PROVIDER_UPDATE_REGISTRAR &&
-            tx.nType != TRANSACTION_PROVIDER_UPDATE_REVOKE &&
-            tx.nType != TRANSACTION_COINBASE &&
-            tx.nType != TRANSACTION_QUORUM_COMMITMENT) {
+    if (tx.nVersion >= 2 &&
+        tx.nType != TRANSACTION_NORMAL &&
+        tx.nType != TRANSACTION_PROVIDER_REGISTER &&
+        tx.nType != TRANSACTION_PROVIDER_UPDATE_SERVICE &&
+        tx.nType != TRANSACTION_PROVIDER_UPDATE_REGISTRAR &&
+        tx.nType != TRANSACTION_PROVIDER_UPDATE_REVOKE &&
+        tx.nType != TRANSACTION_COINBASE &&
+        tx.nType != TRANSACTION_QUORUM_COMMITMENT &&
+        tx.nType != TRANSACTION_STAKE) {
             return state.DoS(100, false, REJECT_INVALID, "bad-txns-type");
         }
         if (tx.IsCoinBase() && tx.nVersion >= 2 && tx.nType != TRANSACTION_COINBASE)
             return state.DoS(100, false, REJECT_INVALID, "bad-txns-cb-type");
-    } else if (tx.nType != TRANSACTION_NORMAL) {
-        return state.DoS(100, false, REJECT_INVALID, "bad-txns-type");
-    }
 
     // Size limits
     if (fDIP0001Active_context && ::GetSerializeSize(tx, SER_NETWORK, PROTOCOL_VERSION) > MAX_STANDARD_TX_SIZE)
