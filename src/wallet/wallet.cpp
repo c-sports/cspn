@@ -5617,35 +5617,6 @@ bool CWallet::SelectStakeCoins(StakeCoinsSet& setCoins, CAmount nTargetAmount) c
     }
     return true;
 }
-bool CWallet::CreateCoinStakeKernel(CScript &kernelScript, const CScript &stakeScript, unsigned int nBits, const CBlock &blockFrom, const CTransactionRef &txPrev, const COutPoint &prevout, unsigned int &nTimeTx, bool fPrintProofOfStake) const
-{
-    unsigned int nTryTime = 0;
-    uint256 hashProofOfStake = uint256();
-
-    if (blockFrom.GetBlockTime() + Params().GetConsensus().nStakeMinAge + nHashDrift > nTimeTx) // Min age requirement
-        return false;
-
-    for(unsigned int i = 0; i < nHashDrift; ++i)
-    {
-        nTryTime = nTimeTx - i;
-        if (CheckStakeKernelHash(nBits, chainActive.Tip(), blockFrom, txPrev, prevout, nTryTime, hashProofOfStake))
-        {
-            //Double check that this will pass time requirements
-            if (nTryTime <= chainActive.Tip()->GetMedianTimePast()) {
-                LogPrintf("CreateCoinStakeKernel() : kernel found, but it is too far in the past \n");
-                continue;
-            }
-
-            // Found a kernel
-            LogPrintf("CreateCoinStakeKernel : kernel found\n");
-            kernelScript.clear();
-            kernelScript = stakeScript;
-            nTimeTx = nTryTime;
-            return true;
-        }
-    }
-    return false;
-}
 
 typedef std::vector<unsigned char> valtype;
 bool CWallet::CreateCoinStake(unsigned int nBits,
