@@ -204,6 +204,11 @@ struct Params {
     int StakeEnforcement() const { return nStakeEnforcement; }
     CAmount MinStakeAmount() const { return nMinStakeAmount; }
     int MinStakeHistory() const { return nMinStakeHistory; }
+
+    bool HasStakeMinDepth(int contextHeight, int utxoFromBlockHeight) const
+    {
+        return (contextHeight - utxoFromBlockHeight >= nMinStakeHistory);
+    }
 };
 } // namespace Consensus
 

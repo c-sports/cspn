@@ -438,10 +438,6 @@ bool CheckProofOfStake(const CBlock &block, CBlockIndex* pindexPrev, uint256& ha
     // Kernel (input 0) must match the stake hash target per coin age (nBits)
     const CTxIn& txin = tx->vin[0];
 
-    // Transaction index is required to get to block header
-    if (!g_txindex)
-        return error("%s: transaction index not available", __func__);
-
     // First try finding the previous transaction in database
     uint256 hashBlock;
     CTransactionRef txPrev;
@@ -468,7 +464,7 @@ bool CheckProofOfStake(const CBlock &block, CBlockIndex* pindexPrev, uint256& ha
         const CTxOut& prevOut = txPrev->vout[txin.prevout.n];
         TransactionSignatureChecker checker(&(*tx), 0, prevOut.nValue, PrecomputedTransactionData(*tx));
 
-        if (!VerifyScript(txin.scriptSig, prevOut.scriptPubKey, &(txin.scriptWitness), SCRIPT_VERIFY_P2SH, checker, nullptr))
+        if (!VerifyScript(txin.scriptSig, prevOut.scriptPubKey, SCRIPT_VERIFY_P2SH, checker, nullptr))
             return error("%s: check kernel script failed on coinstake %s, hashProof=%s\n", __func__, tx->GetHash().ToString(), hashProofOfStake.ToString());
     }
 
