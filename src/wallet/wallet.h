@@ -1270,6 +1270,7 @@ public:
     unsigned int nHashInterval = 22;
     int nStakeSetUpdateTime = 300; // 5 minutes
     uint64_t nStakeSplitThreshold = 2000;
+    int nStakeCombineThreshold = 0;
     using StakeCoinsSet = std::vector<COutput>;
     bool MintableCoins();
     bool SelectStakeCoins(StakeCoinsSet& setCoins, CAmount nTargetAmount) const;
