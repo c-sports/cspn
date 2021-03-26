@@ -318,9 +318,11 @@ bool CheckStakeKernelHash(unsigned int nBits, CBlockIndex* pindexPrev, const CBl
     if (nTimeTx < txPrevTime) {
         //! mimic legacy behaviour
         if (!fHardenedChecks) {
-            return error("%s: nTime violation", __func__);
+            LogPrintf("%s: nTime violation", __func__);
+            return false;
         } else {
-            return error("%s: timestamp violation (nTimeTx < txPrevTime)", __func__);
+            LogPrintf("%s: timestamp violation (nTimeTx < txPrevTime)", __func__);
+            return false;
         }
     }
 
@@ -328,9 +330,11 @@ bool CheckStakeKernelHash(unsigned int nBits, CBlockIndex* pindexPrev, const CBl
     if (nTimeBlockFrom + params.nStakeMinAge > nTimeTx) {
         //! mimic legacy behaviour
         if (!fHardenedChecks) {
-            return error("%s: min age violation", __func__);
+            LogPrintf("%s: min age violation", __func__);
+            return false;
         } else {
-            return error("%s: min age violation (nTimeBlockFrom + params.nStakeMinAge > nTimeTx)", __func__);
+            LogPrintf("%s: min age violation (nTimeBlockFrom + params.nStakeMinAge > nTimeTx)", __func__);
+            return false;
         }
     }
 
@@ -355,8 +359,10 @@ bool CheckStakeKernelHash(unsigned int nBits, CBlockIndex* pindexPrev, const CBl
     int nStakeModifierHeight = 0;
     int64_t nStakeModifierTime = 0;
 
-    if (!GetKernelStakeModifier(pindexPrev, blockFrom.GetHash(), nTimeTx, nStakeModifier, nStakeModifierHeight, nStakeModifierTime, false))
+    if (!GetKernelStakeModifier(pindexPrev, blockFrom.GetHash(), nTimeTx, nStakeModifier, nStakeModifierHeight, nStakeModifierTime, false)) {
+        LogPrintf("%s: error on GetKernelStakeModifer", __func__);
         return false;
+    }
 
     ss << nStakeModifier;
     ss << nTimeBlockFrom << txPrevTime << prevout.n << nTimeTx;
@@ -365,8 +371,10 @@ bool CheckStakeKernelHash(unsigned int nBits, CBlockIndex* pindexPrev, const CBl
     // Now check if proof-of-stake hash meets target protocol
     LogPrint(BCLog::KERNEL, "%s: nValueIn=%s hashProofOfStake=%s hashTarget=%s\n", __func__, FormatMoney(nValueIn), hashProofOfStake.ToString(), (bnCoinDayWeight * bnTargetPerCoinDay).ToString());
 
-    if (UintToArith256(hashProofOfStake) > bnCoinDayWeight * bnTargetPerCoinDay)
+    if (UintToArith256(hashProofOfStake) > bnCoinDayWeight * bnTargetPerCoinDay) {
+        LogPrintf("%s: error on hash greater then dayweight", __func__);
         return false;
+    }
 
     LogPrint(BCLog::KERNEL, "%s: using modifier 0x%016x at height=%d timestamp=%s for block from height=%d timestamp=%s\n",
              __func__, nStakeModifier, nStakeModifierHeight,
@@ -403,8 +411,10 @@ bool CheckProofOfStake(const CBlock &block, CBlockIndex* pindexPrev, uint256& ha
     bool fHardenedChecks = pindexPrev->nHeight+1 > params.StakeEnforcement();
 
     const CTransactionRef &tx = block.vtx[1];
-    if (!tx->IsCoinStake())
-        return error("%s: called on non-coinstake %s", __func__, tx->GetHash().ToString());
+    if (!tx->IsCoinStake()) {
+        LogPrintf("%s: called on non-coinstake %s", __func__, tx->GetHash().ToString());
+        return false;
+    }
 
     // Kernel (input 0) must match the stake hash target per coin age (nBits)
     const CTxIn& txin = tx->vin[0];
@@ -412,16 +422,21 @@ bool CheckProofOfStake(const CBlock &block, CBlockIndex* pindexPrev, uint256& ha
     // First try finding the previous transaction in database
     uint256 hashBlock;
     CTransactionRef txPrev;
-    if (!GetTransaction(txin.prevout.hash, txPrev, Params().GetConsensus(), hashBlock))
-        return error("%s: read txPrev failed", __func__);
+    if (!GetTransaction(txin.prevout.hash, txPrev, Params().GetConsensus(), hashBlock)) {
+        LogPrintf("%s: read txPrev failed", __func__);
+        return false;
+    }
+
 
     // Enforce minimum stake depth
     const int nPreviousBlockHeight = pindexPrev->nHeight;
     const int nBlockFromHeight = GetLastHeight(txin.prevout.hash);
 
     // returning zero from GetLastHeight() indicates error
-    if (nBlockFromHeight == 0 && fHardenedChecks)
-        return error("%s: returning zero from GetLastHeight()", __func__);
+    if (nBlockFromHeight == 0 && fHardenedChecks) {
+        LogPrintf("%s: returning zero from GetLastHeight()", __func__);
+        return false;
+    }
 
     if (!Params().GetConsensus().HasStakeMinDepth(nPreviousBlockHeight+1, nBlockFromHeight) && fHardenedChecks) {
         LogPrintf("\n%s : min age violation - height=%d - nHeightBlockFrom=%d (depth=%d)\n", __func__, nPreviousBlockHeight, nBlockFromHeight, nPreviousBlockHeight - nBlockFromHeight);
@@ -435,12 +450,16 @@ bool CheckProofOfStake(const CBlock &block, CBlockIndex* pindexPrev, uint256& ha
         const CTxOut& prevOut = txPrev->vout[txin.prevout.n];
         TransactionSignatureChecker checker(&(*tx), 0, prevOut.nValue, PrecomputedTransactionData(*tx));
 
-        if (!VerifyScript(txin.scriptSig, prevOut.scriptPubKey, SCRIPT_VERIFY_P2SH, checker, nullptr))
-            return error("%s: check kernel script failed on coinstake %s, hashProof=%s\n", __func__, tx->GetHash().ToString(), hashProofOfStake.ToString());
+        if (!VerifyScript(txin.scriptSig, prevOut.scriptPubKey, SCRIPT_VERIFY_P2SH, checker, nullptr)) {
+            LogPrintf("%s: check kernel script failed on coinstake %s, hashProof=%s\n", __func__, tx->GetHash().ToString(), hashProofOfStake.ToString());
+            return false;
+        }
     }
 
-    if (!CheckStakeKernelHash(block.nBits, pindexPrev, header, txPrev, txin.prevout, block.nTime, hashProofOfStake, gArgs.IsArgSet("-debug")))
-        return error("%s: check kernel failed on coinstake %s, hashProof=%s", __func__, tx->GetHash().ToString(), hashProofOfStake.ToString()); // may occur during initial download or if behind on block chain sync
+    if (!CheckStakeKernelHash(block.nBits, pindexPrev, header, txPrev, txin.prevout, block.nTime, hashProofOfStake, gArgs.IsArgSet("-debug"))) {
+        LogPrintf("%s: check kernel failed on coinstake %s, hashProof=%s", __func__, tx->GetHash().ToString(), hashProofOfStake.ToString()); // may occur during initial download or if behind on block chain sync
+        return false;
+    }
 
     return true;
 }
