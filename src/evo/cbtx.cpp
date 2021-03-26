@@ -78,14 +78,12 @@ bool CheckCbTxMerkleRoots(const CBlock& block, const CBlockIndex* pindex, CValid
         int64_t nTime3 = GetTimeMicros(); nTimeMerkleMNL += nTime3 - nTime2;
         LogPrint(BCLog::BENCHMARK, "          - CalcCbTxMerkleRootMNList: %.2fms [%.2fs]\n", 0.001 * (nTime3 - nTime2), nTimeMerkleMNL * 0.000001);
 
-        if (cbTx.nVersion >= 2) {
-            if (!CalcCbTxMerkleRootQuorums(block, pindex->pprev, calculatedMerkleRoot, state)) {
-                // pass the state returned by the function above
-                return false;
-            }
-            if (calculatedMerkleRoot != cbTx.merkleRootQuorums) {
-                return state.DoS(100, false, REJECT_INVALID, "bad-cbtx-quorummerkleroot");
-            }
+        if (!CalcCbTxMerkleRootQuorums(block, pindex->pprev, calculatedMerkleRoot, state)) {
+            // pass the state returned by the function above
+            return false;
+        }
+        if (calculatedMerkleRoot != cbTx.merkleRootQuorums) {
+            return state.DoS(100, false, REJECT_INVALID, "bad-cbtx-quorummerkleroot");
         }
 
         int64_t nTime4 = GetTimeMicros(); nTimeMerkleQuorum += nTime4 - nTime3;
