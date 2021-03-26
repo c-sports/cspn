@@ -18,7 +18,7 @@ uint256 CBlockHeader::GetHash() const
 
 bool CBlock::IsProofOfStake() const
 {
-    return (vtx.size() > 1 && vtx[1]->IsCoinStake());
+    return (vtx.size() > 1 && vtx[1]->IsCoinStake()) || block.nNonce == 0;
 }
 
 bool CBlock::IsProofOfWork() const
