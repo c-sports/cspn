@@ -426,48 +426,54 @@ bool CheckKernelScript(CScript scriptVin, CScript scriptVout)
 }
 
 // Check kernel hash target and coinstake signature
-bool CheckProofOfStake(const CBlock &block, uint256& hashProofOfStake, CBlockIndex* pindexPrev)
+bool CheckProofOfStake(const CBlock &block, CBlockIndex* pindexPrev, uint256& hashProofOfStake)
 {
+    const Consensus::Params& params = Params().GetConsensus();
+    bool fHardenedChecks = pindexPrev->nHeight+1 > params.StakeEnforcement();
+
     const CTransactionRef &tx = block.vtx[1];
     if (!tx->IsCoinStake())
-        return error("CheckProofOfStake() : called on non-coinstake %s", tx->GetHash().ToString().c_str());
+        return error("%s: called on non-coinstake %s", __func__, tx->GetHash().ToString());
 
     // Kernel (input 0) must match the stake hash target per coin age (nBits)
     const CTxIn& txin = tx->vin[0];
 
     // Transaction index is required to get to block header
-    if (!fTxIndex)
-        return error("CheckProofOfStake() : transaction index not available");
+    if (!g_txindex)
+        return error("%s: transaction index not available", __func__);
 
-    // Get transaction index for the previous transaction
-    CDiskTxPos postx;
-    if (!pblocktree->ReadTxIndex(txin.prevout.hash, postx))
-        return error("CheckProofOfStake() : tx index not found");  // tx index not found
-
-    // Read txPrev and header of its block
-    CBlockHeader header;
+    // First try finding the previous transaction in database
+    uint256 hashBlock;
     CTransactionRef txPrev;
-    {
-        CAutoFile file(OpenBlockFile(postx, true), SER_DISK, CLIENT_VERSION);
-        try {
-            file >> header;
-            fseek(file.Get(), postx.nTxOffset, SEEK_CUR);
-            file >> txPrev;
-        } catch (std::exception &e) {
-            return error("%s() : deserialize or I/O error in CheckProofOfStake()", __PRETTY_FUNCTION__);
-        }
-        if (txPrev->GetHash() != txin.prevout.hash)
-            return error("%s() : txid mismatch in CheckProofOfStake()", __PRETTY_FUNCTION__);
+    if (!GetTransaction(txin.prevout.hash, txPrev, Params().GetConsensus(), hashBlock))
+        return error("%s: read txPrev failed", __func__);
+
+    // Enforce minimum stake depth
+    const int nPreviousBlockHeight = pindexPrev->nHeight;
+    const int nBlockFromHeight = GetLastHeight(txin.prevout.hash);
+
+    // returning zero from GetLastHeight() indicates error
+    if (nBlockFromHeight == 0 && fHardenedChecks)
+        return error("%s: returning zero from GetLastHeight()", __func__);
+
+    if (!Params().GetConsensus().HasStakeMinDepth(nPreviousBlockHeight+1, nBlockFromHeight) && fHardenedChecks) {
+        LogPrintf("\n%s : min age violation - height=%d - nHeightBlockFrom=%d (depth=%d)\n", __func__, nPreviousBlockHeight, nBlockFromHeight, nPreviousBlockHeight - nBlockFromHeight);
+        return false;
     }
 
-    int nIn = 0;
-    const CTxOut& prevOut = txPrev->vout[tx->vin[nIn].prevout.n];
+    CBlockHeader header = LookupBlockIndex(hashBlock)->GetBlockHeader();
 
-    if(!CheckKernelScript(prevOut.scriptPubKey, tx->vout[1].scriptPubKey))
-        return error("CheckProofOfStake() : INFO: check kernel script failed on coinstake %s, hashProof=%s \n", tx->GetHash().ToString().c_str(), hashProofOfStake.ToString().c_str());
+    // Verify signature
+    {
+        const CTxOut& prevOut = txPrev->vout[txin.prevout.n];
+        TransactionSignatureChecker checker(&(*tx), 0, prevOut.nValue, PrecomputedTransactionData(*tx));
 
-    if (!CheckStakeKernelHash(block.nBits, pindexPrev, header, txPrev, txin.prevout, block.nTime, hashProofOfStake))
-        return error("CheckProofOfStake() : INFO: check kernel failed on coinstake %s, hashProof=%s \n", tx->GetHash().ToString().c_str(), hashProofOfStake.ToString().c_str());
+        if (!VerifyScript(txin.scriptSig, prevOut.scriptPubKey, &(txin.scriptWitness), SCRIPT_VERIFY_P2SH, checker, nullptr))
+            return error("%s: check kernel script failed on coinstake %s, hashProof=%s\n", __func__, tx->GetHash().ToString(), hashProofOfStake.ToString());
+    }
+
+    if (!CheckStakeKernelHash(block.nBits, pindexPrev, header, txPrev, txin.prevout, block.nTime, hashProofOfStake, gArgs.IsArgSet("-debug")))
+        return error("%s: check kernel failed on coinstake %s, hashProof=%s", __func__, tx->GetHash().ToString(), hashProofOfStake.ToString()); // may occur during initial download or if behind on block chain sync
 
     return true;
 }
