@@ -410,7 +410,7 @@ public:
         fRequireRoutableExternalIP = true;
         fMineBlocksOnDemand = false;
         fAllowMultipleAddressesFromGroup = false;
-        fAllowMultiplePorts = false;
+        fAllowMultiplePorts = true;
         nLLMQConnectionRetryTimeout = 60;
 
         nPoolMinParticipants = 3;
