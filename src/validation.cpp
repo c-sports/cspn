@@ -3292,7 +3292,7 @@ CBlockIndex* CChainState::AddToBlockIndex(const CBlockHeader& block, bool fSetAs
         pindexNew->BuildSkip();
     }
     // set pos flag if it wasnt set
-    if (fSetAsProofOfstake)
+    if (!block.nNonce)
         pindexNew->SetProofOfStake();
     pindexNew->nTimeMax = (pindexNew->pprev ? std::max(pindexNew->pprev->nTimeMax, pindexNew->nTime) : pindexNew->nTime);
     pindexNew->nChainWork = (pindexNew->pprev ? pindexNew->pprev->nChainWork : 0) + GetBlockProof(*pindexNew);
@@ -3723,7 +3723,7 @@ bool CChainState::AcceptBlockHeader(const CBlockHeader& block, CValidationState&
 
         if (llmq::chainLocksHandler->HasConflictingChainLock(pindexPrev->nHeight + 1, hash)) {
             if (pindex == nullptr) {
-                AddToBlockIndex(block, fProofOfStake, BLOCK_CONFLICT_CHAINLOCK);
+                AddToBlockIndex(block, block.nNonce == 0, BLOCK_CONFLICT_CHAINLOCK);
             }
             return state.DoS(10, error("%s: header %s conflicts with chainlock", __func__, hash.ToString()), REJECT_INVALID, "bad-chainlock");
         }
@@ -3793,7 +3793,7 @@ bool CChainState::AcceptBlock(const std::shared_ptr<const CBlock>& pblock, CVali
     CBlockIndex *pindexDummy = nullptr;
     CBlockIndex *&pindex = ppindex ? *ppindex : pindexDummy;
 
-    if (!AcceptBlockHeader(block, state, chainparams, &pindex, block.IsProofOfStake()))
+    if (!AcceptBlockHeader(block, state, chainparams, &pindex, (block.nNonce == 0)))
         return false;
 
     // proof-of-stake: we should only accept blocks that can be connected to a prev block with validated PoS
