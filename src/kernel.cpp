@@ -40,14 +40,15 @@ static std::map<int, unsigned int> mapStakeModifierCheckpoints = {
 static bool GetLastStakeModifier(const CBlockIndex* pindex, uint64_t& nStakeModifier, int64_t& nModifierTime)
 {
     if (!pindex)
-        return error("GetLastStakeModifier: null pindex");
-    while (pindex && pindex->pprev && !pindex->GeneratedStakeModifier())
-        pindex = pindex->pprev;
-    if (!pindex->GeneratedStakeModifier())
-        return error("GetLastStakeModifier: no generation at genesis block");
-    nStakeModifier = pindex->nStakeModifier;
-    nModifierTime = pindex->GetBlockTime();
-    return true;
+        return error("%s: null pindex", __func__);
+    do {
+        if (pindex->GeneratedStakeModifier()) {
+            nStakeModifier = pindex->nStakeModifier;
+            nModifierTime = pindex->GetBlockTime();
+            return true;
+        }
+    } while ((pindex = pindex->pprev) != nullptr);
+    return error("%s: no generation at genesis block", __func__);
 }
 
 // Get selection interval section (in seconds)
@@ -479,8 +480,8 @@ unsigned int GetStakeModifierChecksum(const CBlockIndex* pindex)
 // Check stake modifier hard checkpoints
 bool CheckStakeModifierCheckpoints(int nHeight, unsigned int nStakeModifierChecksum)
 {
-    bool fTestNet = Params().NetworkIDString() == CBaseChainParams::TESTNET;
-    if (!fTestNet && mapStakeModifierCheckpoints.count(nHeight))
+    if (Params().NetworkIDString() != "main") return true; // Testnet or Regtest has no checkpoints
+    if (mapStakeModifierCheckpoints.count(nHeight))
         return nStakeModifierChecksum == mapStakeModifierCheckpoints[nHeight];
 
     return true;
@@ -489,9 +490,7 @@ bool CheckStakeModifierCheckpoints(int nHeight, unsigned int nStakeModifierCheck
 // Entropy bit for stake modifier if chosen by modifier
 unsigned int GetStakeEntropyBit(const CBlock& block)
 {
-    unsigned int nEntropyBit = 0;
-    nEntropyBit = UintToArith256(block.GetHash()).GetLow64() & 1llu;// last bit of block hash
-    if (gArgs.GetBoolArg("-printstakemodifier", false))
-        LogPrintf("GetStakeEntropyBit(v0.4+): nTime=%u hashBlock=%s entropybit=%d\n", block.nTime, block.GetHash().ToString(), nEntropyBit);
+    unsigned int nEntropyBit = UintToArith256(block.GetHash()).GetLow64() & 1llu; // last bit of block hash
+    LogPrint(BCLog::KERNEL, "%s: nTime=%u hashBlock=%s entropybit=%d\n", __func__, block.nTime, block.GetHash().ToString(), nEntropyBit);
     return nEntropyBit;
 }
