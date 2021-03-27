@@ -448,7 +448,7 @@ bool CheckProofOfStake(CValidationState &state, CBlockIndex* pindexPrev, const C
             return error("%s: check kernel script failed on coinstake %s, hashProof=%s\n", __func__, tx->GetHash().ToString(), hashProofOfStake.ToString());
     }
 
-    if (!CheckStakeKernelHash(nBits, pindexPrev, header, postx.nTxOffset + 80, txPrev, txin.prevout, tx->nTime, hashProofOfStake, gArgs.GetBoolArg("-debug", false)))
+    if (!CheckStakeKernelHash(nBits, pindexPrev, header, postx.nTxOffset + 80, txPrev, txin.prevout, block.nTime, hashProofOfStake, gArgs.GetBoolArg("-debug", false)))
         return error("%s: check kernel failed on coinstake %s, hashProof=%s", __func__, tx->GetHash().ToString(), hashProofOfStake.ToString()); // may occur during initial download or if behind on block chain sync
 
     return true;
