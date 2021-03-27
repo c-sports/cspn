@@ -365,6 +365,18 @@ bool CheckStakeKernelHash(unsigned int nBits, CBlockIndex* pindexPrev, const CBl
     // Now check if proof-of-stake hash meets target protocol
     LogPrint(BCLog::KERNEL, "%s: nValueIn=%s hashProofOfStake=%s hashTarget=%s\n", __func__, FormatMoney(nValueIn), hashProofOfStake.ToString(), (bnCoinDayWeight * bnTargetPerCoinDay).ToString());
 
+    LogPrint(BCLog::KERNEL, "%s: using modifier 0x%016x at height=%d timestamp=%s for block from height=%d timestamp=%s\n",
+             __func__, nStakeModifier, nStakeModifierHeight,
+             DateTimeStrFormat("%Y-%m-%d %H:%M:%S", nStakeModifierTime).c_str(),
+             mapBlockIndex[blockFrom.GetHash()]->nHeight,
+             DateTimeStrFormat("%Y-%m-%d %H:%M:%S", blockFrom.GetBlockTime()).c_str());
+
+    LogPrint(BCLog::KERNEL, "%s: modifier=0x%016x nTimeBlockFrom=%u nTimeTxPrev=%u nPrevout=%u nTimeTx=%u hashProof=%s\n",
+             __func__,
+             nStakeModifier,
+             nTimeBlockFrom, txPrevTime, prevout.n, nTimeTx,
+             hashProofOfStake.ToString());
+
     if (UintToArith256(hashProofOfStake) > bnCoinDayWeight * bnTargetPerCoinDay)
         return false;
 
