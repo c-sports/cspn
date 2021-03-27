@@ -334,22 +334,12 @@ bool CheckStakeKernelHash(unsigned int nBits, CBlockIndex* pindexPrev, const CBl
 
     auto txPrevTime = blockFrom.GetBlockTime();
     if (nTimeTx < txPrevTime) {
-        //! mimic legacy behaviour
-        if (!fHardenedChecks) {
-            return error("%s: nTime violation", __func__);
-        } else {
-            return error("%s: timestamp violation (nTimeTx < txPrevTime)", __func__);
-        }
+        return error("%s: timestamp violation (nTimeTx < txPrevTime)", __func__);
     }
 
     unsigned int nTimeBlockFrom = blockFrom.GetBlockTime();
     if (nTimeBlockFrom + params.nStakeMinAge > nTimeTx) {
-        //! mimic legacy behaviour
-        if (!fHardenedChecks) {
-            return error("%s: min age violation", __func__);
-        } else {
-            return error("%s: min age violation (nTimeBlockFrom + params.nStakeMinAge > nTimeTx)", __func__);
-        }
+        return error("%s: min age violation (nTimeBlockFrom + params.nStakeMinAge > nTimeTx)", __func__);
     }
 
     arith_uint256 bnTargetPerCoinDay;
