@@ -416,7 +416,7 @@ int GetLastHeight(uint256 txHash)
 }
 
 // Check kernel hash target and coinstake signature
-bool CheckProofOfStake(const CBlock &block, CBlockIndex* pindexPrev, const CTransactionRef& tx, uint256& hashProofOfStake)
+bool CheckProofOfStake(const CBlock &block, CBlockIndex* pindexPrev, uint256& hashProofOfStake)
 {
     const Consensus::Params& params = Params().GetConsensus();
     bool fHardenedChecks = pindexPrev->nHeight+1 > params.StakeEnforcement();
@@ -426,6 +426,9 @@ bool CheckProofOfStake(const CBlock &block, CBlockIndex* pindexPrev, const CTran
         LogPrintf("%s: called on non-coinstake %s", __func__, tx->GetHash().ToString());
         return false;
     }
+
+    // Kernel (input 0) must match the stake hash target per coin age (nBits)
+    const CTxIn& txin = tx->vin[0];
 
     // First try finding the previous transaction in database
     uint256 hashBlock;
