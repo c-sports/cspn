@@ -1938,20 +1938,20 @@ static int64_t nBlocksTotal = 0;
 bool CChainState::PoSContextualBlockChecks(const CBlock& block, CValidationState& state, CBlockIndex* pindex, bool fJustCheck)
 {
     uint256 hashProofOfStake = uint256();
-    // peercoin: verify hash target and signature of coinstake tx
+    // verify hash target and signature of coinstake tx
     if (block.IsProofOfStake() && !CheckProofOfStake(block, pindex->pprev, hashProofOfStake)) {
-        LogPrintf("WARNING: %s: check proof-of-stake failed for block %s\n", __func__, block.GetHash().ToString());
+        LogPrintf("%s: check proof-of-stake failed for block %s\n", __func__, block.GetHash().ToString());
         return false; // do not error here as we expect this during initial block download
     }
 
-    // peercoin: compute stake entropy bit for stake modifier
+    // compute stake entropy bit for stake modifier
     unsigned int nEntropyBit = GetStakeEntropyBit(block);
 
-    // peercoin: compute stake modifier
+    // compute stake modifier
     uint64_t nStakeModifier = 0;
     bool fGeneratedStakeModifier = false;
     if (!ComputeNextStakeModifier(pindex, nStakeModifier, fGeneratedStakeModifier))
-        return error("ConnectBlock() : ComputeNextStakeModifier() failed");
+        return error("%s: ComputeNextStakeModifier() failed", __func__);
 
     // compute nStakeModifierChecksum begin
     unsigned int nFlagsBackup      = pindex->nFlags;
@@ -1960,7 +1960,7 @@ bool CChainState::PoSContextualBlockChecks(const CBlock& block, CValidationState
 
     // set necessary pindex fields
     if (!pindex->SetStakeEntropyBit(nEntropyBit))
-        return error("ConnectBlock() : SetStakeEntropyBit() failed");
+        return error("%s: failed SetStakeEntropyBit()", __func__);
     pindex->SetStakeModifier(nStakeModifier, fGeneratedStakeModifier);
     pindex->hashProofOfStake = hashProofOfStake;
 
@@ -1973,21 +1973,22 @@ bool CChainState::PoSContextualBlockChecks(const CBlock& block, CValidationState
     // compute nStakeModifierChecksum end
 
     if (!CheckStakeModifierCheckpoints(pindex->nHeight, nStakeModifierChecksum))
-        return error("ConnectBlock() : Rejected by stake modifier checkpoint height=%d, modifier=0x%016llx", pindex->nHeight, nStakeModifier);
+        return error("%s: rejected by stake modifier checkpoint height=%d, modifier=0x%016llx",
+                     __func__, pindex->nHeight, nStakeModifier);
 
     if (fJustCheck)
         return true;
 
-
     // write everything to index
     if (block.IsProofOfStake())
     {
+        pindex->SetProofOfStake();
         pindex->prevoutStake = block.vtx[1]->vin[0].prevout;
         pindex->nStakeTime = block.nTime;
         pindex->hashProofOfStake = hashProofOfStake;
     }
     if (!pindex->SetStakeEntropyBit(nEntropyBit))
-        return error("ConnectBlock() : SetStakeEntropyBit() failed");
+        return error("%s: failed SetStakeEntropyBit()", __func__);
     pindex->SetStakeModifier(nStakeModifier, fGeneratedStakeModifier);
     pindex->nStakeModifierChecksum = nStakeModifierChecksum;
     setDirtyBlockIndex.insert(pindex);  // queue a write to disk
