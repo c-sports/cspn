@@ -455,6 +455,20 @@ bool CheckProofOfStake(CValidationState &state, CBlockIndex* pindexPrev, const C
     return true;
 }
 
+// Get stake modifier checksum
+unsigned int GetStakeModifierChecksum(const CBlockIndex* pindex)
+{
+    assert (pindex->pprev || pindex->GetBlockHash() == Params().GetConsensus().hashGenesisBlock);
+    // Hash previous checksum with flags, hashProofOfStake and nStakeModifier
+    CDataStream ss(SER_GETHASH, 0);
+    if (pindex->pprev)
+        ss << pindex->pprev->nStakeModifierChecksum;
+    ss << pindex->nFlags << pindex->hashProofOfStake << pindex->nStakeModifier;
+    arith_uint256 hashChecksum = UintToArith256(Hash(ss.begin(), ss.end()));
+    hashChecksum >>= (256 - 32);
+    return hashChecksum.GetLow64();
+}
+
 // Check stake modifier hard checkpoints
 bool CheckStakeModifierCheckpoints(int nHeight, unsigned int nStakeModifierChecksum)
 {
