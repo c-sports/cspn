@@ -343,7 +343,8 @@ bool CheckStakeKernelHash(unsigned int nBits, CBlockIndex* pindexPrev, const CBl
     // v0.3 protocol kernel hash weight starts from 0 at the 30-day min age
     // this change increases active coins participating the hash and helps
     // to secure the network when proof-of-stake difficulty is low
-    int64_t nTimeWeight = std::min<int64_t>(nTimeTx - std::min<int64_t>(blockFrom.GetBlockTime()), params.nStakeMaxAge - params.nStakeMinAge);
+    auto txPrevTime = blockFrom.GetBlockTime();
+    int64_t nTimeWeight = std::min<int64_t>(nTimeTx - txPrevTime, params.nStakeMaxAge - params.nStakeMinAge);
     arith_uint256 bnCoinDayWeight = nValueIn * nTimeWeight / COIN / 200;
     // Calculate hash
     CDataStream ss(SER_GETHASH, 0);
