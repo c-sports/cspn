@@ -435,7 +435,6 @@ bool CheckProofOfStake(const CBlock &block, CBlockIndex* pindexPrev, const CTran
         return false;
     }
 
-
     // Transaction index is required to get to block header
     if (!fTxIndex)
         return error("CheckProofOfStake() : transaction index not available");
@@ -451,10 +450,12 @@ bool CheckProofOfStake(const CBlock &block, CBlockIndex* pindexPrev, const CTran
     }
 
     if (!Params().GetConsensus().HasStakeMinDepth(nPreviousBlockHeight+1, nBlockFromHeight) && fHardenedChecks) {
-        LogPrintf("\n%s : min age violation - height=%d - nHeightBlockFrom=%d (depth=%d)\n", __func__, nPreviousBlockHeight, nBlockFromHeight, nPreviousBlockHeight - nBlockFromHeight);
+        LogPrintf("\n%s : min age violation - height=%d - nHeightBlockFrom=%d (depth=%d)\n", __func__,
+                  nPreviousBlockHeight, nBlockFromHeight, nPreviousBlockHeight - nBlockFromHeight);
         return false;
+    }
 
-        CBlockHeader header = LookupBlockIndex(hashBlock)->GetBlockHeader();
+    CBlockHeader header = LookupBlockIndex(hashBlock)->GetBlockHeader();
 
     // Verify signature
     {
