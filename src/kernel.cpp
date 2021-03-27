@@ -457,20 +457,7 @@ bool CheckProofOfStake(CValidationState &state, CBlockIndex* pindexPrev, const C
 bool CheckStakeModifierCheckpoints(int nHeight, unsigned int nStakeModifierChecksum)
 {
     bool fTestNet = Params().NetworkIDString() == CBaseChainParams::TESTNET;
-    if (fTestNet && mapStakeModifierTestnetCheckpoints.count(nHeight))
-        return nStakeModifierChecksum == mapStakeModifierTestnetCheckpoints[nHeight];
-
     if (!fTestNet && mapStakeModifierCheckpoints.count(nHeight))
-        return nStakeModifierChecksum == mapStakeModifierCheckpoints[nHeight];
-
-    return true;
-}
-
-// Check stake modifier hard checkpoints
-bool CheckStakeModifierCheckpoints(int nHeight, unsigned int nStakeModifierChecksum)
-{
-    if (Params().NetworkIDString() != "main") return true; // Testnet or Regtest has no checkpoints
-    if (mapStakeModifierCheckpoints.count(nHeight))
         return nStakeModifierChecksum == mapStakeModifierCheckpoints[nHeight];
 
     return true;
