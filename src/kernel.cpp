@@ -440,7 +440,7 @@ bool CheckProofOfStake(CValidationState &state, CBlockIndex* pindexPrev, const C
     // Verify signature
     {
         int nIn = 0;
-        const CTxOut& prevOut = txPrev->vout[tx->vin[nIn].prevout.n];class CTransaction
+        const CTxOut& prevOut = txPrev->vout[tx->vin[nIn].prevout.n];
         {
         TransactionSignatureChecker checker(&(*tx), nIn, prevOut.nValue, PrecomputedTransactionData(*tx));
 
