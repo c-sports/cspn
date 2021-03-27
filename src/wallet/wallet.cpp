@@ -5667,7 +5667,7 @@ bool CWallet::CreateCoinStake(unsigned int nBits,
         //
 
         CDiskTxPos postx;
-        if (!pblocktree->ReadTxIndex(out.tx->hashBlock, postx))
+        if (!pblocktree->ReadTxIndex(out.tx->tx->vout[out.i].hash, postx))
             continue;
 
         // Read block header
