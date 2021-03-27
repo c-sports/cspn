@@ -145,7 +145,7 @@ bool ComputeNextStakeModifier(const CBlockIndex* pindexCurrent, uint64_t &nStake
     if (!GetLastStakeModifier(pindexPrev, nStakeModifier, nModifierTime))
         return error("ComputeNextStakeModifier: unable to get last modifier");
     if (gArgs.GetBoolArg("-debug", false))
-        LogPrintf("ComputeNextStakeModifier: prev modifier=0x%016x time=%s epoch=%u\n", nStakeModifier, DateTimeStrFormat(nModifierTime), (unsigned int)nModifierTime);
+        LogPrintf("ComputeNextStakeModifier: prev modifier=0x%016x time=%s epoch=%u\n", nStakeModifier, DateTimeStrFormat("%Y-%m-%d %H:%M:%S", nModifierTime).c_str(), (unsigned int)nModifierTime);
     if (nModifierTime / params.nModifierInterval >= pindexPrev->GetBlockTime() / params.nModifierInterval)
     {
         if (gArgs.GetBoolArg("-debug", false))
@@ -208,7 +208,7 @@ bool ComputeNextStakeModifier(const CBlockIndex* pindexCurrent, uint64_t &nStake
         mapSelectedBlocks.insert(std::make_pair(pindex->GetBlockHash(), pindex));
         if (gArgs.GetBoolArg("-debug", false) && gArgs.GetBoolArg("-printstakemodifier", false))
             LogPrintf("ComputeNextStakeModifier: selected round %d stop=%s height=%d bit=%d\n",
-                      nRound, DateTimeStrFormat(nSelectionIntervalStop), pindex->nHeight, pindex->GetStakeEntropyBit());
+                      nRound, DateTimeStrFormat("%Y-%m-%d %H:%M:%S", nSelectionIntervalStop).c_str(), pindex->nHeight, pindex->GetStakeEntropyBit());
     }
 
     // Print selection map for visualization of the selected blocks
@@ -234,7 +234,7 @@ bool ComputeNextStakeModifier(const CBlockIndex* pindexCurrent, uint64_t &nStake
         LogPrintf("ComputeNextStakeModifier: selection height [%d, %d] map %s\n", nHeightFirstCandidate, pindexPrev->nHeight, strSelectionMap);
     }
     if (gArgs.GetBoolArg("-debug", false))
-        LogPrintf("ComputeNextStakeModifier: new modifier=0x%016x time=%s\n", nStakeModifierNew, DateTimeStrFormat(pindexPrev->GetBlockTime()));
+        LogPrintf("ComputeNextStakeModifier: new modifier=0x%016x time=%s\n", nStakeModifierNew, DateTimeStrFormat("%Y-%m-%d %H:%M:%S", pindexPrev->GetBlockTime()).c_str());
 
     nStakeModifier = nStakeModifierNew;
     fGeneratedStakeModifier = true;
