@@ -344,7 +344,14 @@ bool CheckStakeKernelHash(unsigned int nBits, CBlockIndex* pindexPrev, const CBl
 
     arith_uint256 bnTargetPerCoinDay;
     bnTargetPerCoinDay.SetCompact(nBits);
-    int64_t nValueIn = txPrev->vout[prevout.n].nValue;
+    CAmount nValueIn = txPrev->vout[prevout.n].nValue;
+
+    //! enforce minimum stake amount
+    if (nValueIn < Params().GetConsensus().MinStakeAmount() && fHardenedChecks) {
+        LogPrintf("Minimum stake amount is %d, amount found was %d\n", Params().GetConsensus().MinStakeAmount()/COIN, nValueIn/COIN);
+        return false;
+    }
+
     // v0.3 protocol kernel hash weight starts from 0 at the 30-day min age
     // this change increases active coins participating the hash and helps
     // to secure the network when proof-of-stake difficulty is low
@@ -360,7 +367,7 @@ bool CheckStakeKernelHash(unsigned int nBits, CBlockIndex* pindexPrev, const CBl
         return false;
     ss << nStakeModifier;
 
-    ss << nTimeBlockFrom << blockFrom.GetBlockTime() << prevout.n << nTimeTx;
+    ss << nTimeBlockFrom << txPrevTime << prevout.n << nTimeTx;
     hashProofOfStake = Hash(ss.begin(), ss.end());
     if (fPrintProofOfStake)
     {
