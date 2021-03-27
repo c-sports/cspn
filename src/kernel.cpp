@@ -330,12 +330,27 @@ static bool GetKernelStakeModifier(CBlockIndex* pindexPrev, uint256 hashBlockFro
 bool CheckStakeKernelHash(unsigned int nBits, CBlockIndex* pindexPrev, const CBlockHeader& blockFrom, const CTransactionRef& txPrev, const COutPoint& prevout, unsigned int nTimeTx, uint256& hashProofOfStake, bool fPrintProofOfStake)
 {
     const Consensus::Params& params = Params().GetConsensus();
-    if (nTimeTx < blockFrom.GetBlockTime())  // Transaction timestamp violation
-        return error("CheckStakeKernelHash() : nTime violation");
+    bool fHardenedChecks = pindexPrev->nHeight+1 > params.StakeEnforcement();
+
+    auto txPrevTime = blockFrom.GetBlockTime();
+    if (nTimeTx < txPrevTime) {
+        //! mimic legacy behaviour
+        if (!fHardenedChecks) {
+            return error("%s: nTime violation", __func__);
+        } else {
+            return error("%s: timestamp violation (nTimeTx < txPrevTime)", __func__);
+        }
+    }
 
     unsigned int nTimeBlockFrom = blockFrom.GetBlockTime();
-    if (nTimeBlockFrom + params.nStakeMinAge > nTimeTx) // Min age requirement
-        return error("CheckStakeKernelHash() : min age violation");
+    if (nTimeBlockFrom + params.nStakeMinAge > nTimeTx) {
+        //! mimic legacy behaviour
+        if (!fHardenedChecks) {
+            return error("%s: min age violation", __func__);
+        } else {
+            return error("%s: min age violation (nTimeBlockFrom + params.nStakeMinAge > nTimeTx)", __func__);
+        }
+    }
 
     arith_uint256 bnTargetPerCoinDay;
     bnTargetPerCoinDay.SetCompact(nBits);
