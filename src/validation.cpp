@@ -1983,7 +1983,7 @@ bool CChainState::PoSContextualBlockChecks(const CBlock& block, CValidationState
     if (block.IsProofOfStake())
     {
         pindex->prevoutStake = block.vtx[1]->vin[0].prevout;
-        pindex->nStakeTime = block.vtx[1]->nTime;
+        pindex->nStakeTime = block.nTime;
         pindex->hashProofOfStake = hashProofOfStake;
     }
     if (!pindex->SetStakeEntropyBit(nEntropyBit))
