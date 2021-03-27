@@ -330,7 +330,7 @@ static bool GetKernelStakeModifier(CBlockIndex* pindexPrev, uint256 hashBlockFro
 bool CheckStakeKernelHash(unsigned int nBits, CBlockIndex* pindexPrev, const CBlockHeader& blockFrom, unsigned int nTxPrevOffset, const CTransactionRef& txPrev, const COutPoint& prevout, unsigned int nTimeTx, uint256& hashProofOfStake, bool fPrintProofOfStake)
 {
     const Consensus::Params& params = Params().GetConsensus();
-    if (nTimeTx < txPrev->nTime)  // Transaction timestamp violation
+    if (nTimeTx < blockFrom.GetBlockTime())  // Transaction timestamp violation
         return error("CheckStakeKernelHash() : nTime violation");
 
     unsigned int nTimeBlockFrom = blockFrom.GetBlockTime();
@@ -365,9 +365,9 @@ bool CheckStakeKernelHash(unsigned int nBits, CBlockIndex* pindexPrev, const CBl
                   mapBlockIndex[blockFrom.GetHash()]->nHeight,
                   DateTimeStrFormat("%Y-%m-%d %H:%M:%S", blockFrom.GetBlockTime()).c_str());
         LogPrintf("CheckStakeKernelHash() : check protocol=%s modifier=0x%016x nTimeBlockFrom=%u nTxPrevOffset=%u nTimeTxPrev=%u nPrevout=%u nTimeTx=%u hashProof=%s\n",
-                  "0.3"),
+                  "0.3",
                   nStakeModifier,
-                  nTimeBlockFrom, nTxPrevOffset, txPrev->nTime, prevout.n, nTimeTx,
+                  nTimeBlockFrom, nTxPrevOffset, blockFrom.GetBlockTime(), prevout.n, nTimeTx,
                   hashProofOfStake.ToString());
     }
 
@@ -384,7 +384,7 @@ bool CheckStakeKernelHash(unsigned int nBits, CBlockIndex* pindexPrev, const CBl
         LogPrintf("CheckStakeKernelHash() : pass protocol=%s modifier=0x%016x nTimeBlockFrom=%u nTxPrevOffset=%u nTimeTxPrev=%u nPrevout=%u nTimeTx=%u hashProof=%s\n",
                   "0.3",
                   nStakeModifier,
-                  nTimeBlockFrom, nTxPrevOffset, txPrev->nTime, prevout.n, nTimeTx,
+                  nTimeBlockFrom, nTxPrevOffset, blockFrom.GetBlockTime(), prevout.n, nTimeTx,
                   hashProofOfStake.ToString());
     }
     return true;
