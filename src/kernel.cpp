@@ -327,7 +327,7 @@ static bool GetKernelStakeModifier(CBlockIndex* pindexPrev, uint256 hashBlockFro
 //   quantities so as to generate blocks faster, degrading the system back into
 //   a proof-of-work situation.
 //
-bool CheckStakeKernelHash(unsigned int nBits, CBlockIndex* pindexPrev, const CBlockHeader& blockFrom, unsigned int nTxPrevOffset, const CTransactionRef& txPrev, const COutPoint& prevout, unsigned int nTimeTx, uint256& hashProofOfStake, bool fPrintProofOfStake)
+bool CheckStakeKernelHash(unsigned int nBits, CBlockIndex* pindexPrev, const CBlockHeader& blockFrom, const CTransactionRef& txPrev, const COutPoint& prevout, unsigned int nTimeTx, uint256& hashProofOfStake, bool fPrintProofOfStake)
 {
     const Consensus::Params& params = Params().GetConsensus();
     if (nTimeTx < blockFrom.GetBlockTime())  // Transaction timestamp violation
@@ -448,7 +448,7 @@ bool CheckProofOfStake(CValidationState &state, CBlockIndex* pindexPrev, const C
             return error("%s: check kernel script failed on coinstake %s, hashProof=%s\n", __func__, tx->GetHash().ToString(), hashProofOfStake.ToString());
     }
 
-    if (!CheckStakeKernelHash(nBits, pindexPrev, header, postx.nTxOffset + 80, txPrev, txin.prevout, header.nTime, hashProofOfStake, gArgs.GetBoolArg("-debug", false)))
+    if (!CheckStakeKernelHash(nBits, pindexPrev, header, txPrev, txin.prevout, header.nTime, hashProofOfStake, gArgs.GetBoolArg("-debug", false)))
         return error("%s: check kernel failed on coinstake %s, hashProof=%s", __func__, tx->GetHash().ToString(), hashProofOfStake.ToString()); // may occur during initial download or if behind on block chain sync
 
     return true;

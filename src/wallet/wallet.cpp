@@ -5666,22 +5666,6 @@ bool CWallet::CreateCoinStake(unsigned int nBits,
         // additional staking consensus checks
         //
 
-        CDiskTxPos postx;
-        if (!pblocktree->ReadTxIndex(out.tx->tx->vout[out.i].hash, postx))
-            continue;
-
-        // Read block header
-        CAutoFile file(OpenBlockFile(postx, true), SER_DISK, CLIENT_VERSION);
-        CBlockHeader header;
-        CTransactionRef tx;
-        try {
-            file >> header;
-            fseek(file.Get(), postx.nTxOffset, SEEK_CUR);
-            file >> tx;
-        } catch (std::exception &e) {
-            return error("%s() : deserialize or I/O error in CreateCoinStake()", __PRETTY_FUNCTION__);
-        }
-
         // dont choose inputs smaller than this
         if (out.tx->tx->vout[out.i].nValue < Params().GetConsensus().MinStakeAmount())
             continue;
@@ -5723,7 +5707,7 @@ bool CWallet::CreateCoinStake(unsigned int nBits,
             COutPoint prevoutStake = COutPoint(out.tx->GetHash(), out.i);
             nTryTime = nTxNewTime + 45 - n; // TODO: change 45 to nHashDrift
 
-            if (CheckStakeKernelHash(nBits, chainActive.Tip(), block, postx.nTxOffset + 80, out.tx->tx, prevoutStake, nTryTime, hashProofOfStake))
+            if (CheckStakeKernelHash(nBits, chainActive.Tip(), block, out.tx->tx, prevoutStake, nTryTime, hashProofOfStake))
                 {
                 // Found a kernel
                 LogPrint(BCLog::KERNEL, "%s: kernel found\n", __func__);
