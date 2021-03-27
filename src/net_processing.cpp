@@ -3237,8 +3237,8 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
             LOCK(cs_main);
             bool fRequested = mapBlocksInFlight.count(hash2);
 
-            BlockMap::iterator miPrev = ::BlockIndex().find(pblock->hashPrevBlock);
-            if (miPrev == ::BlockIndex().end()) {
+            BlockMap::iterator miPrev = mapBlockIndex.find(pblock->hashPrevBlock);
+            if (miPrev == mapBlockIndex.end()) {
                 return error("previous header not found");
             }
 
@@ -3255,7 +3255,7 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
 
         static CBlockIndex* pindexLastAccepted = nullptr;
         if (pindexLastAccepted == nullptr)
-            pindexLastAccepted = ::ChainActive().Tip();
+            pindexLastAccepted = chainActive.Tip();
         bool fContinue = true;
 
         // peercoin: accept as many blocks as we possibly can from mapBlocksWait
