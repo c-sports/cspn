@@ -143,7 +143,7 @@ bool ComputeNextStakeModifier(const CBlockIndex* pindexCurrent, uint64_t &nStake
     // if it's not old enough, return the same stake modifier
     int64_t nModifierTime = 0;
     if (!GetLastStakeModifier(pindexPrev, nStakeModifier, nModifierTime))
-        return error("ComputeNextStakeModifier: unable to get last modifier");
+        return error("%s: unable to get last modifier", __func__);
     if (gArgs.GetBoolArg("-debug", false))
         LogPrintf("ComputeNextStakeModifier: prev modifier=0x%016x time=%s epoch=%u\n", nStakeModifier, DateTimeStrFormat("%Y-%m-%d %H:%M:%S", nModifierTime).c_str(), (unsigned int)nModifierTime);
     if (nModifierTime / params.nModifierInterval >= pindexPrev->GetBlockTime() / params.nModifierInterval)
@@ -171,25 +171,8 @@ bool ComputeNextStakeModifier(const CBlockIndex* pindexCurrent, uint64_t &nStake
     }
     int nHeightFirstCandidate = pindex ? (pindex->nHeight + 1) : 0;
 
-    // Shuffle before sort
-    for(int i = vSortedByTimestamp.size() - 1; i > 1; --i)
-        std::swap(vSortedByTimestamp[i], vSortedByTimestamp[GetRand(i)]);
-
-    sort(vSortedByTimestamp.begin(), vSortedByTimestamp.end(), [] (const std::pair<int64_t, uint256> &a, const std::pair<int64_t, uint256> &b)
-    {
-        if (a.first != b.first)
-            return a.first < b.first;
-        // Timestamp equals - compare block hashes
-        const uint32_t *pa = a.second.GetDataPtr();
-        const uint32_t *pb = b.second.GetDataPtr();
-        int cnt = 256 / 32;
-        do {
-            --cnt;
-            if (pa[cnt] != pb[cnt])
-                return pa[cnt] < pb[cnt];
-        } while(cnt);
-        return false; // Elements are equal
-    });
+    reverse(vSortedByTimestamp.begin(), vSortedByTimestamp.end());
+    sort(vSortedByTimestamp.begin(), vSortedByTimestamp.end());
 
     // Select 64 blocks from candidate blocks to generate stake modifier
     uint64_t nStakeModifierNew = 0;
@@ -212,7 +195,7 @@ bool ComputeNextStakeModifier(const CBlockIndex* pindexCurrent, uint64_t &nStake
     }
 
     // Print selection map for visualization of the selected blocks
-    if (gArgs.GetBoolArg("-debug", false) && gArgs.GetBoolArg("-printstakemodifier", false))
+    if (gArgs.IsArgSet("-debug"))
     {
         std::string strSelectionMap = "";
         // '-' indicates proof-of-work blocks not selected
@@ -231,10 +214,10 @@ bool ComputeNextStakeModifier(const CBlockIndex* pindexCurrent, uint64_t &nStake
             // 'W' indicates selected proof-of-work blocks
             strSelectionMap.replace(item.second->nHeight - nHeightFirstCandidate, 1, item.second->IsProofOfStake()? "S" : "W");
         }
-        LogPrintf("ComputeNextStakeModifier: selection height [%d, %d] map %s\n", nHeightFirstCandidate, pindexPrev->nHeight, strSelectionMap);
+        LogPrint(BCLog::KERNEL, "%s: selection height [%d, %d] map %s\n", __func__, nHeightFirstCandidate, pindexPrev->nHeight, strSelectionMap);
     }
-    if (gArgs.GetBoolArg("-debug", false))
-        LogPrintf("ComputeNextStakeModifier: new modifier=0x%016x time=%s\n", nStakeModifierNew, DateTimeStrFormat("%Y-%m-%d %H:%M:%S", pindexPrev->GetBlockTime()).c_str());
+
+    LogPrint(BCLog::KERNEL, "%s: new modifier=0x%016x time=%s\n", __func__, nStakeModifierNew, DateTimeStrFormat("%Y-%m-%d %H:%M:%S", pindexPrev->GetBlockTime()).c_str());
 
     nStakeModifier = nStakeModifierNew;
     fGeneratedStakeModifier = true;
