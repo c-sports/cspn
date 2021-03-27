@@ -197,7 +197,7 @@ private:
     bool ActivateBestChainStep(CValidationState& state, const CChainParams& chainparams, CBlockIndex* pindexMostWork, const std::shared_ptr<const CBlock>& pblock, bool& fInvalidFound, ConnectTrace& connectTrace);
     bool ConnectTip(CValidationState& state, const CChainParams& chainparams, CBlockIndex* pindexNew, const std::shared_ptr<const CBlock>& pblock, ConnectTrace& connectTrace, DisconnectedBlockTransactions &disconnectpool);
 
-    CBlockIndex* AddToBlockIndex(const CBlockHeader& block, bool fProofOfStake, enum BlockStatus nStatus = BLOCK_VALID_TREE);
+    CBlockIndex* AddToBlockIndex(const CBlockHeader& block, bool fSetAsProofOfstake, enum BlockStatus nStatus = BLOCK_VALID_TREE);
     /** Create a new block index entry for a given block hash */
     CBlockIndex * InsertBlockIndex(const uint256& hash);
     void CheckBlockIndex(const Consensus::Params& consensusParams);
@@ -1938,20 +1938,20 @@ static int64_t nBlocksTotal = 0;
 bool CChainState::PoSContextualBlockChecks(const CBlock& block, CValidationState& state, CBlockIndex* pindex, bool fJustCheck)
 {
     uint256 hashProofOfStake = uint256();
-    // verify hash target and signature of coinstake tx
-    if (block.IsProofOfStake() && !CheckProofOfStake(block, pindex->pprev, hashProofOfStake)) {
-        LogPrintf("%s: check proof-of-stake failed for block %s\n", __func__, block.GetHash().ToString());
+    // peercoin: verify hash target and signature of coinstake tx
+    if (block.IsProofOfStake() && !CheckProofOfStake(state, pindex->pprev, block.vtx[1], block.nBits, hashProofOfStake)) {
+        LogPrintf("WARNING: %s: check proof-of-stake failed for block %s\n", __func__, block.GetHash().ToString());
         return false; // do not error here as we expect this during initial block download
     }
 
-    // compute stake entropy bit for stake modifier
+    // peercoin: compute stake entropy bit for stake modifier
     unsigned int nEntropyBit = GetStakeEntropyBit(block);
 
-    // compute stake modifier
+    // peercoin: compute stake modifier
     uint64_t nStakeModifier = 0;
     bool fGeneratedStakeModifier = false;
     if (!ComputeNextStakeModifier(pindex, nStakeModifier, fGeneratedStakeModifier))
-        return error("%s: ComputeNextStakeModifier() failed", __func__);
+        return error("ConnectBlock() : ComputeNextStakeModifier() failed");
 
     // compute nStakeModifierChecksum begin
     unsigned int nFlagsBackup      = pindex->nFlags;
@@ -1960,7 +1960,7 @@ bool CChainState::PoSContextualBlockChecks(const CBlock& block, CValidationState
 
     // set necessary pindex fields
     if (!pindex->SetStakeEntropyBit(nEntropyBit))
-        return error("%s: failed SetStakeEntropyBit()", __func__);
+        return error("ConnectBlock() : SetStakeEntropyBit() failed");
     pindex->SetStakeModifier(nStakeModifier, fGeneratedStakeModifier);
     pindex->hashProofOfStake = hashProofOfStake;
 
@@ -1973,22 +1973,21 @@ bool CChainState::PoSContextualBlockChecks(const CBlock& block, CValidationState
     // compute nStakeModifierChecksum end
 
     if (!CheckStakeModifierCheckpoints(pindex->nHeight, nStakeModifierChecksum))
-        return error("%s: rejected by stake modifier checkpoint height=%d, modifier=0x%016llx",
-                     __func__, pindex->nHeight, nStakeModifier);
+        return error("ConnectBlock() : Rejected by stake modifier checkpoint height=%d, modifier=0x%016llx", pindex->nHeight, nStakeModifier);
 
     if (fJustCheck)
         return true;
 
+
     // write everything to index
     if (block.IsProofOfStake())
     {
-        pindex->SetProofOfStake();
         pindex->prevoutStake = block.vtx[1]->vin[0].prevout;
-        pindex->nStakeTime = block.nTime;
+        pindex->nStakeTime = block.vtx[1]->nTime;
         pindex->hashProofOfStake = hashProofOfStake;
     }
     if (!pindex->SetStakeEntropyBit(nEntropyBit))
-        return error("%s: failed SetStakeEntropyBit()", __func__);
+        return error("ConnectBlock() : SetStakeEntropyBit() failed");
     pindex->SetStakeModifier(nStakeModifier, fGeneratedStakeModifier);
     pindex->nStakeModifierChecksum = nStakeModifierChecksum;
     setDirtyBlockIndex.insert(pindex);  // queue a write to disk
@@ -3269,7 +3268,7 @@ bool ResetBlockFailureFlags(CBlockIndex *pindex) {
     return g_chainstate.ResetBlockFailureFlags(pindex);
 }
 
-CBlockIndex* CChainState::AddToBlockIndex(const CBlockHeader& block, bool fProofOfStake, enum BlockStatus nStatus)
+CBlockIndex* CChainState::AddToBlockIndex(const CBlockHeader& block, bool fSetAsProofOfstake, enum BlockStatus nStatus)
 {
     // Check for duplicate
     uint256 hash = block.GetHash();
@@ -3293,7 +3292,7 @@ CBlockIndex* CChainState::AddToBlockIndex(const CBlockHeader& block, bool fProof
         pindexNew->BuildSkip();
     }
     // set pos flag if it wasnt set
-    if (!block.nNonce)
+    if (fSetAsProofOfstake)
         pindexNew->SetProofOfStake();
     pindexNew->nTimeMax = (pindexNew->pprev ? std::max(pindexNew->pprev->nTimeMax, pindexNew->nTime) : pindexNew->nTime);
     pindexNew->nChainWork = (pindexNew->pprev ? pindexNew->pprev->nChainWork : 0) + GetBlockProof(*pindexNew);
@@ -3724,7 +3723,7 @@ bool CChainState::AcceptBlockHeader(const CBlockHeader& block, CValidationState&
 
         if (llmq::chainLocksHandler->HasConflictingChainLock(pindexPrev->nHeight + 1, hash)) {
             if (pindex == nullptr) {
-                AddToBlockIndex(block, block.nNonce == 0, BLOCK_CONFLICT_CHAINLOCK);
+                AddToBlockIndex(block, fProofOfStake, BLOCK_CONFLICT_CHAINLOCK);
             }
             return state.DoS(10, error("%s: header %s conflicts with chainlock", __func__, hash.ToString()), REJECT_INVALID, "bad-chainlock");
         }
@@ -3794,7 +3793,7 @@ bool CChainState::AcceptBlock(const std::shared_ptr<const CBlock>& pblock, CVali
     CBlockIndex *pindexDummy = nullptr;
     CBlockIndex *&pindex = ppindex ? *ppindex : pindexDummy;
 
-    if (!AcceptBlockHeader(block, state, chainparams, &pindex, (block.nNonce == 0)))
+    if (!AcceptBlockHeader(block, state, chainparams, &pindex, block.IsProofOfStake()))
         return false;
 
     // proof-of-stake: we should only accept blocks that can be connected to a prev block with validated PoS
