@@ -3876,7 +3876,7 @@ bool CChainState::AcceptBlock(const std::shared_ptr<const CBlock>& pblock, CVali
     return true;
 }
 
-bool ProcessNewBlock(const CChainParams& chainparams, const std::shared_ptr<const CBlock> pblock, bool fForceProcessing, bool *fNewBlock)
+bool ProcessNewBlock(const CChainParams& chainparams, const std::shared_ptr<const CBlock> pblock, bool fForceProcessing, bool *fNewBlock, CBlockIndex** ppindex)
 {
     AssertLockNotHeld(cs_main);
 
@@ -3894,6 +3894,10 @@ bool ProcessNewBlock(const CChainParams& chainparams, const std::shared_ptr<cons
             // Store to disk
             ret = g_chainstate.AcceptBlock(pblock, state, chainparams, &pindex, fForceProcessing, nullptr, fNewBlock);
         }
+
+        if (ppindex)
+            *ppindex = ret ? pindex : nullptr;
+
         if (!ret) {
             GetMainSignals().BlockChecked(*pblock, state);
             return error("%s: AcceptBlock FAILED: %s", __func__, FormatStateMessage(state));
