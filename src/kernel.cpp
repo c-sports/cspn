@@ -409,7 +409,7 @@ int GetLastHeight(uint256 txHash)
 }
 
 // Check kernel hash target and coinstake signature
-bool CheckProofOfStake(CValidationState &state, CBlockIndex* pindexPrev, const CTransactionRef& tx, unsigned int nBits, uint256& hashProofOfStake)
+bool CheckProofOfStake(const CBlock &block, CBlockIndex* pindexPrev, const CTransactionRef& tx, uint256& hashProofOfStake)
 {
     if (!tx->IsCoinStake())
         return error("CheckProofOfStake() : called on non-coinstake %s", tx->GetHash().ToString());
@@ -453,7 +453,7 @@ bool CheckProofOfStake(CValidationState &state, CBlockIndex* pindexPrev, const C
             return error("%s: check kernel script failed on coinstake %s, hashProof=%s\n", __func__, tx->GetHash().ToString(), hashProofOfStake.ToString());
     }
 
-    if (!CheckStakeKernelHash(nBits, pindexPrev, header, txPrev, txin.prevout, header.nTime, hashProofOfStake, gArgs.GetBoolArg("-debug", false)))
+    if (!CheckStakeKernelHash(block.nBits, pindexPrev, header, txPrev, txin.prevout, block.nTime, hashProofOfStake, gArgs.GetBoolArg("-debug", false)))
         return error("%s: check kernel failed on coinstake %s, hashProof=%s", __func__, tx->GetHash().ToString(), hashProofOfStake.ToString()); // may occur during initial download or if behind on block chain sync
 
     return true;
