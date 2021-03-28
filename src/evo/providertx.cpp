@@ -142,6 +142,8 @@ bool CheckProRegTx(const CTransaction& tx, const CBlockIndex* pindexPrev, CValid
             return state.DoS(10, false, REJECT_INVALID, "bad-protx-collateral");
         }
 
+        LogPrintf("collateralOutpoint %s scriptpubkey %s nHeight %s testest\n", ptx.collateralOutpoint.ToStringShort(), coin.out.scriptPubKey.ToString, pindexPrev->nHeight);
+
         if (!ExtractDestination(coin.out.scriptPubKey, collateralTxDest)) {
             return state.DoS(10, false, REJECT_INVALID, "bad-protx-collateral-dest");
         }
