@@ -145,7 +145,7 @@ bool Solver(const CScript& scriptPubKey, txnouttype& typeRet, std::vector<std::v
  * Parse a standard scriptPubKey for the destination address. Assigns result to
  * the addressRet parameter and returns true if successful. For multisig
  * scripts, instead use ExtractDestinations. Currently only works for P2PK,
- * P2PKH, and P2SH scripts.
+ * P2PKH, P2SH, P2WPKH, and P2WSH scripts.
  */
 bool ExtractDestination(const CScript& scriptPubKey, CTxDestination& addressRet);
 
