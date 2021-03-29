@@ -115,6 +115,7 @@ BITCOIN_CORE_H = \
   spentindex.h \
   addrman.h \
   base58.h \
+  bech32.h \
   batchedlogger.h \
   bip39.h \
   bip39_english.h \
@@ -511,6 +512,7 @@ libdash_common_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 libdash_common_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libdash_common_a_SOURCES = \
   base58.cpp \
+  bech32.cpp \
   bip39.cpp \
   chainparams.cpp \
   coins.cpp \

@@ -401,6 +401,8 @@ public:
         // Dash BIP44 coin type is '5'
         nExtCoinType = 5;
 
+        bech32_hrp = "cp";
+
         vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_main, pnSeed6_main + ARRAYLEN(pnSeed6_main));
 
         // long living quorum params
@@ -562,6 +564,8 @@ public:
 
         // Testnet Dash BIP44 coin type is '1' (All coin's testnet default)
         nExtCoinType = 1;
+
+        bech32_hrp = "tbg";
 
         // long living quorum params
         consensus.llmqs[Consensus::LLMQ_50_60] = llmq50_60;
@@ -862,6 +866,8 @@ public:
 
         // Regtest Dash BIP44 coin type is '1' (All coin's testnet default)
         nExtCoinType = 1;
+
+        bech32_hrp = "bgrt";
 
         // long living quorum params
         consensus.llmqs[Consensus::LLMQ_TEST] = llmq_test;

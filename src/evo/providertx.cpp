@@ -16,6 +16,7 @@
 #include <streams.h>
 #include <univalue.h>
 #include <validation.h>
+#include <wallet/wallet.h>
 
 template <typename ProTx>
 static bool CheckService(const uint256& proTxHash, const ProTx& proTx, CValidationState& state)
@@ -133,7 +134,7 @@ bool CheckProRegTx(const CTransaction& tx, const CBlockIndex* pindexPrev, CValid
     }
 
     CTxDestination collateralTxDest;
-    const CKeyID *keyForPayloadSig = nullptr;
+    CKeyID keyForPayloadSig;
     COutPoint collateralOutpoint;
 
     if (!ptx.collateralOutpoint.hash.IsNull()) {
@@ -148,10 +149,12 @@ bool CheckProRegTx(const CTransaction& tx, const CBlockIndex* pindexPrev, CValid
             return state.DoS(10, false, REJECT_INVALID, "bad-protx-collateral-dest");
         }
 
+        CWallet* const pwallet = GetWallets()[0];
+
         // Extract key from collateral. This only works for P2PK and P2PKH collaterals and will fail for P2SH.
         // Issuer of this ProRegTx must prove ownership with this key by signing the ProRegTx
-        keyForPayloadSig = boost::get<CKeyID>(&collateralTxDest);
-        if (!keyForPayloadSig) {
+        keyForPayloadSig = GetKeyForDestination(*pwallet, collateralTxDest);
+        if (keyForPayloadSig.IsNull()) {
             return state.DoS(10, false, REJECT_INVALID, "bad-protx-collateral-pkh");
         }
 
@@ -195,9 +198,9 @@ bool CheckProRegTx(const CTransaction& tx, const CBlockIndex* pindexPrev, CValid
         return false;
     }
 
-    if (keyForPayloadSig) {
+    if (!keyForPayloadSig.IsNull()) {
         // collateral is not part of this ProRegTx, so we must verify ownership of the collateral
-        if (!CheckStringSig(ptx, *keyForPayloadSig, state)) {
+        if (!CheckStringSig(ptx, keyForPayloadSig, state)) {
             // pass the state returned by the function above
             return false;
         }
