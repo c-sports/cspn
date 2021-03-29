@@ -149,7 +149,7 @@ bool CheckProRegTx(const CTransaction& tx, const CBlockIndex* pindexPrev, CValid
             return state.DoS(10, false, REJECT_INVALID, "bad-protx-collateral-dest");
         }
 
-        CWallet* const pwallet = GetWallets().front().get();
+        CWallet* const pwallet = GetWallets()[0];
 
         // Extract key from collateral. This only works for P2PK and P2PKH collaterals and will fail for P2SH.
         // Issuer of this ProRegTx must prove ownership with this key by signing the ProRegTx
