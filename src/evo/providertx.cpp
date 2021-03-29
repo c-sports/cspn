@@ -134,7 +134,7 @@ bool CheckProRegTx(const CTransaction& tx, const CBlockIndex* pindexPrev, CValid
     }
 
     CTxDestination collateralTxDest;
-    const CKeyID *keyForPayloadSig = nullptr;
+    CKeyID keyForPayloadSig;
     COutPoint collateralOutpoint;
 
     if (!ptx.collateralOutpoint.hash.IsNull()) {
@@ -198,9 +198,9 @@ bool CheckProRegTx(const CTransaction& tx, const CBlockIndex* pindexPrev, CValid
         return false;
     }
 
-    if (keyForPayloadSig) {
+    if (!keyForPayloadSig.IsNull()) {
         // collateral is not part of this ProRegTx, so we must verify ownership of the collateral
-        if (!CheckStringSig(ptx, *keyForPayloadSig, state)) {
+        if (!CheckStringSig(ptx, keyForPayloadSig, state)) {
             // pass the state returned by the function above
             return false;
         }
