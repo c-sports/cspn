@@ -2818,19 +2818,27 @@ bool CChainState::ConnectTip(CValidationState& state, const CChainParams& chainp
     {
         LogPrintf("test 9\n");
         auto dbTx = evoDb->BeginTransaction();
-
+        LogPrintf("test 20\n");
         CCoinsViewCache view(pcoinsTip.get());
+        LogPrintf("test 21\n");
         bool rv = ConnectBlock(blockConnecting, state, pindexNew, view, chainparams);
+        LogPrintf("test 22\n");
         GetMainSignals().BlockChecked(blockConnecting, state);
+        LogPrintf("test 23\n");
         if (!rv) {
+            LogPrintf("test 24\n");
             if (state.IsInvalid())
                 InvalidBlockFound(pindexNew, state);
             return error("ConnectTip(): ConnectBlock %s failed with %s", pindexNew->GetBlockHash().ToString(), FormatStateMessage(state));
         }
+        LogPrintf("test 25\n");
         nTime3 = GetTimeMicros(); nTimeConnectTotal += nTime3 - nTime2;
         LogPrint(BCLog::BENCHMARK, "  - Connect total: %.2fms [%.2fs (%.2fms/blk)]\n", (nTime3 - nTime2) * MILLI, nTimeConnectTotal * MICRO, nTimeConnectTotal * MILLI / nBlocksTotal);
+        LogPrintf("test 26\n");
         bool flushed = view.Flush();
+        LogPrintf("test 27\n");
         assert(flushed);
+        LogPrintf("test 28\n");
         dbTx->Commit();
         LogPrintf("test 10\n");
     }
