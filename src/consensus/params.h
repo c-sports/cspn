@@ -209,6 +209,8 @@ struct Params {
     {
         return (contextHeight - utxoFromBlockHeight >= nMinStakeHistory);
     }
+
+    int nStartQuorums;
 };
 } // namespace Consensus
 
