@@ -937,8 +937,11 @@ CDeterministicMNList CDeterministicMNManager::GetListForBlock(const CBlockIndex*
         LogPrintf("test 32\n");
         // try using cache before reading from disk
         auto itLists = mnListsCache.find(pindex->GetBlockHash());
+        LogPrintf("test 40\n");
         if (itLists != mnListsCache.end()) {
+            LogPrintf("test 41\n");
             snapshot = itLists->second;
+            LogPrintf("test 42\n");
             break;
         }
         LogPrintf("test 33\n");
