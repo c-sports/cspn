@@ -929,23 +929,24 @@ void CDeterministicMNManager::DecreasePoSePenalties(CDeterministicMNList& mnList
 CDeterministicMNList CDeterministicMNManager::GetListForBlock(const CBlockIndex* pindex)
 {
     LOCK(cs);
-
+    LogPrintf("test 30\n");
     CDeterministicMNList snapshot;
     std::list<const CBlockIndex*> listDiffIndexes;
-
+    LogPrintf("test 31\n");
     while (true) {
+        LogPrintf("test 32\n");
         // try using cache before reading from disk
         auto itLists = mnListsCache.find(pindex->GetBlockHash());
         if (itLists != mnListsCache.end()) {
             snapshot = itLists->second;
             break;
         }
-
+        LogPrintf("test 33\n");
         if (evoDb.Read(std::make_pair(DB_LIST_SNAPSHOT, pindex->GetBlockHash()), snapshot)) {
             mnListsCache.emplace(pindex->GetBlockHash(), snapshot);
             break;
         }
-
+        LogPrintf("test 34\n");
         // no snapshot found yet, check diffs
         auto itDiffs = mnListDiffsCache.find(pindex->GetBlockHash());
         if (itDiffs != mnListDiffsCache.end()) {
@@ -953,7 +954,7 @@ CDeterministicMNList CDeterministicMNManager::GetListForBlock(const CBlockIndex*
             pindex = pindex->pprev;
             continue;
         }
-
+        LogPrintf("test 35\n");
         CDeterministicMNListDiff diff;
         if (!evoDb.Read(std::make_pair(DB_LIST_DIFF, pindex->GetBlockHash()), diff)) {
             // no snapshot and no diff on disk means that it's the initial snapshot
@@ -961,13 +962,13 @@ CDeterministicMNList CDeterministicMNManager::GetListForBlock(const CBlockIndex*
             mnListsCache.emplace(pindex->GetBlockHash(), snapshot);
             break;
         }
-
+        LogPrintf("test 36\n");
         diff.nHeight = pindex->nHeight;
         mnListDiffsCache.emplace(pindex->GetBlockHash(), std::move(diff));
         listDiffIndexes.emplace_front(pindex);
         pindex = pindex->pprev;
     }
-
+    LogPrintf("test 37\n");
     for (const auto& diffIndex : listDiffIndexes) {
         const auto& diff = mnListDiffsCache.at(diffIndex->GetBlockHash());
         if (diff.HasChanges()) {
@@ -977,7 +978,7 @@ CDeterministicMNList CDeterministicMNManager::GetListForBlock(const CBlockIndex*
             snapshot.SetHeight(diffIndex->nHeight);
         }
     }
-
+    LogPrintf("test 38\n");
     if (tipIndex) {
         // always keep a snapshot for the tip
         if (snapshot.GetBlockHash() == tipIndex->GetBlockHash()) {
@@ -992,7 +993,7 @@ CDeterministicMNList CDeterministicMNManager::GetListForBlock(const CBlockIndex*
             }
         }
     }
-
+    LogPrintf("test 39\n");
     return snapshot;
 }
 
