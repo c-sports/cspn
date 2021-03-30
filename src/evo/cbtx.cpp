@@ -83,7 +83,7 @@ bool CheckCbTxMerkleRoots(const CBlock& block, const CBlockIndex* pindex, CValid
             // pass the state returned by the function above
             return false;
         }
-        LogPrintf("merkle quorums 1 %s : 2 %s", calculatedMerkleRoot.ToString(), cbTx.merkleRootMNList.ToString());
+        LogPrintf("merkle quorums 1 %s : 2 %s", calculatedMerkleRoot.ToString(), cbTx.merkleRootQuorums.ToString());
         if (calculatedMerkleRoot != cbTx.merkleRootQuorums) {
             return state.DoS(100, false, REJECT_INVALID, "bad-cbtx-quorummerkleroot");
         }
