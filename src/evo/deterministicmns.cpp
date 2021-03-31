@@ -938,7 +938,7 @@ CDeterministicMNList CDeterministicMNManager::GetListForBlock(const CBlockIndex*
 
         uint256 hash = pindex->GetBlockHash();
         LogPrintf("test 50\n");
-        LogPrint("print blockhash test = %s", hash.ToString());
+        LogPrintf("print blockhash test = %s", hash.ToString());
 
         // try using cache before reading from disk
         auto itLists = mnListsCache.find(hash);
