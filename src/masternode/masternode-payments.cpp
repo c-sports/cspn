@@ -327,10 +327,15 @@ bool CMasternodePayments::GetBlockTxOuts(int nBlockHeight, CAmount blockReward, 
 {
     voutMasternodePaymentsRet.clear();
 
-    const CBlockIndex* pindex;
     uint256 proTxHash;
 
     CAmount masternodeReward = GetMasternodePayment(nBlockHeight, blockReward);
+
+    const CBlockIndex* pindex;
+    {
+        LOCK(cs_main);
+        pindex = chainActive[nBlockHeight - 1];
+    }
 
     auto dmnPayee = deterministicMNManager->GetListForBlock(pindex).GetMNPayee();
     if (!dmnPayee) {
