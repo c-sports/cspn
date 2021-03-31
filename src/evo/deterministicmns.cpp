@@ -935,6 +935,8 @@ CDeterministicMNList CDeterministicMNManager::GetListForBlock(const CBlockIndex*
     LogPrintf("test 31\n");
     while (true) {
         LogPrintf("test 32\n");
+        // disable cache bitg probably screwed something up, I don't have time to look at it rn.
+        /*
         // try using cache before reading from disk
         auto itLists = mnListsCache.find(pindex->GetBlockHash());
         LogPrintf("test 40\n");
@@ -943,7 +945,7 @@ CDeterministicMNList CDeterministicMNManager::GetListForBlock(const CBlockIndex*
             snapshot = itLists->second;
             LogPrintf("test 42\n");
             break;
-        }
+        }*/
         LogPrintf("test 33\n");
         if (evoDb.Read(std::make_pair(DB_LIST_SNAPSHOT, pindex->GetBlockHash()), snapshot)) {
             mnListsCache.emplace(pindex->GetBlockHash(), snapshot);
