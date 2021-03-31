@@ -2790,57 +2790,39 @@ public:
  */
 bool CChainState::ConnectTip(CValidationState& state, const CChainParams& chainparams, CBlockIndex* pindexNew, const std::shared_ptr<const CBlock>& pblock, ConnectTrace& connectTrace, DisconnectedBlockTransactions &disconnectpool)
 {
-    LogPrintf("test 1\n");
     assert(pindexNew->pprev == chainActive.Tip());
     // Read block from disk.
     int64_t nTime1 = GetTimeMicros();
-    LogPrintf("test 2\n");
     std::shared_ptr<const CBlock> pthisBlock;
-    LogPrintf("test 3\n");
     if (!pblock) {
-        LogPrintf("test 4\n");
         std::shared_ptr<CBlock> pblockNew = std::make_shared<CBlock>();
         if (!ReadBlockFromDisk(*pblockNew, pindexNew, chainparams.GetConsensus()))
             return AbortNode(state, "Failed to read block");
         pthisBlock = pblockNew;
-        LogPrintf("test 5\n");
     } else {
-        LogPrintf("test 6\n");
         pthisBlock = pblock;
-        LogPrintf("test 7\n");
     }
     const CBlock& blockConnecting = *pthisBlock;
     // Apply the block atomically to the chain state.
     int64_t nTime2 = GetTimeMicros(); nTimeReadFromDisk += nTime2 - nTime1;
     int64_t nTime3;
-    LogPrintf("test 8\n");
     LogPrint(BCLog::BENCHMARK, "  - Load block from disk: %.2fms [%.2fs]\n", (nTime2 - nTime1) * MILLI, nTimeReadFromDisk * MICRO);
     {
-        LogPrintf("test 9\n");
         auto dbTx = evoDb->BeginTransaction();
-        LogPrintf("test 20\n");
+
         CCoinsViewCache view(pcoinsTip.get());
-        LogPrintf("test 21\n");
         bool rv = ConnectBlock(blockConnecting, state, pindexNew, view, chainparams);
-        LogPrintf("test 22\n");
         GetMainSignals().BlockChecked(blockConnecting, state);
-        LogPrintf("test 23\n");
         if (!rv) {
-            LogPrintf("test 24\n");
             if (state.IsInvalid())
                 InvalidBlockFound(pindexNew, state);
             return error("ConnectTip(): ConnectBlock %s failed with %s", pindexNew->GetBlockHash().ToString(), FormatStateMessage(state));
         }
-        LogPrintf("test 25\n");
         nTime3 = GetTimeMicros(); nTimeConnectTotal += nTime3 - nTime2;
         LogPrint(BCLog::BENCHMARK, "  - Connect total: %.2fms [%.2fs (%.2fms/blk)]\n", (nTime3 - nTime2) * MILLI, nTimeConnectTotal * MICRO, nTimeConnectTotal * MILLI / nBlocksTotal);
-        LogPrintf("test 26\n");
         bool flushed = view.Flush();
-        LogPrintf("test 27\n");
         assert(flushed);
-        LogPrintf("test 28\n");
         dbTx->Commit();
-        LogPrintf("test 10\n");
     }
     int64_t nTime4 = GetTimeMicros(); nTimeFlush += nTime4 - nTime3;
     LogPrint(BCLog::BENCHMARK, "  - Flush: %.2fms [%.2fs (%.2fms/blk)]\n", (nTime4 - nTime3) * MILLI, nTimeFlush * MICRO, nTimeFlush * MILLI / nBlocksTotal);
@@ -2855,13 +2837,12 @@ bool CChainState::ConnectTip(CValidationState& state, const CChainParams& chainp
     // Update chainActive & related variables.
     chainActive.SetTip(pindexNew);
     UpdateTip(pindexNew, chainparams);
-    LogPrintf("test 11\n");
+
     int64_t nTime6 = GetTimeMicros(); nTimePostConnect += nTime6 - nTime5; nTimeTotal += nTime6 - nTime1;
     LogPrint(BCLog::BENCHMARK, "  - Connect postprocess: %.2fms [%.2fs (%.2fms/blk)]\n", (nTime6 - nTime5) * MILLI, nTimePostConnect * MICRO, nTimePostConnect * MILLI / nBlocksTotal);
     LogPrint(BCLog::BENCHMARK, "- Connect block: %.2fms [%.2fs (%.2fms/blk)]\n", (nTime6 - nTime1) * MILLI, nTimeTotal * MICRO, nTimeTotal * MILLI / nBlocksTotal);
 
     connectTrace.BlockConnected(pindexNew, std::move(pthisBlock));
-    LogPrintf("test 12\n");
     return true;
 }
 
