@@ -80,7 +80,7 @@ void CMNAuth::ProcessMessage(CNode* pnode, const std::string& strCommand, CDataS
 
         // bitg removed this
         // bitg nodes does node_network and witness not network and bloom only activate this once we fork off
-        if (chainActive.Tip().nHeight >= Params().GetConsensus().nForkOffOldNodes) {
+        if (chainActive.Tip()->nHeight >= Params().GetConsensus().nForkOffOldNodes) {
             if ((~pnode->nServices) & (NODE_NETWORK | NODE_BLOOM)) {
                 // either NODE_NETWORK or NODE_BLOOM bit is missing in node's services
                 LOCK(cs_main);
