@@ -123,7 +123,7 @@ void CMNAuth::ProcessMessage(CNode* pnode, const std::string& strCommand, CDataS
                 nOurNodeVersion = gArgs.GetArg("-pushversion", PROTOCOL_VERSION);
             }
             // See comment in PushMNAUTH (fInbound is negated here as we're on the other side of the connection)
-            if (pnode->nVersion < MNAUTH_NODE_VER_VERSION || nOurNodeVersion < MNAUTH_NODE_VER_VERSION) {
+            if (!(chainActive.Tip()->nHeight >= Params().GetConsensus().nForkOffOldNodes)) {
                 signHash = ::SerializeHash(std::make_tuple(dmn->pdmnState->pubKeyOperator, pnode->sentMNAuthChallenge, !pnode->fInbound));
             } else {
                 signHash = ::SerializeHash(std::make_tuple(dmn->pdmnState->pubKeyOperator, pnode->sentMNAuthChallenge, !pnode->fInbound, pnode->nVersion.load()));
