@@ -202,6 +202,7 @@ public:
     UnlockContext requestUnlock(bool fForMixingOnly=false);
 
     bool getPubKey(const CKeyID &address, CPubKey& vchPubKeyOut) const;
+    bool isMine(CTxDestination  address);
     bool IsSpendable(const CTxDestination& dest) const;
     bool IsSpendable(const CScript& script) const;
     bool getPrivKey(const CKeyID &address, CKey& vchPrivKeyOut) const;

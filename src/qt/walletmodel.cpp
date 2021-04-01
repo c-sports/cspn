@@ -814,6 +814,11 @@ bool WalletModel::hdEnabled() const
     return wallet->IsHDEnabled();
 }
 
+bool WalletModel::isMine(CTxDestination  address)
+{
+    return IsMine(*wallet, address);
+}
+
 int WalletModel::getDefaultConfirmTarget() const
 {
     return nTxConfirmTarget;
