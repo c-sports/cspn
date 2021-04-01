@@ -53,6 +53,7 @@ public:
     static QList<CAmount> payAmounts;
     static CCoinControl *coinControl();
     static bool fSubtractFeeFromAmount;
+    static int nSplitBlockDummy;
     static void usePrivateSend(bool fUsePrivateSend);
 
 private:

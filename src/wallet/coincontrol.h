@@ -29,6 +29,8 @@ class CCoinControl
 {
 public:
     CTxDestination destChange;
+    bool fSplitBlock;
+    int nSplitBlock;
     //! If false, allows unselected inputs, but requires all selected inputs be used if fAllowOtherInputs is true (default)
     bool fAllowOtherInputs;
     //! If false, only include as many inputs as necessary to fulfill a coin selection request. Only usable together with fAllowOtherInputs
@@ -65,6 +67,8 @@ public:
         fOverrideFeeRate = false;
         m_confirm_target.reset();
         m_fee_mode = FeeEstimateMode::UNSET;
+        fSplitBlock = false;
+        nSplitBlock = 1;
         nCoinType = CoinType::ALL_COINS;
     }
 

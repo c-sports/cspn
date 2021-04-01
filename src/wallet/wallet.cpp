@@ -3875,6 +3875,23 @@ bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend, CWalletT
                         return false;
                     }
                     txNew.vout.push_back(txout);
+                } else {
+                    int nSplitBlock;
+
+                    if (coinControl)
+                        nSplitBlock = coinControl->nSplitBlock;
+                    else
+                        nSplitBlock = 1;
+
+                    for (const auto& recipient : vecSend) {
+                        for (int i = 0; i < nSplitBlock; i++) {
+                            if (i == nSplitBlock - 1) {
+                                uint64_t nRemainder = recipient.nAmount % nSplitBlock;
+                                txNew.vout.push_back(CTxOut((recipient.nAmount / nSplitBlock) + nRemainder, recipient.scriptPubKey));
+                            } else
+                                txNew.vout.push_back(CTxOut(recipient.nAmount / nSplitBlock, recipient.scriptPubKey));
+                        }
+                    }
                 }
 
                 // Choose coins to use
