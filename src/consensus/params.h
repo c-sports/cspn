@@ -211,6 +211,7 @@ struct Params {
     }
 
     int nStartQuorums;
+    int nForkOffOldNodes;
 };
 } // namespace Consensus
 

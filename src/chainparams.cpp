@@ -331,6 +331,7 @@ public:
         // we shouldn't check quorums till we fork off there code
         // so I will just add a number to not check them here, but in the future we will have to add this check in a few other places.
         consensus.nStartQuorums = 9999999999;
+        consensus.nForkOffOldNodes = 9999999999;
 
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = 1199145601; // January 1, 2008
