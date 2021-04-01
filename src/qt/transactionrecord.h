@@ -84,6 +84,8 @@ public:
     {
         Other,
         Generated,
+        StakeMint,
+        MNReward,
         SendToAddress,
         SendToOther,
         RecvWithAddress,

@@ -317,7 +317,7 @@ void SendCoinsDialog::on_sendButton_clicked()
     // and make many transactions while unlocking through this dialog
     // will call relock
     WalletModel::EncryptionStatus encStatus = model->getEncryptionStatus();
-    if(encStatus == model->Locked || encStatus == model->UnlockedForMixingOnly)
+    if(encStatus == model->Locked || encStatus == model->UnlockedForStakingOnly)
     {
         WalletModel::UnlockContext ctx(model->requestUnlock());
         if(!ctx.isValid())

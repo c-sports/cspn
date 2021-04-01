@@ -39,6 +39,33 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
     uint256 hash = wtx.GetHash();
     std::map<std::string, std::string> mapValue = wtx.mapValue;
 
+    if(wtx.IsCoinStake()) {
+
+        TransactionRecord sub(hash, nTime);
+        CTxDestination address;
+        if (!ExtractDestination(wtx.tx->vout[1].scriptPubKey, address))
+            return parts;
+
+        if (!IsMine(*wallet, address)) {
+            for (unsigned int i = 1; i < wtx.tx->vout.size(); i++) {
+                CTxDestination outAddress;
+                if (ExtractDestination(wtx.tx->vout[i].scriptPubKey, outAddress)) {
+                    isminetype mine = IsMine(*wallet, outAddress);
+                    if (mine) {
+                        sub.involvesWatchAddress = mine & ISMINE_WATCH_ONLY;
+                        sub.type = TransactionRecord::MNReward;
+                        sub.credit = wtx.tx->vout[i].nValue;
+                    }
+                }
+            }
+        } else {
+            isminetype mine = IsMine(*wallet, address);
+            sub.involvesWatchAddress = mine & ISMINE_WATCH_ONLY;
+            sub.credit = nCredit - nDebit;
+            sub.type = TransactionRecord::StakeMint;
+        }
+    }
+
     if (nNet > 0 || wtx.IsCoinBase())
     {
         //
@@ -314,7 +341,7 @@ void TransactionRecord::updateStatus(const CWalletTx &wtx, int chainLockHeight)
         }
     }
     // For generated transactions, determine maturity
-    else if(type == TransactionRecord::Generated)
+    else if(type == TransactionRecord::Generated || type == TransactionRecord::StakeMint || type == TransactionRecord::MNReward)
     {
         if (wtx.GetBlocksToMaturity() > 0)
         {
