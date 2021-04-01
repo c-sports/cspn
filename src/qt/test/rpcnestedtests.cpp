@@ -11,7 +11,7 @@
 #include <rpc/register.h>
 #include <rpc/server.h>
 #include <qt/rpcconsole.h>
-#include <test/test_dash.h>
+#include <test/test_cspn.h>
 #include <univalue.h>
 #include <util.h>
 

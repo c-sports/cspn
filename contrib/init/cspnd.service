@@ -1,0 +1,25 @@
+# It is not recommended to modify this file in-place, because it will
+# be overwritten during package upgrades. If you want to add further
+# options or overwrite existing ones then use
+# $ systemctl edit cspnd.service
+# See "man systemd.service" for details.
+
+# Note that almost all daemon options could be specified in
+# /etc/cspn/cspn.conf
+
+[Unit]
+Description=CSPN daemon
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/cspnd -daemon -conf=/etc/cspn/cspn.conf -pid=/run/cspnd/cspnd.pid
+# Creates /run/cspn owned by cspncore
+RuntimeDirectory=cspnd
+User=cspncore
+Type=forking
+PIDFile=/run/cspnd/cspnd.pid
+Restart=on-failure
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

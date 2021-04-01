@@ -1,0 +1,67 @@
+#!/bin/bash
+#
+#  cspnd The CSPN Core server.
+#
+#
+# chkconfig: 345 80 20
+# description: cspnd
+# processname: cspnd
+#
+
+# Source function library.
+. /etc/init.d/functions
+
+# you can override defaults in /etc/sysconfig/cspnd, see below
+if [ -f /etc/sysconfig/cspnd ]; then
+        . /etc/sysconfig/cspnd
+fi
+
+RETVAL=0
+
+prog=cspnd
+# you can override the lockfile via BITCOIND_LOCKFILE in /etc/sysconfig/cspnd
+lockfile=${BITCOIND_LOCKFILE-/var/lock/subsys/cspnd}
+
+# cspnd defaults to /usr/bin/cspnd, override with BITCOIND_BIN
+cspnd=${BITCOIND_BIN-/usr/bin/cspnd}
+
+# cspnd opts default to -disablewallet, override with BITCOIND_OPTS
+cspnd_opts=${BITCOIND_OPTS--disablewallet}
+
+start() {
+    echo -n $"Starting $prog: "
+    daemon $DAEMONOPTS $cspnd $cspnd_opts
+    RETVAL=$?
+    echo
+    [ $RETVAL -eq 0 ] && touch $lockfile
+    return $RETVAL
+}
+
+stop() {
+    echo -n $"Stopping $prog: "
+    killproc $prog
+    RETVAL=$?
+    echo
+    [ $RETVAL -eq 0 ] && rm -f $lockfile
+    return $RETVAL
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    status)
+        status $prog
+        ;;
+    restart)
+        stop
+        start
+        ;;
+    *)
+        echo "Usage: service $prog {start|stop|status|restart}"
+        exit 1
+        ;;
+esac

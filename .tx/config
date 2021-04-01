@@ -1,7 +1,7 @@
 [main]
 host = https://www.transifex.com
 
-[dash.qt-translation-012x]
-file_filter = src/qt/locale/dash_<lang>.ts
-source_file = src/qt/locale/dash_en.ts
+[cspn.qt-translation-012x]
+file_filter = src/qt/locale/cspn_<lang>.ts
+source_file = src/qt/locale/cspn_en.ts
 source_lang = en

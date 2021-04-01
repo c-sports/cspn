@@ -102,7 +102,7 @@ public:
         vOutpoints.assign(setSelected.begin(), setSelected.end());
     }
 
-    // Dash-specific helpers
+    // CSPN-specific helpers
 
     void UsePrivateSend(bool fUsePrivateSend)
     {

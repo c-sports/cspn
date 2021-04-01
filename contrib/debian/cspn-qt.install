@@ -1,0 +1,6 @@
+usr/local/bin/cspn-qt usr/bin
+share/pixmaps/cspn32.xpm usr/share/pixmaps
+share/pixmaps/cspn16.xpm usr/share/pixmaps
+share/pixmaps/cspn128.png usr/share/pixmaps
+debian/cspn-qt.desktop usr/share/applications
+debian/cspn-qt.protocol usr/share/kde4/services/

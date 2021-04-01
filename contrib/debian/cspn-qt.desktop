@@ -1,0 +1,14 @@
+[Desktop Entry]
+Version=1.0
+Name=CSPN Core
+Comment=CSPN P2P Cryptocurrency
+Comment[de]=Verbinde mit dem CSPN peer-to-peer Netzwerk
+Comment[fr]=CSPN, monnaie virtuelle cryptographique pair à pair
+Comment[tr]=CSPN, eşten eşe kriptografik sanal para birimi
+Exec=cspn-qt %u
+Terminal=false
+Type=Application
+Icon=cspn128
+MimeType=x-scheme-handler/cspn;
+Categories=Office;Finance;
+StartupWMClass=CSPN-qt

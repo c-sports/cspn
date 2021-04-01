@@ -1,8 +1,9 @@
 // Copyright (c) 2014-2019 The Dash Core developers
+// Copyright (c) 2021 The CSPN Core developers
 
 #include <cachemultimap.h>
 
-#include <test/test_dash.h>
+#include <test/test_cspn.h>
 
 #include <algorithm>
 #include <iostream>

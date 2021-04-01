@@ -1,9 +1,10 @@
 // Copyright (c) 2018-2019 The Dash Core developers
+// Copyright (c) 2021 The CSPN Core developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef DASH_QUORUMS_H
-#define DASH_QUORUMS_H
+#ifndef CSPN_QUORUMS_H
+#define CSPN_QUORUMS_H
 
 #include <evo/evodb.h>
 #include <evo/deterministicmns.h>
@@ -117,4 +118,4 @@ extern CQuorumManager* quorumManager;
 
 } // namespace llmq
 
-#endif //DASH_QUORUMS_H
+#endif //CSPN_QUORUMS_H

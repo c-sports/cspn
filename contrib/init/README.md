@@ -1,11 +1,11 @@
 Sample configuration files for:
 ```
-SystemD: dashd.service
-Upstart: dashd.conf
-OpenRC:  dashd.openrc
-         dashd.openrcconf
-CentOS:  dashd.init
-OS X:    org.dash.dashd.plist
+SystemD: cspnd.service
+Upstart: cspnd.conf
+OpenRC:  cspnd.openrc
+         cspnd.openrcconf
+CentOS:  cspnd.init
+OS X:    org.cspn.cspnd.plist
 ```
 have been made available to assist packagers in creating node packages here.
 

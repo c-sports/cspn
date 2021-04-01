@@ -1,5 +1,6 @@
 // Copyright (c) 2011-2014 The Bitcoin Core developers
 // Copyright (c) 2014-2019 The Dash Core developers
+// Copyright (c) 2021 The CSPN Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -19,7 +20,7 @@ OpenURIDialog::OpenURIDialog(QWidget *parent) :
     GUIUtil::updateFonts();
     GUIUtil::disableMacFocusRect(this);
 #if QT_VERSION >= 0x040700
-    ui->uriEdit->setPlaceholderText("dash:");
+    ui->uriEdit->setPlaceholderText("cspn:");
 #endif
 }
 
@@ -51,5 +52,5 @@ void OpenURIDialog::on_selectFileButton_clicked()
     if(filename.isEmpty())
         return;
     QUrl fileUri = QUrl::fromLocalFile(filename);
-    ui->uriEdit->setText("dash:?r=" + QUrl::toPercentEncoding(fileUri.toString()));
+    ui->uriEdit->setText("cspn:?r=" + QUrl::toPercentEncoding(fileUri.toString()));
 }

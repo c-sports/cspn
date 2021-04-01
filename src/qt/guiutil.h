@@ -32,7 +32,7 @@ class QUrl;
 class QWidget;
 QT_END_NAMESPACE
 
-/** Utility functions used by the Dash Qt UI.
+/** Utility functions used by the CSPN Qt UI.
  */
 namespace GUIUtil
 {
@@ -108,7 +108,7 @@ namespace GUIUtil
     // Setup appearance settings if not done yet
     void setupAppearance(QWidget* parent, OptionsModel* model);
 
-    // Parse "dash:" URI into recipient object, return true on successful parsing
+    // Parse "cspn:" URI into recipient object, return true on successful parsing
     bool parseBitcoinURI(const QUrl &uri, SendCoinsRecipient *out);
     bool parseBitcoinURI(QString uri, SendCoinsRecipient *out);
     bool validateBitcoinURI(const QString& uri);
@@ -181,7 +181,7 @@ namespace GUIUtil
     // Open debug.log
     void openDebugLogfile();
 	
-    // Open dash.conf
+    // Open cspn.conf
     void openConfigfile();	
 
     // Browse backup folder
@@ -320,7 +320,7 @@ namespace GUIUtil
     /** get font size with GUIUtil::fontScale applied */
     double getScaledFontSize(int nSize);
 
-    /** Load dash specific appliciation fonts */
+    /** Load cspn specific appliciation fonts */
     bool loadFonts();
 
     /** Set an application wide default font, depends on the selected theme */
@@ -356,8 +356,8 @@ namespace GUIUtil
     /** Return the name of the currently active theme.*/
     QString getActiveTheme();
 
-    /** Check if a dash specific theme is activated (light/dark).*/
-    bool dashThemeActive();
+    /** Check if a cspn specific theme is activated (light/dark).*/
+    bool cspnThemeActive();
 
     /** Load the theme and update all UI elements according to the appearance settings. */
     void loadTheme(QWidget* widget = nullptr, bool fForce = false);

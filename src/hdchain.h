@@ -1,7 +1,8 @@
 // Copyright (c) 2014-2019 The Dash Core developers
+// Copyright (c) 2021 The CSPN Core developers
 // Distributed under the MIT software license, see the accompanying
-#ifndef DASH_HDCHAIN_H
-#define DASH_HDCHAIN_H
+#ifndef CSPN_HDCHAIN_H
+#define CSPN_HDCHAIN_H
 
 #include <key.h>
 #include <sync.h>
@@ -147,4 +148,4 @@ public:
     std::string GetKeyPath() const;
 };
 
-#endif // DASH_HDCHAIN_H
+#endif // CSPN_HDCHAIN_H

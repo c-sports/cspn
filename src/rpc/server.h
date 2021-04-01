@@ -135,7 +135,7 @@ public:
 };
 
 /**
- * Dash RPC command dispatcher.
+ * CSPN RPC command dispatcher.
  */
 class CRPCTable
 {

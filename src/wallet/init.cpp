@@ -51,7 +51,7 @@ public:
     //! Close all wallets.
     void Close() override;
 
-    // Dash Specific Wallet Init
+    // CSPN Specific Wallet Init
     void AutoLockMasternodeCollaterals() override;
     void InitPrivateSendSettings() override;
     void InitKeePass() override;

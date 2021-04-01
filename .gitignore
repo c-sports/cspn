@@ -6,15 +6,15 @@ reset-files.bash
 *.tar.gz
 
 *.exe
-src/dash
-src/dashd
-src/dash-cli
-src/dash-tx
-src/test/test_dash
-src/test/test_dash_fuzzy
-src/qt/test/test_dash-qt
+src/cspn
+src/cspnd
+src/cspn-cli
+src/cspn-tx
+src/test/test_cspn
+src/test/test_cspn_fuzzy
+src/qt/test/test_cspn-qt
 src/qt/res/css/colors/*
-src/bench/bench_dash
+src/bench/bench_cspn
 
 # autoreconf
 Makefile.in
@@ -37,8 +37,8 @@ config.log
 config.status
 configure
 libtool
-src/config/dash-config.h
-src/config/dash-config.h.in
+src/config/cspn-config.h
+src/config/cspn-config.h.in
 src/config/stamp-h1
 share/setup.nsi
 share/qt/Info.plist
@@ -83,14 +83,14 @@ libconftest.dylib*
 # Compilation and Qt preprocessor part
 *.qm
 Makefile
-dash-qt
-Dash-Qt.app
+cspn-qt
+CSPN-Qt.app
 background.tiff*
 !/depends/Makefile
 
 # Unit-tests
 Makefile.test
-dash-qt_test
+cspn-qt_test
 
 # Resources cpp
 qrc_*.cpp
@@ -103,7 +103,7 @@ build
 *.gcno
 *.gcda
 /*.info
-test_dash.coverage/
+test_cspn.coverage/
 total.coverage/
 coverage_percent.txt
 
@@ -121,15 +121,15 @@ test/cache/*
 .autotools
 /doc/doxygen/
 
-libdashconsensus.pc
+libcspnconsensus.pc
 contrib/devtools/split-debug.sh
-src/qt/dash-qt.bash
+src/qt/cspn-qt.bash
 qa/pull-tester/tests-config.sh
 
 #development symlinks
-dash-cli
-dashd
-dash-qt
+cspn-cli
+cspnd
+cspn-qt
 make
 
 /docker/bin
