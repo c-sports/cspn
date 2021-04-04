@@ -1067,6 +1067,10 @@ bool ReadRawBlockFromDisk(std::vector<uint8_t>& block, const CBlockIndex* pindex
 
 CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams, bool fSuperblockPartOnly)
 {
+    if (nHeight >= Params().GetConsensus().nLastBlockReward) {
+        return 0 * COIN;
+    }
+
     if (Params().NetworkIDString() == "regtest")
         return 50 * COIN;
 
@@ -1121,6 +1125,10 @@ CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams, b
 
 CAmount GetMasternodePayment(int nHeight, CAmount blockValue)
 {
+    if (nHeight >= Params().GetConsensus().nLastBlockReward) {
+        return 0;
+    }
+
     // No rewards till masternode activation.
     if (nHeight < Params().GetConsensus().nLastPoWBlock || blockValue == 0)
         return 0;
