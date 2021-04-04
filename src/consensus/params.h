@@ -160,6 +160,7 @@ struct Params {
 
     // proof-of-stake
     int nLastPoWBlock;
+    int nLastBlockReward;
     int64_t nPosTargetSpacing;
     int64_t nPosTargetTimespan;
     int nStakeMinAge;
