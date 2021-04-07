@@ -154,7 +154,7 @@ class BIP68_112_113Test(BitcoinTestFramework):
         self.setup_clean_chain = True
         # Must also set '-maxtipage=600100' to allow syncing from very old blocks
         # and '-dip3params=2000:2000' to create pre-dip3 blocks only
-        self.extra_args = [['-whitelist=127.0.0.1', '-blockversion=4', '-maxtipage=600100', '-dip3params=2000:2000']]
+        self.extra_args = [['-whitelist=127.0.0.1', '-blockversion=4', '-addresstype=legacy', '-maxtipage=600100', '-dip3params=2000:2000']]
 
     def setup_network(self):
         self.setup_nodes()

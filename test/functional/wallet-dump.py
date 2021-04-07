@@ -70,7 +70,7 @@ class WalletDumpTest(BitcoinTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 1
-        self.extra_args = [["-keypool=90", "-usehd=1"]]
+        self.extra_args = [["-keypool=90", "-usehd=1", "-addresstype=legacy"]]
 
     def setup_network(self):
         # TODO remove this when usehd=1 becomes the default
