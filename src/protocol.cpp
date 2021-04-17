@@ -240,53 +240,42 @@ bool operator<(const CInv& a, const CInv& b)
     return (a.type < b.type || (a.type == b.type && a.hash < b.hash));
 }
 
-bool CInv::IsKnownType() const
-{
-    return GetCommandInternal() != nullptr;
-}
-
-const char* CInv::GetCommandInternal() const
-{
-    switch (type)
-    {
-        case MSG_TX:                            return NetMsgType::TX;
-        case MSG_BLOCK:                         return NetMsgType::BLOCK;
-        case MSG_FILTERED_BLOCK:                return NetMsgType::MERKLEBLOCK;
-        case MSG_LEGACY_TXLOCK_REQUEST:         return NetMsgType::LEGACYTXLOCKREQUEST;
-        case MSG_CMPCT_BLOCK:                   return NetMsgType::CMPCTBLOCK;
-        case MSG_SPORK:                         return NetMsgType::SPORK;
-        case MSG_DSTX:                          return NetMsgType::DSTX;
-        case MSG_GOVERNANCE_OBJECT:             return NetMsgType::MNGOVERNANCEOBJECT;
-        case MSG_GOVERNANCE_OBJECT_VOTE:        return NetMsgType::MNGOVERNANCEOBJECTVOTE;
-        case MSG_QUORUM_FINAL_COMMITMENT:       return NetMsgType::QFCOMMITMENT;
-        case MSG_QUORUM_CONTRIB:                return NetMsgType::QCONTRIB;
-        case MSG_QUORUM_COMPLAINT:              return NetMsgType::QCOMPLAINT;
-        case MSG_QUORUM_JUSTIFICATION:          return NetMsgType::QJUSTIFICATION;
-        case MSG_QUORUM_PREMATURE_COMMITMENT:   return NetMsgType::QPCOMMITMENT;
-        case MSG_QUORUM_RECOVERED_SIG:          return NetMsgType::QSIGREC;
-        case MSG_CLSIG:                         return NetMsgType::CLSIG;
-        case MSG_ISLOCK:                        return NetMsgType::ISLOCK;
-        default:
-            return nullptr;
-    }
-}
-
 std::string CInv::GetCommand() const
 {
-    auto cmd = GetCommandInternal();
-    if (cmd == nullptr) {
-        throw std::out_of_range(strprintf("CInv::GetCommand(): type=%d unknown type", type));
+    std::string cmd;
+    if (type & MSG_WITNESS_FLAG)
+        cmd.append("witness-");
+    int masked = type & MSG_TYPE_MASK;
+    switch (masked)
+    {
+        case MSG_TX:                            return cmd.append(NetMsgType::TX);
+        case MSG_BLOCK:                         return cmd.append(NetMsgType::BLOCK);
+        case MSG_FILTERED_BLOCK:                return cmd.append(NetMsgType::MERKLEBLOCK);
+        case MSG_CMPCT_BLOCK:                   return cmd.append(NetMsgType::CMPCTBLOCK);
+        case MSG_LEGACY_TXLOCK_REQUEST:         return cmd.append(NetMsgType::LEGACYTXLOCKREQUEST);
+        case MSG_SPORK:                         return cmd.append(NetMsgType::SPORK);
+        case MSG_DSTX:                          return cmd.append(NetMsgType::DSTX);
+        case MSG_GOVERNANCE_OBJECT:             return cmd.append(NetMsgType::MNGOVERNANCEOBJECT);
+        case MSG_GOVERNANCE_OBJECT_VOTE:        return cmd.append(NetMsgType::MNGOVERNANCEOBJECTVOTE);
+        case MSG_QUORUM_FINAL_COMMITMENT:       return cmd.append(NetMsgType::QFCOMMITMENT);
+        case MSG_QUORUM_CONTRIB:                return cmd.append(NetMsgType::QCONTRIB);
+        case MSG_QUORUM_COMPLAINT:              return cmd.append(NetMsgType::QCOMPLAINT);
+        case MSG_QUORUM_JUSTIFICATION:          return cmd.append(NetMsgType::QJUSTIFICATION);
+        case MSG_QUORUM_PREMATURE_COMMITMENT:   return cmd.append(NetMsgType::QPCOMMITMENT);
+        case MSG_QUORUM_RECOVERED_SIG:          return cmd.append(NetMsgType::QSIGREC);
+        case MSG_CLSIG:                         return cmd.append(NetMsgType::CLSIG);
+        case MSG_ISLOCK:                        return cmd.append(NetMsgType::ISLOCK);
+        default:
+            throw std::out_of_range(strprintf("CInv::GetCommand(): type=%d unknown type", type));
     }
-    return cmd;
 }
 
 std::string CInv::ToString() const
 {
-    auto cmd = GetCommandInternal();
-    if (!cmd) {
+    try {
+        return strprintf("%s %s", GetCommand(), hash.ToString());
+    } catch(const std::out_of_range &) {
         return strprintf("0x%08x %s", type, hash.ToString());
-    } else {
-        return strprintf("%s %s", cmd, hash.ToString());
     }
 }
 

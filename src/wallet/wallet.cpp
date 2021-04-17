@@ -1101,7 +1101,7 @@ bool CWallet::GetAccountDestination(CTxDestination &dest, std::string strAccount
         LearnRelatedScripts(account.vchPubKey, g_address_type);
         dest = GetDestinationForKey(account.vchPubKey, g_address_type);
         SetAddressBook(dest, strAccount, "receive");
-        walletdb.WriteAccount(strAccount, account);
+        batch.WriteAccount(strAccount, account);
     } else {
         dest = GetDestinationForKey(account.vchPubKey, g_address_type);
     }
@@ -1175,6 +1175,15 @@ bool CWallet::AddToWallet(const CWalletTx& wtxIn, bool fFlushOnClose)
         if (wtxIn.fFromMe && wtxIn.fFromMe != wtx.fFromMe)
         {
             wtx.fFromMe = wtxIn.fFromMe;
+            fUpdated = true;
+        }
+        // If we have a witness-stripped version of this transaction, and we
+        // see a new version with a witness, then we must be upgrading a pre-segwit
+        // wallet.  Store the new version of the transaction with the witness,
+        // as the stripped-version must be invalid.
+        // TODO: Store all versions of the transaction, instead of just one.
+        if (wtxIn.tx->HasWitness() && !wtx.tx->HasWitness()) {
+            wtx.SetTx(wtxIn.tx);
             fUpdated = true;
         }
     }
@@ -3941,22 +3950,12 @@ bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend, CWalletT
                         nIn++;
                     }
 
-                    nBytes = ::GetSerializeSize(txNew, SER_NETWORK, PROTOCOL_VERSION);
-
-                    if (nExtraPayloadSize != 0) {
-                        // account for extra payload in fee calculation
-                        nBytes += GetSizeOfCompactSize(nExtraPayloadSize) + nExtraPayloadSize;
-                    }
-
-                    if (nBytes > MAX_STANDARD_TX_SIZE) {
-                        // Do not create oversized transactions (bad-txns-oversize).
-                        strFailReason = _("Transaction too large");
-                        return false;
-                    }
+                    nBytes = GetVirtualTransactionSize(txNew);
 
                     // Remove scriptSigs to eliminate the fee calculation dummy signatures
-                    for (auto& txin : txNew.vin) {
-                        txin.scriptSig = CScript();
+                    for (auto& vin : txNew.vin) {
+                        vin.scriptSig = CScript();
+                        vin.scriptWitness.SetNull();
                     }
 
                     nFee = GetMinimumFee(nBytes, coin_control, ::mempool, ::feeEstimator, &feeCalc);
@@ -5844,7 +5843,7 @@ bool CWallet::CreateCoinStake(unsigned int nBits,
 
     // Limit size
     unsigned int nBytes = ::GetSerializeSize(txNew, PROTOCOL_VERSION);
-    if (nBytes >= 4000000 / 5)
+    if (nBytes >= MAX_BLOCK_SERIALIZED_SIZE / 5)
         return error("%s: exceeded coinstake size limit", __func__);
 
     std::vector<CTxOut> voutMasternodePayments; // masternode payment

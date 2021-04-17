@@ -403,8 +403,8 @@ UniValue validateaddress(const JSONRPCRequest& request)
             }
 
             CHDChain hdChainCurrent;
-            if (keyID && pwallet->mapHdPubKeys.count(*keyID) && pwallet->GetHDChain(hdChainCurrent)) {
-                ret.push_back(Pair("hdkeypath", pwallet->mapHdPubKeys[*keyID].GetKeyPath()));
+            if (&key_id && pwallet->mapHdPubKeys.count(key_id) && pwallet->GetHDChain(hdChainCurrent)) {
+                ret.push_back(Pair("hdkeypath", pwallet->mapHdPubKeys[key_id].GetKeyPath()));
                 ret.push_back(Pair("hdchainid", hdChainCurrent.GetID().GetHex()));
             }
         }

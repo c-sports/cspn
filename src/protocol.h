@@ -291,6 +291,9 @@ enum ServiceFlags : uint64_t {
     // CSPN Core nodes used to support this by default, without advertising this bit,
     // but no longer do as of protocol version 70201 (= NO_BLOOM_VERSION)
     NODE_BLOOM = (1 << 2),
+    // NODE_WITNESS indicates that a node can be asked for blocks and transactions including
+    // witness data.
+    NODE_WITNESS = (1 << 3),
     // NODE_XTHIN means the node supports Xtreme Thinblocks
     // If this is turned off then the node will not service nor make xthin requests
     NODE_XTHIN = (1 << 4),
@@ -390,6 +393,10 @@ public:
     unsigned int nTime;
 };
 
+/** getdata message type flags */
+const uint32_t MSG_WITNESS_FLAG = 1 << 30;
+const uint32_t MSG_TYPE_MASK    = 0xffffffff >> 2;
+
 /** getdata / inv message types.
  * These numbers are defined by the protocol. When adding a new value, be sure
  * to mention it in the respective BIP.
@@ -403,6 +410,10 @@ enum GetDataMsg {
     // CSPN message types
     // NOTE: declare non-implmented here, we must keep this enum consistent and backwards compatible
     MSG_LEGACY_TXLOCK_REQUEST = 4,
+    MSG_WITNESS_BLOCK = MSG_BLOCK | MSG_WITNESS_FLAG, //!< Defined in BIP144
+    MSG_WITNESS_TX = MSG_TX | MSG_WITNESS_FLAG,       //!< Defined in BIP144
+    MSG_FILTERED_WITNESS_BLOCK = MSG_FILTERED_BLOCK | MSG_WITNESS_FLAG,
+
     /* MSG_TXLOCK_VOTE = 5, Legacy InstantSend and not used anymore  */
     MSG_SPORK = 6,
     /* 7 - 15 were used in old CSPN versions and were mainly budget and MN broadcast/ping related*/
@@ -443,14 +454,8 @@ public:
 
     friend bool operator<(const CInv& a, const CInv& b);
 
-    bool IsKnownType() const;
     std::string GetCommand() const;
     std::string ToString() const;
-
-private:
-    const char* GetCommandInternal() const;
-
-    // TODO: make private (improves encapsulation)
 public:
     int type;
     uint256 hash;

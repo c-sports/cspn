@@ -20,6 +20,7 @@
 #include <rpc/safemode.h>
 #include <rpc/server.h>
 #include <rpc/util.h>
+#include <script/sign.h>
 #include <timedata.h>
 #include <txmempool.h>
 #include <util.h>
@@ -1373,6 +1374,78 @@ public:
     template<typename T>
     bool operator()(const T& dest) { return false; }
 };
+
+UniValue addwitnessaddress(const JSONRPCRequest& request)
+{
+    CWallet * const pwallet = GetWalletForJSONRPCRequest(request);
+    if (!EnsureWalletIsAvailable(pwallet, request.fHelp)) {
+        return NullUniValue;
+    }
+
+    if (request.fHelp || request.params.size() < 1 || request.params.size() > 2)
+    {
+        std::string msg = "addwitnessaddress \"address\" ( p2sh )\n"
+                          "\nDEPRECATED: set the address_type argument of getnewaddress, or option -addresstype=[bech32|p2sh-segwit] instead.\n"
+                          "Add a witness address for a script (with pubkey or redeemscript known). Requires a new wallet backup.\n"
+                          "It returns the witness script.\n"
+
+                          "\nArguments:\n"
+                          "1. \"address\"       (string, required) An address known to the wallet\n"
+                          "2. p2sh            (bool, optional, default=true) Embed inside P2SH\n"
+
+                          "\nResult:\n"
+                          "\"witnessaddress\",  (string) The value of the new address (P2SH or BIP173).\n"
+                          "}\n"
+        ;
+        throw std::runtime_error(msg);
+    }
+
+    if (!IsDeprecatedRPCEnabled("addwitnessaddress")) {
+        throw JSONRPCError(RPC_METHOD_DEPRECATED, "addwitnessaddress is deprecated and will be fully removed in v0.17. "
+                                                  "To use addwitnessaddress in v0.16, restart bitcoind with -deprecatedrpc=addwitnessaddress.\n"
+                                                  "Projects should transition to using the address_type argument of getnewaddress, or option -addresstype=[bech32|p2sh-segwit] instead.\n");
+    }
+
+    {
+        LOCK(cs_main);
+        if (!IsWitnessEnabled(chainActive.Tip(), Params().GetConsensus()) && !gArgs.GetBoolArg("-walletprematurewitness", false)) {
+            throw JSONRPCError(RPC_WALLET_ERROR, "Segregated witness not enabled on network");
+        }
+    }
+
+    CTxDestination dest = DecodeDestination(request.params[0].get_str());
+    if (!IsValidDestination(dest)) {
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Bitcoin address");
+    }
+
+    bool p2sh = true;
+    if (!request.params[1].isNull()) {
+        p2sh = request.params[1].get_bool();
+    }
+
+    Witnessifier w(pwallet);
+    bool ret = boost::apply_visitor(w, dest);
+    if (!ret) {
+        throw JSONRPCError(RPC_WALLET_ERROR, "Public key or redeemscript not known to wallet, or the key is uncompressed");
+    }
+
+    CScript witprogram = GetScriptForDestination(w.result);
+
+    if (p2sh) {
+        w.result = CScriptID(witprogram);
+    }
+
+    if (w.already_witness) {
+        if (!(dest == w.result)) {
+            throw JSONRPCError(RPC_WALLET_ERROR, "Cannot convert between witness address types");
+        }
+    } else {
+        pwallet->AddCScript(witprogram); // Implicit for single-key now, but necessary for multisig and for compatibility with older software
+        pwallet->SetAddressBook(w.result, "", "receive");
+    }
+
+    return EncodeDestination(w.result);
+}
 
 struct tallyitem
 {
@@ -3451,8 +3524,11 @@ UniValue fundrawtransaction(const JSONRPCRequest& request)
 
     // parse hex string from parameter
     CMutableTransaction tx;
-    if (!DecodeHexTx(tx, request.params[0].get_str()))
+    bool try_witness = request.params[2].isNull() ? true : request.params[2].get_bool();
+    bool try_no_witness = request.params[2].isNull() ? true : !request.params[2].get_bool();
+    if (!DecodeHexTx(tx, request.params[0].get_str(), try_no_witness, try_witness)) {
         throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "TX decode failed");
+    }
 
     if (tx.vout.size() == 0)
         throw JSONRPCError(RPC_INVALID_PARAMETER, "TX must have at least one output");
@@ -3641,6 +3717,7 @@ static const CRPCCommand commands[] =
     { "wallet",             "abandontransaction",       &abandontransaction,       {"txid"} },
     { "wallet",             "abortrescan",              &abortrescan,              {} },
     { "wallet",             "addmultisigaddress",       &addmultisigaddress,       {"nrequired","keys","account"} },
+    { "hidden",             "addwitnessaddress",        &addwitnessaddress,        {"address","p2sh"} },
     { "wallet",             "backupwallet",             &backupwallet,             {"destination"} },
     { "wallet",             "dumpprivkey",              &dumpprivkey,              {"address"}  },
     { "wallet",             "dumpwallet",               &dumpwallet,               {"filename"} },

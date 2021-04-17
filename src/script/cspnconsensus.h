@@ -33,7 +33,7 @@
 extern "C" {
 #endif
 
-#define BITCOINCONSENSUS_API_VER 0
+#define BITCOINCONSENSUS_API_VER 1
 
 typedef enum cspnconsensus_error_t
 {
@@ -41,6 +41,7 @@ typedef enum cspnconsensus_error_t
     cspnconsensus_ERR_TX_INDEX,
     cspnconsensus_ERR_TX_SIZE_MISMATCH,
     cspnconsensus_ERR_TX_DESERIALIZE,
+    cspnconsensus_ERR_AMOUNT_REQUIRED,
     cspnconsensus_ERR_INVALID_FLAGS,
 } cspnconsensus_error;
 
@@ -53,9 +54,10 @@ enum
     cspnconsensus_SCRIPT_FLAGS_VERIFY_NULLDUMMY           = (1U << 4), // enforce NULLDUMMY (BIP147)
     cspnconsensus_SCRIPT_FLAGS_VERIFY_CHECKLOCKTIMEVERIFY = (1U << 9), // enable CHECKLOCKTIMEVERIFY (BIP65)
     cspnconsensus_SCRIPT_FLAGS_VERIFY_CHECKSEQUENCEVERIFY = (1U << 10), // enable CHECKSEQUENCEVERIFY (BIP112)
+    cspnconsensus_SCRIPT_FLAGS_VERIFY_WITNESS             = (1U << 11), // enable WITNESS (BIP141)
     cspnconsensus_SCRIPT_FLAGS_VERIFY_ALL                 = cspnconsensus_SCRIPT_FLAGS_VERIFY_P2SH | cspnconsensus_SCRIPT_FLAGS_VERIFY_DERSIG |
                                                             cspnconsensus_SCRIPT_FLAGS_VERIFY_NULLDUMMY | cspnconsensus_SCRIPT_FLAGS_VERIFY_CHECKLOCKTIMEVERIFY |
-                                                            cspnconsensus_SCRIPT_FLAGS_VERIFY_CHECKSEQUENCEVERIFY
+                                                            cspnconsensus_SCRIPT_FLAGS_VERIFY_CHECKSEQUENCEVERIFY | cspnconsensus_SCRIPT_FLAGS_VERIFY_WITNESS
 };
 
 /// Returns 1 if the input nIn of the serialized transaction pointed to by
@@ -63,8 +65,12 @@ enum
 /// the additional constraints specified by flags.
 /// If not nullptr, err will contain an error/success code for the operation
 EXPORT_SYMBOL int cspnconsensus_verify_script(const unsigned char *scriptPubKey, unsigned int scriptPubKeyLen,
-                                    const unsigned char *txTo        , unsigned int txToLen,
-                                    unsigned int nIn, unsigned int flags, cspnconsensus_error* err);
+                                                 const unsigned char *txTo        , unsigned int txToLen,
+                                                 unsigned int nIn, unsigned int flags, cspnconsensus_error* err);
+
+EXPORT_SYMBOL int cspnconsensus_verify_script_with_amount(const unsigned char *scriptPubKey, unsigned int scriptPubKeyLen, int64_t amount,
+                                                             const unsigned char *txTo        , unsigned int txToLen,
+                                                             unsigned int nIn, unsigned int flags, cspnconsensus_error* err);
 
 EXPORT_SYMBOL unsigned int cspnconsensus_version();
 

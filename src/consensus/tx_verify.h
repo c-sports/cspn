@@ -49,13 +49,13 @@ unsigned int GetLegacySigOpCount(const CTransaction& tx);
 unsigned int GetP2SHSigOpCount(const CTransaction& tx, const CCoinsViewCache& mapInputs);
 
 /**
- * Count total signature operations for a transaction.
- * @param[in] tx     Transaction for which we are counting sigops
+ * Compute total signature operation cost of a transaction.
+ * @param[in] tx     Transaction for which we are computing the cost
  * @param[in] inputs Map of previous transactions that have outputs we're spending
  * @param[out] flags Script verification flags
- * @return Total signature operation count for a tx
+ * @return Total signature operation cost of tx
  */
-unsigned int GetTransactionSigOpCount(const CTransaction& tx, const CCoinsViewCache& inputs, int flags);
+int64_t GetTransactionSigOpCost(const CTransaction& tx, const CCoinsViewCache& inputs, int flags);
 
 /**
  * Check if transaction is final and can be included in a block with the

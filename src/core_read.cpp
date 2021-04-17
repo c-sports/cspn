@@ -87,23 +87,60 @@ CScript ParseScript(const std::string& s)
     return result;
 }
 
-bool DecodeHexTx(CMutableTransaction& tx, const std::string& strHexTx)
+// Check that all of the input and output scripts of a transaction contains valid opcodes
+bool CheckTxScriptsSanity(const CMutableTransaction& tx)
 {
-    if (!IsHex(strHexTx))
-        return false;
-
-    std::vector<unsigned char> txData(ParseHex(strHexTx));
-    CDataStream ssData(txData, SER_NETWORK, PROTOCOL_VERSION);
-    try {
-        ssData >> tx;
-        if (!ssData.empty())
-            return false;
+    // Check input scripts for non-coinbase txs
+    if (!CTransaction(tx).IsCoinBase()) {
+        for (unsigned int i = 0; i < tx.vin.size(); i++) {
+            if (!tx.vin[i].scriptSig.HasValidOps() || tx.vin[i].scriptSig.size() > MAX_SCRIPT_SIZE) {
+                return false;
+            }
+        }
     }
-    catch (const std::exception&) {
-        return false;
+    // Check output scripts
+    for (unsigned int i = 0; i < tx.vout.size(); i++) {
+        if (!tx.vout[i].scriptPubKey.HasValidOps() || tx.vout[i].scriptPubKey.size() > MAX_SCRIPT_SIZE) {
+            return false;
+        }
     }
 
     return true;
+}
+
+bool DecodeHexTx(CMutableTransaction& tx, const std::string& hex_tx, bool try_no_witness, bool try_witness)
+{
+    if (!IsHex(hex_tx)) {
+        return false;
+    }
+
+    std::vector<unsigned char> txData(ParseHex(hex_tx));
+
+    if (try_no_witness) {
+        CDataStream ssData(txData, SER_NETWORK, PROTOCOL_VERSION | SERIALIZE_TRANSACTION_NO_WITNESS);
+        try {
+            ssData >> tx;
+            if (ssData.eof() && (!try_witness || CheckTxScriptsSanity(tx))) {
+                return true;
+            }
+        } catch (const std::exception&) {
+            // Fall through.
+        }
+    }
+
+    if (try_witness) {
+        CDataStream ssData(txData, SER_NETWORK, PROTOCOL_VERSION);
+        try {
+            ssData >> tx;
+            if (ssData.empty()) {
+                return true;
+            }
+        } catch (const std::exception&) {
+            // Fall through.
+        }
+    }
+
+    return false;
 }
 
 bool DecodeHexBlk(CBlock& block, const std::string& strHexBlk)

@@ -4,6 +4,7 @@
 
 #include <qt/walletmodeltransaction.h>
 
+#include <policy/policy.h>
 #include <wallet/wallet.h>
 
 WalletModelTransaction::WalletModelTransaction(const QList<SendCoinsRecipient> &_recipients) :
@@ -31,7 +32,7 @@ CWalletTx *WalletModelTransaction::getTransaction() const
 
 unsigned int WalletModelTransaction::getTransactionSize()
 {
-    return (!walletTransaction ? 0 : (::GetSerializeSize(*walletTransaction->tx, SER_NETWORK, PROTOCOL_VERSION)));
+    return (!walletTransaction ? 0 : ::GetVirtualTransactionSize(*walletTransaction->tx));
 }
 
 CAmount WalletModelTransaction::getTransactionFee() const

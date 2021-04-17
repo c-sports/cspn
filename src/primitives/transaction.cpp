@@ -65,7 +65,20 @@ CMutableTransaction::CMutableTransaction(const CTransaction& tx) : vin(tx.vin), 
 
 uint256 CMutableTransaction::GetHash() const
 {
-    return SerializeHash(*this);
+    return SerializeHash(*this, SER_GETHASH, SERIALIZE_TRANSACTION_NO_WITNESS);
+}
+
+uint256 CTransaction::ComputeHash() const
+{
+    return SerializeHash(*this, SER_GETHASH, SERIALIZE_TRANSACTION_NO_WITNESS);
+}
+
+uint256 CTransaction::GetWitnessHash() const
+{
+    if (!HasWitness()) {
+        return GetHash();
+    }
+    return SerializeHash(*this, SER_GETHASH, 0);
 }
 
 std::string CMutableTransaction::ToString() const
@@ -81,14 +94,11 @@ std::string CMutableTransaction::ToString() const
         vExtraPayload.size());
     for (unsigned int i = 0; i < vin.size(); i++)
         str += "    " + vin[i].ToString() + "\n";
+    for (const auto& tx_in : vin)
+        str += "    " + tx_in.scriptWitness.ToString() + "\n";
     for (unsigned int i = 0; i < vout.size(); i++)
         str += "    " + vout[i].ToString() + "\n";
     return str;
-}
-
-uint256 CTransaction::ComputeHash() const
-{
-    return SerializeHash(*this);
 }
 
 /* For backward compatibility, the hash is initialized to 0. TODO: remove the need for this default constructor entirely. */
@@ -126,6 +136,8 @@ std::string CTransaction::ToString() const
         vExtraPayload.size());
     for (const auto& tx_in : vin)
         str += "    " + tx_in.ToString() + "\n";
+    for (const auto& tx_in : vin)
+        str += "    " + tx_in.scriptWitness.ToString() + "\n";
     for (const auto& tx_out : vout)
         str += "    " + tx_out.ToString() + "\n";
     return str;

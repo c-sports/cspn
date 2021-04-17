@@ -116,6 +116,17 @@ static std::vector<uint256> ComputeMerkleBranch(const std::vector<uint256>& leav
     return ret;
 }
 
+uint256 BlockWitnessMerkleRoot(const CBlock& block, bool* mutated)
+{
+    std::vector<uint256> leaves;
+    leaves.resize(block.vtx.size());
+    leaves[0].SetNull(); // The witness hash of the coinbase is 0.
+    for (size_t s = 1; s < block.vtx.size(); s++) {
+        leaves[s] = block.vtx[s]->GetWitnessHash();
+    }
+    return ComputeMerkleRoot(std::move(leaves), mutated);
+}
+
 static std::vector<uint256> BlockMerkleBranch(const CBlock& block, uint32_t position)
 {
     std::vector<uint256> leaves;

@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2015 The Bitcoin Core developers
+// Copyright (c) 2009-2017 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -65,7 +65,6 @@ enum txnouttype
     TX_WITNESS_V0_SCRIPTHASH,
     TX_WITNESS_V0_KEYHASH,
     TX_WITNESS_UNKNOWN, //!< Only for Witness versions not already defined above
-
 };
 
 class CNoDestination {
@@ -154,7 +153,12 @@ bool ExtractDestination(const CScript& scriptPubKey, CTxDestination& addressRet)
  * multisig scripts, this populates the addressRet vector with the pubkey IDs
  * and nRequiredRet with the n required to spend. For other destinations,
  * addressRet is populated with a single value and nRequiredRet is set to 1.
- * Returns true if successful.
+ * Returns true if successful. Currently does not extract address from
+ * pay-to-witness scripts.
+ *
+ * Note: this function confuses destinations (a subset of CScripts that are
+ * encodable as an address) with key identifiers (of keys involved in a
+ * CScript), and its use should be phased out.
  */
 bool ExtractDestinations(const CScript& scriptPubKey, txnouttype& typeRet, std::vector<CTxDestination>& addressRet, int& nRequiredRet);
 

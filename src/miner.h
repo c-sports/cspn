@@ -29,7 +29,8 @@ struct CBlockTemplate
 {
     CBlock block;
     std::vector<CAmount> vTxFees;
-    std::vector<int64_t> vTxSigOps;
+    std::vector<int64_t> vTxSigOpsCost;
+    std::vector<unsigned char> vchCoinbaseCommitment;
     uint32_t nPrevBits; // nBits of previous block (for subsidy calculation)
     std::vector<CTxOut> voutMasternodePayments; // masternode payment
     std::vector<CTxOut> voutSuperblockPayments; // superblock payment
@@ -43,7 +44,7 @@ struct CTxMemPoolModifiedEntry {
         iter = entry;
         nSizeWithAncestors = entry->GetSizeWithAncestors();
         nModFeesWithAncestors = entry->GetModFeesWithAncestors();
-        nSigOpCountWithAncestors = entry->GetSigOpCountWithAncestors();
+        nSigOpCostWithAncestors = entry->GetSigOpCostWithAncestors();
     }
 
     int64_t GetModifiedFee() const { return iter->GetModifiedFee(); }
@@ -55,7 +56,7 @@ struct CTxMemPoolModifiedEntry {
     CTxMemPool::txiter iter;
     uint64_t nSizeWithAncestors;
     CAmount nModFeesWithAncestors;
-    unsigned int nSigOpCountWithAncestors;
+    int64_t nSigOpCostWithAncestors;
 };
 
 /** Comparator for CTxMemPool::txiter objects.
@@ -118,7 +119,7 @@ struct update_for_parent_inclusion
     {
         e.nModFeesWithAncestors -= iter->GetFee();
         e.nSizeWithAncestors -= iter->GetTxSize();
-        e.nSigOpCountWithAncestors -= iter->GetSigOpCount();
+        e.nSigOpCostWithAncestors -= iter->GetSigOpCost();
     }
 
     CTxMemPool::txiter iter;
@@ -134,13 +135,14 @@ private:
     CBlock* pblock;
 
     // Configuration parameters for the block size
-    unsigned int nBlockMaxSize;
+    bool fIncludeWitness;
+    unsigned int nBlockMaxWeight;
     CFeeRate blockMinFeeRate;
 
     // Information on the current status of the block
-    uint64_t nBlockSize;
+    uint64_t nBlockWeight;
     uint64_t nBlockTx;
-    unsigned int nBlockSigOps;
+    uint64_t nBlockSigOpsCost;
     CAmount nFees;
     CTxMemPool::setEntries inBlock;
 
@@ -155,7 +157,7 @@ private:
 public:
     struct Options {
         Options();
-        size_t nBlockMaxSize;
+        size_t nBlockMaxWeight;
         CFeeRate blockMinFeeRate;
     };
 
@@ -182,7 +184,7 @@ private:
     /** Remove confirmed (inBlock) entries from given set */
     void onlyUnconfirmed(CTxMemPool::setEntries& testSet);
     /** Test if a new package would "fit" in the block */
-    bool TestPackage(uint64_t packageSize, unsigned int packageSigOps) const;
+    bool TestPackage(uint64_t packageSize, int64_t packageSigOpsCost) const;
     /** Perform checks on each transaction in a package:
       * locktime
       * These checks should always succeed, and they're here

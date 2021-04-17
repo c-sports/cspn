@@ -36,6 +36,7 @@
 #include <util.h>
 #include <masternode/masternode-sync.h>
 #include <qt/masternodelist.h>
+#include <miner.h>
 
 #include <iostream>
 

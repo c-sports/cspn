@@ -6,6 +6,8 @@
 #ifndef BITCOIN_CONSENSUS_PARAMS_H
 #define BITCOIN_CONSENSUS_PARAMS_H
 
+#include <stdexcept>
+#include <limits>
 #include <uint256.h>
 #include <amount.h>
 #include <map>
@@ -17,8 +19,7 @@ enum DeploymentPos
 {
     DEPLOYMENT_TESTDUMMY,
     DEPLOYMENT_CSV, // Deployment of BIP68, BIP112, and BIP113.
-    DEPLOYMENT_DIP0001, // Deployment of DIP0001 and lower transaction fees.
-    DEPLOYMENT_BIP147, // Deployment of BIP147 (NULLDUMMY)
+    DEPLOYMENT_SEGWIT, // Deployment of BIP141, BIP143, and BIP147.
     // NOTE: Also add new deployments to VersionBitsDeploymentInfo in versionbits.cpp
     MAX_VERSION_BITS_DEPLOYMENTS
 };
@@ -41,6 +42,15 @@ struct BIP9Deployment {
     int64_t nThresholdMin{0};
     /** A coefficient which adjusts the speed a required number of signaling blocks is decreasing from nThresholdStart to nThresholdMin at with each period. */
     int64_t nFalloffCoeff{0};
+
+    /** Constant for nTimeout very far in the future. */
+    static constexpr int64_t NO_TIMEOUT = std::numeric_limits<int64_t>::max();
+
+    /** Special value for nStartTime indicating that the deployment is always active.
+     *  This is useful for testing, as it means tests don't need to deal with the activation
+     *  process (which takes at least 3 BIP9 intervals). Only tests that specifically test the
+     *  behaviour during activation cannot use this. */
+    static constexpr int64_t ALWAYS_ACTIVE = -1;
 };
 
 enum LLMQType : uint8_t

@@ -507,6 +507,7 @@ void CoinControlDialog::updateLabels(WalletModel *model, QDialog* dialog)
     unsigned int nBytes         = 0;
     unsigned int nBytesInputs   = 0;
     unsigned int nQuantity      = 0;
+    bool fWitness               = false;
     int nQuantityUncompressed   = 0;
     bool fUnselectedSpent{false};
     bool fUnselectedNonMixed{false};
@@ -524,7 +525,6 @@ void CoinControlDialog::updateLabels(WalletModel *model, QDialog* dialog)
         if (model->isSpent(outpt))
         {
             coinControl()->UnSelect(outpt);
-            fUnselectedSpent = true;
             continue;
         }
 
@@ -536,7 +536,14 @@ void CoinControlDialog::updateLabels(WalletModel *model, QDialog* dialog)
 
         // Bytes
         CTxDestination address;
-        if(ExtractDestination(out.tx->tx->vout[out.i].scriptPubKey, address))
+        int witnessversion = 0;
+        std::vector<unsigned char> witnessprogram;
+        if (out.tx->tx->vout[out.i].scriptPubKey.IsWitnessProgram(witnessversion, witnessprogram))
+        {
+            nBytesInputs += (32 + 4 + 1 + (107 / WITNESS_SCALE_FACTOR) + 4);
+            fWitness = true;
+        }
+        else if(ExtractDestination(out.tx->tx->vout[out.i].scriptPubKey, address))
         {
             CPubKey pubkey;
             CKeyID *keyid = boost::get<CKeyID>(&address);
@@ -554,7 +561,15 @@ void CoinControlDialog::updateLabels(WalletModel *model, QDialog* dialog)
     if (nQuantity > 0)
     {
         // Bytes
-        nBytes = nBytesInputs + ((CoinControlDialog::payAmounts.size() > 0 ? CoinControlDialog::payAmounts.size() + std::max(1, CoinControlDialog::nSplitBlockDummy) : 2) * 34) + 10; // always assume +1 output for change here
+        nBytes = nBytesInputs + ((CoinControlDialog::payAmounts.size() > 0 ? CoinControlDialog::payAmounts.size() + 1 : 2) * 34) + 10; // always assume +1 output for change here
+        if (fWitness)
+        {
+            // there is some fudging in these numbers related to the actual virtual transaction size calculation that will keep this estimate from being exact.
+            // usually, the result will be an overestimate within a couple of satoshis so that the confirmation dialog ends up displaying a slightly smaller fee.
+            // also, the witness stack size value is a variable sized integer. usually, the number of stack items will be well under the single byte var int limit.
+            nBytes += 2; // account for the serialized marker and flag bytes
+            nBytes += nQuantity; // account for the witness byte that holds the number of stack items for each input.
+        }
 
         // in the subtract fee from amount case, we can tell if zero change already and subtract the bytes, so that fee calculation afterwards is accurate
         if (CoinControlDialog::fSubtractFeeFromAmount)
@@ -567,17 +582,8 @@ void CoinControlDialog::updateLabels(WalletModel *model, QDialog* dialog)
         if (nPayAmount > 0)
         {
             nChange = nAmount - nPayAmount;
-
-            // PrivateSend Fee = overpay
-            if(coinControl()->IsUsingPrivateSend() && nChange > 0)
-            {
-                nPayFee = std::max(nChange, nPayFee);
-                nChange = 0;
-                if (CoinControlDialog::fSubtractFeeFromAmount)
-                    nBytes -= 34; // we didn't detect lack of change above
-            } else if (!CoinControlDialog::fSubtractFeeFromAmount) {
+            if (!CoinControlDialog::fSubtractFeeFromAmount)
                 nChange -= nPayFee;
-            }
 
             // Never create dust outputs; if we would, just add the dust to the fee.
             if (nChange > 0 && nChange < MIN_CHANGE)
