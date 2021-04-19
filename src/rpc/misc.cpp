@@ -345,8 +345,6 @@ UniValue validateaddress(const JSONRPCRequest& request)
             "  \"iscompressed\" : true|false,  (boolean) If the address is compressed\n"
             "  \"account\" : \"account\"         (string) DEPRECATED. The account associated with the address, \"\" is the default account\n"
             "  \"timestamp\" : timestamp,        (number, optional) The creation time of the key if available in seconds since epoch (Jan 1 1970 GMT)\n"
-            "  \"hdkeypath\" : \"keypath\"       (string, optional) The HD keypath if the key is HD and available\n"
-            "  \"hdchainid\" : \"<hash>\"        (string, optional) The ID of the HD chain\n"
             "}\n"
             "\nExamples:\n"
             + HelpExampleCli("validateaddress", "\"XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\"")
@@ -400,12 +398,6 @@ UniValue validateaddress(const JSONRPCRequest& request)
             }
             if (meta) {
                 ret.push_back(Pair("timestamp", meta->nCreateTime));
-            }
-
-            CHDChain hdChainCurrent;
-            if (&key_id && pwallet->mapHdPubKeys.count(key_id) && pwallet->GetHDChain(hdChainCurrent)) {
-                ret.push_back(Pair("hdkeypath", pwallet->mapHdPubKeys[key_id].GetKeyPath()));
-                ret.push_back(Pair("hdchainid", hdChainCurrent.GetID().GetHex()));
             }
         }
 #endif

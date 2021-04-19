@@ -779,48 +779,14 @@ UniValue dumpprivkey(const JSONRPCRequest& request)
     return CBitcoinSecret(vchSecret).ToString();
 }
 
-UniValue dumphdinfo(const JSONRPCRequest& request)
+static std::string WriteHDKeypath(const std::vector<uint32_t>& path)
 {
-    CWallet* const pwallet = GetWalletForJSONRPCRequest(request);
-    if (!EnsureWalletIsAvailable(pwallet, request.fHelp))
-        return NullUniValue;
-
-    if (request.fHelp || request.params.size() != 0)
-        throw std::runtime_error(
-            "dumphdinfo\n"
-            "Returns an object containing sensitive private info about this HD wallet.\n"
-            "\nResult:\n"
-            "{\n"
-            "  \"hdseed\": \"seed\",                    (string) The HD seed (bip32, in hex)\n"
-            "  \"mnemonic\": \"words\",                 (string) The mnemonic for this HD wallet (bip39, english words) \n"
-            "  \"mnemonicpassphrase\": \"passphrase\",  (string) The mnemonic passphrase for this HD wallet (bip39)\n"
-            "}\n"
-            "\nExamples:\n"
-            + HelpExampleCli("dumphdinfo", "")
-            + HelpExampleRpc("dumphdinfo", "")
-        );
-
-    LOCK(pwallet->cs_wallet);
-
-    EnsureWalletIsUnlocked(pwallet);
-
-    CHDChain hdChainCurrent;
-    if (!pwallet->GetHDChain(hdChainCurrent))
-        throw JSONRPCError(RPC_WALLET_ERROR, "This wallet is not a HD wallet.");
-
-    if (!pwallet->GetDecryptedHDChain(hdChainCurrent))
-        throw JSONRPCError(RPC_INTERNAL_ERROR, "Cannot decrypt HD seed");
-
-    SecureString ssMnemonic;
-    SecureString ssMnemonicPassphrase;
-    hdChainCurrent.GetMnemonic(ssMnemonic, ssMnemonicPassphrase);
-
-    UniValue obj(UniValue::VOBJ);
-    obj.push_back(Pair("hdseed", HexStr(hdChainCurrent.GetSeed())));
-    obj.push_back(Pair("mnemonic", ssMnemonic.c_str()));
-    obj.push_back(Pair("mnemonicpassphrase", ssMnemonicPassphrase.c_str()));
-
-    return obj;
+    std::string ret;
+    for (auto i : path) {
+        ret += strprintf("/%i", (i << 1) >> 1);
+        if (i >> 31) ret += '\'';
+    }
+    return "m" + ret;
 }
 
 UniValue dumpwallet(const JSONRPCRequest& request)
@@ -896,50 +862,17 @@ UniValue dumpwallet(const JSONRPCRequest& request)
     obj.push_back(Pair("lastblocktime", EncodeDumpTime(chainActive.Tip()->GetBlockTime())));
 
     // add the base58check encoded extended master if the wallet uses HD
-    CHDChain hdChainCurrent;
-    if (pwallet->GetHDChain(hdChainCurrent))
+    CKeyID seed_id = pwallet->GetHDChain().seed_id;
+    if (!seed_id.IsNull())
     {
+        CKey seed;
+        if (pwallet->GetKey(seed_id, seed)) {
+            CExtKey masterKey;
+            masterKey.SetSeed(seed.begin(), seed.size());
 
-        if (!pwallet->GetDecryptedHDChain(hdChainCurrent))
-            throw JSONRPCError(RPC_INTERNAL_ERROR, "Cannot decrypt HD chain");
-
-        SecureString ssMnemonic;
-        SecureString ssMnemonicPassphrase;
-        hdChainCurrent.GetMnemonic(ssMnemonic, ssMnemonicPassphrase);
-        file << "# mnemonic: " << ssMnemonic << "\n";
-        file << "# mnemonic passphrase: " << ssMnemonicPassphrase << "\n\n";
-
-        SecureVector vchSeed = hdChainCurrent.GetSeed();
-        file << "# HD seed: " << HexStr(vchSeed) << "\n\n";
-
-        CExtKey masterKey;
-        masterKey.SetMaster(&vchSeed[0], vchSeed.size());
-
-        CBitcoinExtKey b58extkey;
-        b58extkey.SetKey(masterKey);
-
-        file << "# extended private masterkey: " << b58extkey.ToString() << "\n";
-
-        CExtPubKey masterPubkey;
-        masterPubkey = masterKey.Neuter();
-
-        CBitcoinExtPubKey b58extpubkey;
-        b58extpubkey.SetKey(masterPubkey);
-        file << "# extended public masterkey: " << b58extpubkey.ToString() << "\n\n";
-
-        for (size_t i = 0; i < hdChainCurrent.CountAccounts(); ++i)
-        {
-            CHDAccount acc;
-            if(hdChainCurrent.GetAccount(i, acc)) {
-                file << "# external chain counter: " << acc.nExternalChainCounter << "\n";
-                file << "# internal chain counter: " << acc.nInternalChainCounter << "\n\n";
-            } else {
-                file << "# WARNING: ACCOUNT " << i << " IS MISSING!" << "\n\n";
-            }
+            file << "# extended private masterkey: " << EncodeExtKey(masterKey) << "\n\n";
         }
-        obj.push_back(Pair("hdaccounts", int(hdChainCurrent.CountAccounts())));
     }
-
     for (std::vector<std::pair<int64_t, CKeyID> >::const_iterator it = vKeyBirth.begin(); it != vKeyBirth.end(); it++) {
         const CKeyID &keyid = it->second;
         std::string strTime = EncodeDumpTime(it->first);
@@ -949,12 +882,16 @@ UniValue dumpwallet(const JSONRPCRequest& request)
             file << strprintf("%s %s ", CBitcoinSecret(key).ToString(), strTime);
             if (pwallet->mapAddressBook.count(keyid)) {
                 file << strprintf("label=%s", EncodeDumpString(pwallet->mapAddressBook[keyid].name));
+            } else if (keyid == seed_id) {
+                file << "hdseed=1";
             } else if (mapKeyPool.count(keyid)) {
                 file << "reserve=1";
+            } else if (pwallet->mapKeyMetadata[keyid].hdKeypath == "s") {
+                file << "inactivehdseed=1";
             } else {
                 file << "change=1";
             }
-            file << strprintf(" # addr=%s%s\n", strAddr, (pwallet->mapHdPubKeys.count(keyid) ? " hdkeypath="+pwallet->mapHdPubKeys[keyid].GetKeyPath() : ""));
+            file << strprintf(" # addr=%s%s\n", strAddr, (pwallet->mapKeyMetadata[keyid].has_key_origin ? " hdkeypath="+WriteHDKeypath(pwallet->mapKeyMetadata[keyid].key_origin.path) : ""));
         }
     }
     file << "\n";

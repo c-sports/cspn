@@ -199,9 +199,3 @@ CKeyID GetKeyForDestination(const CKeyStore& store, const CTxDestination& dest)
     }
     return CKeyID();
 }
-
-bool CBasicKeyStore::GetHDChain(CHDChain& hdChainRet) const
-{
-    hdChainRet = hdChain;
-    return !hdChain.IsNull();
-}

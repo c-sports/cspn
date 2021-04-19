@@ -356,6 +356,30 @@ bool CBitcoinSecret::SetString(const std::string& strSecret)
     return SetString(strSecret.c_str());
 }
 
+CExtKey DecodeExtKey(const std::string& str)
+{
+    CExtKey key;
+    std::vector<unsigned char> data;
+    if (DecodeBase58Check(str, data)) {
+        const std::vector<unsigned char>& prefix = Params().Base58Prefix(CChainParams::EXT_SECRET_KEY);
+        if (data.size() == BIP32_EXTKEY_SIZE + prefix.size() && std::equal(prefix.begin(), prefix.end(), data.begin())) {
+            key.Decode(data.data() + prefix.size());
+        }
+    }
+    return key;
+}
+
+std::string EncodeExtKey(const CExtKey& key)
+{
+    std::vector<unsigned char> data = Params().Base58Prefix(CChainParams::EXT_SECRET_KEY);
+    size_t size = data.size();
+    data.resize(size + BIP32_EXTKEY_SIZE);
+    key.Encode(data.data() + size);
+    std::string ret = EncodeBase58Check(data);
+    memory_cleanse(data.data(), data.size());
+    return ret;
+}
+
 std::string EncodeDestination(const CTxDestination& dest)
 {
     return boost::apply_visitor(DestinationEncoder(Params()), dest);

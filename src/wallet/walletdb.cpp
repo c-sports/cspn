@@ -59,9 +59,14 @@ bool WalletBatch::EraseTx(uint256 hash)
     return EraseIC(std::make_pair(std::string("tx"), hash));
 }
 
+bool WalletBatch::WriteKeyMetadata(const CKeyMetadata& meta, const CPubKey& pubkey, const bool overwrite)
+{
+    return WriteIC(std::make_pair(std::string("keymeta"), pubkey), meta, overwrite);
+}
+
 bool WalletBatch::WriteKey(const CPubKey& vchPubKey, const CPrivKey& vchPrivKey, const CKeyMetadata& keyMeta)
 {
-    if (!WriteIC(std::make_pair(std::string("keymeta"), vchPubKey), keyMeta, false)) {
+    if (!WriteKeyMetadata(keyMeta, vchPubKey, false)) {
         return false;
     }
 
@@ -78,7 +83,7 @@ bool WalletBatch::WriteCryptedKey(const CPubKey& vchPubKey,
                                 const std::vector<unsigned char>& vchCryptedSecret,
                                 const CKeyMetadata &keyMeta)
 {
-    if (!WriteIC(std::make_pair(std::string("keymeta"), vchPubKey), keyMeta)) {
+    if (!WriteKeyMetadata(keyMeta, vchPubKey, true)) {
         return false;
     }
 
@@ -239,7 +244,6 @@ public:
     unsigned int nKeys;
     unsigned int nCKeys;
     unsigned int nWatchKeys;
-    unsigned int nHDPubKeys;
     unsigned int nKeyMeta;
     bool fIsEncrypted;
     bool fAnyUnordered;
@@ -247,7 +251,7 @@ public:
     std::vector<uint256> vWalletUpgrade;
 
     CWalletScanState() {
-        nKeys = nCKeys = nWatchKeys = nHDPubKeys = nKeyMeta = 0;
+        nKeys = nCKeys = nWatchKeys = nKeyMeta = 0;
         fIsEncrypted = false;
         fAnyUnordered = false;
         nFileVersion = 0;
@@ -502,51 +506,24 @@ ReadKeyValue(CWallet* pwallet, CDataStream& ssKey, CDataStream& ssValue,
             ssKey >> strAddress;
             ssKey >> strKey;
             ssValue >> strValue;
-            if (!pwallet->LoadDestData(DecodeDestination(strAddress), strKey, strValue))
-            {
-                strErr = "Error reading wallet database: LoadDestData failed";
-                return false;
-            }
+            pwallet->LoadDestData(DecodeDestination(strAddress), strKey, strValue);
         }
         else if (strType == "hdchain")
         {
             CHDChain chain;
             ssValue >> chain;
-            if (!pwallet->SetHDChainSingle(chain, true))
-            {
-                strErr = "Error reading wallet database: SetHDChain failed";
+            pwallet->SetHDChain(chain, true);
+        } else if (strType == "flags") {
+            uint64_t flags;
+            ssValue >> flags;
+            if (!pwallet->SetWalletFlags(flags, true)) {
+                strErr = "Error reading wallet database: Unknown non-tolerable wallet flags found";
                 return false;
             }
-        }
-        else if (strType == "chdchain")
-        {
-            CHDChain chain;
-            ssValue >> chain;
-            if (!pwallet->SetCryptedHDChainSingle(chain, true))
-            {
-                strErr = "Error reading wallet database: SetHDCryptedChain failed";
-                return false;
-            }
-        }
-        else if (strType == "hdpubkey")
-        {
-            wss.nHDPubKeys++;
-            CPubKey vchPubKey;
-            ssKey >> vchPubKey;
-
-            CHDPubKey hdPubKey;
-            ssValue >> hdPubKey;
-
-            if(vchPubKey != hdPubKey.extPubKey.pubkey)
-            {
-                strErr = "Error reading wallet database: CHDPubKey corrupt";
-                return false;
-            }
-            if (!pwallet->LoadHDPubKey(hdPubKey))
-            {
-                strErr = "Error reading wallet database: LoadHDPubKey failed";
-                return false;
-            }
+        } else if (strType == "stakest") {
+            ssValue >> pwallet->nStakeSplitThreshold;
+        } else if (strType == "stakect") {
+            ssValue >> pwallet->nStakeCombineThreshold;
         }
     } catch (...)
     {
@@ -558,8 +535,7 @@ ReadKeyValue(CWallet* pwallet, CDataStream& ssKey, CDataStream& ssValue,
 bool WalletBatch::IsKeyType(const std::string& strType)
 {
     return (strType== "key" || strType == "wkey" ||
-            strType == "mkey" || strType == "ckey" ||
-            strType == "hdchain" || strType == "chdchain");
+            strType == "mkey" || strType == "ckey");
 }
 
 DBErrors WalletBatch::LoadWallet(CWallet* pwallet)
@@ -643,12 +619,12 @@ DBErrors WalletBatch::LoadWallet(CWallet* pwallet)
 
     LogPrintf("nFileVersion = %d\n", wss.nFileVersion);
 
-    LogPrintf("Keys: %u plaintext, %u encrypted, %u total; Watch scripts: %u; HD PubKeys: %u; Metadata: %u\n",
+    LogPrintf("Keys: %u plaintext, %u encrypted, %u total; Watch scripts: %u; Metadata: %u\n",
            wss.nKeys, wss.nCKeys, wss.nKeys + wss.nCKeys,
-           wss.nWatchKeys, wss.nHDPubKeys, wss.nKeyMeta);
+           wss.nWatchKeys, wss.nKeyMeta);
 
     // nTimeFirstKey is only reliable if all keys have metadata
-    if ((wss.nKeys + wss.nCKeys + wss.nWatchKeys + wss.nHDPubKeys) != wss.nKeyMeta)
+    if ((wss.nKeys + wss.nCKeys + wss.nWatchKeys) != wss.nKeyMeta)
         pwallet->UpdateTimeFirstKey(1);
 
     for (uint256 hash : wss.vWalletUpgrade)
@@ -668,6 +644,14 @@ DBErrors WalletBatch::LoadWallet(CWallet* pwallet)
     ListAccountCreditDebit("*", pwallet->laccentries);
     for (CAccountingEntry& entry : pwallet->laccentries) {
         pwallet->wtxOrdered.insert(make_pair(entry.nOrderPos, CWallet::TxPair(nullptr, &entry)));
+    }
+
+    // Upgrade all of the wallet keymetadata to have the hd master key id
+    // This operation is not atomic, but if it fails, updated entries are still backwards compatible with older software
+    try {
+        pwallet->UpgradeKeyMetadata();
+    } catch (...) {
+        result = DB_CORRUPT;
     }
 
     return result;
@@ -844,7 +828,7 @@ bool WalletBatch::RecoverKeysOnlyFilter(void *callbackData, CDataStream ssKey, C
         fReadOK = ReadKeyValue(dummyWallet, ssKey, ssValue,
                                dummyWss, strType, strErr);
     }
-    if (!IsKeyType(strType) && strType != "hdpubkey")
+    if (!IsKeyType(strType) && strType != "hdchain")
         return false;
     if (!fReadOK)
     {
@@ -875,27 +859,24 @@ bool WalletBatch::EraseDestData(const std::string &address, const std::string &k
     return EraseIC(std::make_pair(std::string("destdata"), std::make_pair(address, key)));
 }
 
+bool WalletBatch::WriteStakeSplitThreshold(const int nStakeSplitThreshold)
+{
+    return WriteIC(std::string("stakest"), nStakeSplitThreshold);
+}
+
+bool WalletBatch::WriteStakeCombineThreshold(const int nStakeCombineThreshold)
+{
+    return WriteIC(std::string("stakect"), nStakeCombineThreshold);
+}
+
 bool WalletBatch::WriteHDChain(const CHDChain& chain)
 {
     return WriteIC(std::string("hdchain"), chain);
 }
 
-bool WalletBatch::WriteCryptedHDChain(const CHDChain& chain)
+bool WalletBatch::WriteWalletFlags(const uint64_t flags)
 {
-    if (!WriteIC(std::string("chdchain"), chain))
-        return false;
-
-    EraseIC(std::string("hdchain"));
-
-    return true;
-}
-
-bool WalletBatch::WriteHDPubKey(const CHDPubKey& hdPubKey, const CKeyMetadata& keyMeta)
-{
-    if (!WriteIC(std::make_pair(std::string("keymeta"), hdPubKey.extPubKey.pubkey), keyMeta, false))
-        return false;
-
-    return WriteIC(std::make_pair(std::string("hdpubkey"), hdPubKey.extPubKey.pubkey), hdPubKey, false);
+    return WriteIC(std::string("flags"), flags);
 }
 
 bool WalletBatch::TxnBegin()

@@ -11,6 +11,7 @@
 
 #include <compat.h>
 #include <serialize.h>
+#include <span.h>
 
 #include <stdint.h>
 #include <string>
@@ -96,7 +97,7 @@ class CNetAddr
 
         template <typename Stream, typename Operation>
         inline void SerializationOp(Stream& s, Operation ser_action) {
-            READWRITE(FLATDATA(ip));
+            READWRITE(ip);
         }
 
         friend class CSubNet;
@@ -134,8 +135,8 @@ class CSubNet
         template <typename Stream, typename Operation>
         inline void SerializationOp(Stream& s, Operation ser_action) {
             READWRITE(network);
-            READWRITE(FLATDATA(netmask));
-            READWRITE(FLATDATA(valid));
+            READWRITE(netmask);
+            READWRITE(valid);
         }
 };
 
@@ -169,11 +170,14 @@ class CService : public CNetAddr
 
         template <typename Stream, typename Operation>
         inline void SerializationOp(Stream& s, Operation ser_action) {
-            READWRITE(FLATDATA(ip));
+            READWRITE(ip);
+
+            // TODO: introduce native support for BE serialization in serialize.h
             unsigned short portN = htons(port);
-            READWRITE(FLATDATA(portN));
-            if (ser_action.ForRead())
-                 port = ntohs(portN);
+            READWRITE(Span<unsigned char>((unsigned char*)&portN, 2));
+            if (ser_action.ForRead()) {
+                port = ntohs(portN);
+            }
         }
 };
 

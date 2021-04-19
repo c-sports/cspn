@@ -25,6 +25,7 @@
 #include <vector>
 
 #include <prevector.h>
+#include <span.h>
 
 static const unsigned int MAX_SIZE = 0x02000000;
 
@@ -44,7 +45,7 @@ constexpr deserialize_type deserialize {};
 
 /**
  * Used to bypass the rule against non-const reference to temporary
- * where it makes sense with wrappers such as CFlatData or CTxDB
+ * where it makes sense with wrappers.
  */
 template<typename T>
 inline T& REF(const T& val)
@@ -61,6 +62,12 @@ inline T* NCONST_PTR(const T* val)
 {
     return const_cast<T*>(val);
 }
+
+//! Safely convert odd char pointer types to standard ones.
+inline char* CharCast(char* c) { return c; }
+inline char* CharCast(unsigned char* c) { return (char*)c; }
+inline const char* CharCast(const char* c) { return c; }
+inline const char* CharCast(const unsigned char* c) { return (const char*)c; }
 
 /*
  * Lowest-level serialization and conversion.
@@ -162,8 +169,12 @@ enum
     SER_GETHASH         = (1 << 2),
 };
 
-#define READWRITE(obj)      (::SerReadWrite(s, (obj), ser_action))
-#define READWRITEMANY(...)      (::SerReadWriteMany(s, ser_action, __VA_ARGS__))
+//! Convert the reference base type to X, without changing constness or reference type.
+template<typename X> X& ReadWriteAsHelper(X& x) { return x; }
+template<typename X> const X& ReadWriteAsHelper(const X& x) { return x; }
+
+#define READWRITE(...) (::SerReadWriteMany(s, ser_action, __VA_ARGS__))
+#define READWRITEAS(type, obj) (::SerReadWriteMany(s, ser_action, ReadWriteAsHelper<type>(obj)))
 
 /** 
  * Implement three methods for serializable objects. These are actually wrappers over
@@ -192,6 +203,10 @@ template<typename Stream> inline void Serialize(Stream& s, int64_t a ) { ser_wri
 template<typename Stream> inline void Serialize(Stream& s, uint64_t a) { ser_writedata64(s, a); }
 template<typename Stream> inline void Serialize(Stream& s, float a   ) { ser_writedata32(s, ser_float_to_uint32(a)); }
 template<typename Stream> inline void Serialize(Stream& s, double a  ) { ser_writedata64(s, ser_double_to_uint64(a)); }
+template<typename Stream, int N> inline void Serialize(Stream& s, const char (&a)[N]) { s.write(a, N); }
+template<typename Stream, int N> inline void Serialize(Stream& s, const unsigned char (&a)[N]) { s.write(CharCast(a), N); }
+template<typename Stream> inline void Serialize(Stream& s, const Span<const unsigned char>& span) { s.write(CharCast(span.data()), span.size()); }
+template<typename Stream> inline void Serialize(Stream& s, const Span<unsigned char>& span) { s.write(CharCast(span.data()), span.size()); }
 
 template<typename Stream> inline void Unserialize(Stream& s, char& a    ) { a = ser_readdata8(s); } // TODO Get rid of bare char
 template<typename Stream> inline void Unserialize(Stream& s, int8_t& a  ) { a = ser_readdata8(s); }
@@ -207,6 +222,9 @@ template<typename Stream> inline void Unserialize(Stream& s, double& a  ) { a = 
 
 template<typename Stream> inline void Serialize(Stream& s, bool a)    { char f=a; ser_writedata8(s, f); }
 template<typename Stream> inline void Unserialize(Stream& s, bool& a) { char f=ser_readdata8(s); a=f; }
+template<typename Stream, int N> inline void Unserialize(Stream& s, char (&a)[N]) { s.read(a, N); }
+template<typename Stream, int N> inline void Unserialize(Stream& s, unsigned char (&a)[N]) { s.read(CharCast(a), N); }
+template<typename Stream> inline void Unserialize(Stream& s, Span<unsigned char>& span) { s.read(CharCast(span.data()), span.size()); }
 
 template <typename T> size_t GetSerializeSize(const T& t, int nType, int nVersion = 0);
 template <typename S, typename T> size_t GetSerializeSize(const S& s, const T& t);
@@ -367,7 +385,6 @@ I ReadVarInt(Stream& is)
     }
 }
 
-#define FLATDATA(obj) REF(CFlatData((char*)&(obj), (char*)&(obj) + sizeof(obj)))
 #define FIXEDBITSET(obj, size) REF(CFixedBitSet(REF(obj), (size)))
 #define DYNBITSET(obj) REF(CDynamicBitSet(REF(obj)))
 #define FIXEDVARINTSBITSET(obj, size) REF(CFixedVarIntsBitSet(REF(obj), (size)))
@@ -375,46 +392,6 @@ I ReadVarInt(Stream& is)
 #define VARINT(obj) REF(WrapVarInt(REF(obj)))
 #define COMPACTSIZE(obj) REF(CCompactSize(REF(obj)))
 #define LIMITED_STRING(obj,n) REF(LimitedString< n >(REF(obj)))
-
-/** 
- * Wrapper for serializing arrays and POD.
- */
-class CFlatData
-{
-protected:
-    char* pbegin;
-    char* pend;
-public:
-    CFlatData(void* pbeginIn, void* pendIn) : pbegin((char*)pbeginIn), pend((char*)pendIn) { }
-    template <class T, class TAl>
-    explicit CFlatData(std::vector<T,TAl> &v)
-    {
-        pbegin = (char*)v.data();
-        pend = (char*)(v.data() + v.size());
-    }
-    template <unsigned int N, typename T, typename S, typename D>
-    explicit CFlatData(prevector<N, T, S, D> &v)
-    {
-        pbegin = (char*)v.data();
-        pend = (char*)(v.data() + v.size());
-    }
-    char* begin() { return pbegin; }
-    const char* begin() const { return pbegin; }
-    char* end() { return pend; }
-    const char* end() const { return pend; }
-
-    template<typename Stream>
-    void Serialize(Stream& s) const
-    {
-        s.write(pbegin, pend - pbegin);
-    }
-
-    template<typename Stream>
-    void Unserialize(Stream& s)
-    {
-        s.read(pbegin, pend - pbegin);
-    }
-};
 
 class CFixedBitSet
 {
@@ -1165,18 +1142,6 @@ struct CSerActionUnserialize
     constexpr bool ForRead() const { return true; }
 };
 
-template<typename Stream, typename T>
-inline void SerReadWrite(Stream& s, const T& obj, CSerActionSerialize ser_action)
-{
-    ::Serialize(s, obj);
-}
-
-template<typename Stream, typename T>
-inline void SerReadWrite(Stream& s, T& obj, CSerActionUnserialize ser_action)
-{
-    ::Unserialize(s, obj);
-}
-
 
 
 
@@ -1237,17 +1202,11 @@ void SerializeMany(Stream& s)
 {
 }
 
-template<typename Stream, typename Arg>
-void SerializeMany(Stream& s, Arg&& arg)
-{
-    ::Serialize(s, std::forward<Arg>(arg));
-}
-
 template<typename Stream, typename Arg, typename... Args>
-void SerializeMany(Stream& s, Arg&& arg, Args&&... args)
+void SerializeMany(Stream& s, const Arg& arg, const Args&... args)
 {
-    ::Serialize(s, std::forward<Arg>(arg));
-    ::SerializeMany(s, std::forward<Args>(args)...);
+    ::Serialize(s, arg);
+    ::SerializeMany(s, args...);
 }
 
 template<typename Stream>
@@ -1255,27 +1214,21 @@ inline void UnserializeMany(Stream& s)
 {
 }
 
-template<typename Stream, typename Arg>
-inline void UnserializeMany(Stream& s, Arg& arg)
-{
-    ::Unserialize(s, arg);
-}
-
 template<typename Stream, typename Arg, typename... Args>
-inline void UnserializeMany(Stream& s, Arg& arg, Args&... args)
+inline void UnserializeMany(Stream& s, Arg&& arg, Args&&... args)
 {
     ::Unserialize(s, arg);
     ::UnserializeMany(s, args...);
 }
 
 template<typename Stream, typename... Args>
-inline void SerReadWriteMany(Stream& s, CSerActionSerialize ser_action, Args&&... args)
+inline void SerReadWriteMany(Stream& s, CSerActionSerialize ser_action, const Args&... args)
 {
-    ::SerializeMany(s, std::forward<Args>(args)...);
+    ::SerializeMany(s, args...);
 }
 
 template<typename Stream, typename... Args>
-inline void SerReadWriteMany(Stream& s, CSerActionUnserialize ser_action, Args&... args)
+inline void SerReadWriteMany(Stream& s, CSerActionUnserialize ser_action, Args&&... args)
 {
     ::UnserializeMany(s, args...);
 }

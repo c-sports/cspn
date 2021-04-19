@@ -130,7 +130,7 @@ CTransactionBuilder::CTransactionBuilder(CWallet* pwalletIn, const CompactTallyI
         LOCK(pwallet->cs_wallet);
         WalletBatch dummyBatch(pwallet->GetDBHandle(), "r+", false);
         dummyBatch.TxnBegin();
-        CPubKey dummyPubkey = pwallet->GenerateNewKey(dummyBatch, 0, false);
+        CPubKey dummyPubkey = pwallet->GenerateNewKey(dummyBatch, false);
         dummyBatch.TxnAbort();
         dummyScript = ::GetScriptForDestination(dummyPubkey.GetID());
     }

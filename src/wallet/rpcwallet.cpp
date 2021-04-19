@@ -2380,7 +2380,7 @@ UniValue keypoolrefill(const JSONRPCRequest& request)
     EnsureWalletIsUnlocked(pwallet);
     pwallet->TopUpKeyPool(kpSize);
 
-    if (pwallet->GetKeyPoolSize() < (pwallet->IsHDEnabled() ? kpSize * 2 : kpSize)) {
+    if (pwallet->GetKeyPoolSize() < kpSize) {
         throw JSONRPCError(RPC_WALLET_ERROR, "Error refreshing keypool.");
     }
 
@@ -2925,21 +2925,12 @@ UniValue getwalletinfo(const JSONRPCRequest& request)
             "  \"txcount\": xxxxxxx,         (numeric) the total number of transactions in the wallet\n"
             "  \"keypoololdest\": xxxxxx,    (numeric) the timestamp (seconds since Unix epoch) of the oldest pre-generated key in the key pool\n"
             "  \"keypoolsize\": xxxx,        (numeric) how many new keys are pre-generated (only counts external keys)\n"
-            "  \"keypoolsize_hd_internal\": xxxx, (numeric) how many new keys are pre-generated for internal use (used for change outputs, only appears if the wallet is using this feature, otherwise external keys are used)\n"
+            "  \"keypoolsize_hd_internal\": xxxx,   (numeric) how many new keys are pre-generated for internal use (used for change outputs, only appears if the wallet is using this feature, otherwise external keys are used)\n"
             "  \"keys_left\": xxxx,          (numeric) how many new keys are left since last automatic backup\n"
             "  \"unlocked_until\": ttt,      (numeric) the timestamp in seconds since epoch (midnight Jan 1 1970 GMT) that the wallet is unlocked for transfers, or 0 if the wallet is locked\n"
             "  \"unlocked_staking\": true|false     (boolean) whether the wallet is unlocked for staking only\n"
             "  \"paytxfee\": x.xxxx,         (numeric) the transaction fee configuration, set in " + CURRENCY_UNIT + "/kB\n"
-            "  \"hdchainid\": \"<hash>\",      (string) the ID of the HD chain\n"
-            "  \"hdaccountcount\": xxx,      (numeric) how many accounts of the HD chain are in this wallet\n"
-            "    [\n"
-            "      {\n"
-            "      \"hdaccountindex\": xxx,         (numeric) the index of the account\n"
-            "      \"hdexternalkeyindex\": xxxx,    (numeric) current external childkey index\n"
-            "      \"hdinternalkeyindex\": xxxx,    (numeric) current internal childkey index\n"
-            "      }\n"
-            "      ,...\n"
-            "    ]\n"
+            "  \"hdseedid\": \"<hash160>\"            (string, optional) the Hash160 of the HD seed (only present when HD is enabled)\n"
             "  \"scanning\":                        (json object) current scanning details, or false if no scan is in progress\n"
             "    {\n"
             "      \"duration\" : xxxx              (numeric) elapsed seconds since scan start\n"
@@ -2958,11 +2949,9 @@ UniValue getwalletinfo(const JSONRPCRequest& request)
     pwallet->BlockUntilSyncedToCurrentChain();
 
     LOCK2(cs_main, pwallet->cs_wallet);
-
-    CHDChain hdChainCurrent;
-    bool fHDEnabled = pwallet->GetHDChain(hdChainCurrent);
     UniValue obj(UniValue::VOBJ);
 
+    size_t kpExternalSize = pwallet->KeypoolCountExternalKeys();
     obj.push_back(Pair("walletname", pwallet->GetName()));
     obj.push_back(Pair("walletversion", pwallet->GetVersion()));
     obj.push_back(Pair("balance",       ValueFromAmount(pwallet->GetBalance())));
@@ -2971,9 +2960,10 @@ UniValue getwalletinfo(const JSONRPCRequest& request)
     obj.push_back(Pair("immature_balance",    ValueFromAmount(pwallet->GetImmatureBalance())));
     obj.push_back(Pair("txcount",       (int)pwallet->mapWallet.size()));
     obj.push_back(Pair("keypoololdest", pwallet->GetOldestKeyPoolTime()));
-    obj.push_back(Pair("keypoolsize",   (int64_t)pwallet->KeypoolCountExternalKeys()));
-    if (fHDEnabled) {
-        obj.push_back(Pair("keypoolsize_hd_internal",   (int64_t)(pwallet->KeypoolCountInternalKeys())));
+    obj.pushKV("keypoolsize", (int64_t)kpExternalSize);
+    CKeyID seed_id = pwallet->GetHDChain().seed_id;
+    if (pwallet->CanSupportFeature(FEATURE_HD_SPLIT)) {
+        obj.pushKV("keypoolsize_hd_internal",   (int64_t)(pwallet->GetKeyPoolSize() - kpExternalSize));
     }
     obj.push_back(Pair("keys_left",     pwallet->nKeysLeftSinceAutoBackup));
     if (pwallet->IsCrypted()) {
@@ -2981,24 +2971,8 @@ UniValue getwalletinfo(const JSONRPCRequest& request)
         obj.pushKV("unlocked_staking", fWalletUnlockStakingOnly);
     }
     obj.push_back(Pair("paytxfee",      ValueFromAmount(payTxFee.GetFeePerK())));
-    if (fHDEnabled) {
-        obj.push_back(Pair("hdchainid", hdChainCurrent.GetID().GetHex()));
-        obj.push_back(Pair("hdaccountcount", (int64_t)hdChainCurrent.CountAccounts()));
-        UniValue accounts(UniValue::VARR);
-        for (size_t i = 0; i < hdChainCurrent.CountAccounts(); ++i)
-        {
-            CHDAccount acc;
-            UniValue account(UniValue::VOBJ);
-            account.push_back(Pair("hdaccountindex", (int64_t)i));
-            if(hdChainCurrent.GetAccount(i, acc)) {
-                account.push_back(Pair("hdexternalkeyindex", (int64_t)acc.nExternalChainCounter));
-                account.push_back(Pair("hdinternalkeyindex", (int64_t)acc.nInternalChainCounter));
-            } else {
-                account.push_back(Pair("error", strprintf("account %d is missing", i)));
-            }
-            accounts.push_back(account);
-        }
-        obj.push_back(Pair("hdaccounts", accounts));
+    if (!seed_id.IsNull()) {
+        obj.pushKV("hdseedid", seed_id.GetHex());
     }
     if (pwallet->IsScanning()) {
         UniValue scanning(UniValue::VOBJ);
@@ -3148,6 +3122,71 @@ UniValue loadwallet(const JSONRPCRequest& request)
     obj.pushKV("warning", warning);
 
     return obj;
+}
+
+static UniValue setwalletflag(const JSONRPCRequest& request)
+{
+    CWallet * const pwallet = GetWalletForJSONRPCRequest(request);
+
+    if (!EnsureWalletIsAvailable(pwallet, request.fHelp)) {
+        return NullUniValue;
+    }
+
+            std::string flags = "";
+            for (auto& it : WALLET_FLAG_MAP)
+                if (it.second & MUTABLE_WALLET_FLAGS)
+                    flags += (flags == "" ? "" : ", ") + it.first;
+    if (request.fHelp || request.params.size() == 0)
+        throw std::runtime_error(
+                "setwalletflag \"filename\"\n"
+                "\nChange the state of the given wallet flag for a wallet.\n"
+                "\nArguments:\n"
+                "1. \"flag\"    (string, required) \"The name of the flag to change. Current available flags: " + flags + "\n"
+                "1. \"value\"    (string, required) true \"The new state.\"\n"
+                "\nResult:\n"
+                "{\n"
+                "    \"flag_name\": string   (string) The name of the flag that was modified\n"
+                "    \"flag_state\": bool    (bool) The new state of the flag\n"
+                "    \"warnings\": string    (string) Any warnings associated with the change\n"
+                "}\n"
+                "\nExamples:\n"
+                + HelpExampleCli("setwalletflag", "avoid_reuse")
+                + HelpExampleRpc("setwalletflag", "\"avoid_reuse\"")
+        );
+
+    std::string flag_str = request.params[0].get_str();
+    bool value = request.params[1].isNull() || request.params[1].get_bool();
+
+    if (!WALLET_FLAG_MAP.count(flag_str)) {
+        throw JSONRPCError(RPC_INVALID_PARAMETER, strprintf("Unknown wallet flag: %s", flag_str));
+    }
+
+    auto flag = WALLET_FLAG_MAP.at(flag_str);
+
+    if (!(flag & MUTABLE_WALLET_FLAGS)) {
+        throw JSONRPCError(RPC_INVALID_PARAMETER, strprintf("Wallet flag is immutable: %s", flag_str));
+    }
+
+    UniValue res(UniValue::VOBJ);
+
+    if (pwallet->IsWalletFlagSet(flag) == value) {
+        throw JSONRPCError(RPC_INVALID_PARAMETER, strprintf("Wallet flag is already set to %s: %s", value ? "true" : "false", flag_str));
+    }
+
+    res.pushKV("flag_name", flag_str);
+    res.pushKV("flag_state", value);
+
+    if (value) {
+        pwallet->SetWalletFlag(flag);
+    } else {
+        pwallet->UnsetWalletFlag(flag);
+    }
+
+    if (flag && value && WALLET_FLAG_CAVEATS.count(flag)) {
+        res.pushKV("warnings", WALLET_FLAG_CAVEATS.at(flag));
+    }
+
+    return res;
 }
 
 UniValue resendwallettransactions(const JSONRPCRequest& request)
@@ -3706,7 +3745,6 @@ extern UniValue removeprunedfunds(const JSONRPCRequest& request);
 extern UniValue importmulti(const JSONRPCRequest& request);
 extern UniValue rescanblockchain(const JSONRPCRequest& request);
 
-extern UniValue dumphdinfo(const JSONRPCRequest& request);
 extern UniValue importelectrumwallet(const JSONRPCRequest& request);
 
 static const CRPCCommand commands[] =
@@ -3772,7 +3810,6 @@ static const CRPCCommand commands[] =
 #endif //ENABLE_MINER
     { "wallet",             "keepass",                  &keepass,                  {} },
     { "hidden",             "instantsendtoaddress",     &instantsendtoaddress,     {} },
-    { "wallet",             "dumphdinfo",               &dumphdinfo,               {} },
     { "wallet",             "importelectrumwallet",     &importelectrumwallet,     {"filename", "index"} },
 };
 

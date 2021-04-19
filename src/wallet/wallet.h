@@ -101,10 +101,16 @@ enum WalletFeature
 
     FEATURE_WALLETCRYPT = 40000, // wallet encryption
     FEATURE_COMPRPUBKEY = 60000, // compressed public keys
-    FEATURE_HD = 120200,    // Hierarchical key derivation after BIP32 (HD Wallet), BIP44 (multi-coin), BIP39 (mnemonic)
-                            // which uses on-the-fly private key derivation
 
-    FEATURE_LATEST = 61000
+    FEATURE_HD = 130000, // Hierarchical key derivation after BIP32 (HD Wallet)
+
+    FEATURE_HD_SPLIT = 139900, // Wallet with HD chain split (change outputs will use m/0'/1'/k)
+
+    FEATURE_NO_DEFAULT_KEY = 159900, // Wallet without a default key written
+
+    FEATURE_PRE_SPLIT_KEYPOOL = 169900, // Upgraded to HD SPLIT and can have a pre-split keypool
+
+    FEATURE_LATEST = FEATURE_PRE_SPLIT_KEYPOOL
 };
 
 struct CompactTallyItem
@@ -131,13 +137,107 @@ enum OutputType
 extern OutputType g_address_type;
 extern OutputType g_change_type;
 
-/** A key pool entry */
+enum WalletFlags : uint64_t {
+    // wallet flags in the upper section (> 1 << 31) will lead to not opening the wallet if flag is unknown
+    // unknown wallet flags in the lower section <= (1 << 31) will be tolerated
+
+    // will categorize coins as clean (not reused) and dirty (reused), and handle
+    // them with privacy considerations in mind
+    WALLET_FLAG_AVOID_REUSE = (1ULL << 0),
+
+    // Indicates that the metadata has already been upgraded to contain key origins
+    WALLET_FLAG_KEY_ORIGIN_METADATA = (1ULL << 1),
+
+    // will enforce the rule that the wallet can't contain any private keys (only watch-only/pubkeys)
+    WALLET_FLAG_DISABLE_PRIVATE_KEYS = (1ULL << 32),
+
+    //! Flag set when a wallet contains no HD seed and no private keys, scripts,
+    //! addresses, and other watch only things, and is therefore "blank."
+    //!
+    //! The only function this flag serves is to distinguish a blank wallet from
+    //! a newly created wallet when the wallet database is loaded, to avoid
+    //! initialization that should only happen on first run.
+    //!
+    //! This flag is also a mandatory flag to prevent previous versions of
+    //! cspn from opening the wallet, thinking it was newly created, and
+    //! then improperly reinitializing it.
+    WALLET_FLAG_BLANK_WALLET = (1ULL << 33),
+};
+
+static constexpr uint64_t KNOWN_WALLET_FLAGS =
+        WALLET_FLAG_AVOID_REUSE
+    |   WALLET_FLAG_BLANK_WALLET
+    |   WALLET_FLAG_KEY_ORIGIN_METADATA
+    |   WALLET_FLAG_DISABLE_PRIVATE_KEYS;
+
+static constexpr uint64_t MUTABLE_WALLET_FLAGS =
+        WALLET_FLAG_AVOID_REUSE;
+
+static const std::map<std::string,WalletFlags> WALLET_FLAG_MAP{
+    {"avoid_reuse", WALLET_FLAG_AVOID_REUSE},
+    {"blank", WALLET_FLAG_BLANK_WALLET},
+    {"key_origin_metadata", WALLET_FLAG_KEY_ORIGIN_METADATA},
+    {"disable_private_keys", WALLET_FLAG_DISABLE_PRIVATE_KEYS},
+};
+
+extern const std::map<uint64_t,std::string> WALLET_FLAG_CAVEATS;
+
+
+/** A key from a CWallet's keypool
+ *
+ * The wallet holds one (for pre HD-split wallets) or several keypools. These
+ * are sets of keys that have not yet been used to provide addresses or receive
+ * change.
+ *
+ * The CSPN Core wallet was originally a collection of unrelated private
+ * keys with their associated addresses. If a non-HD wallet generated a
+ * key/address, gave that address out and then restored a backup from before
+ * that key's generation, then any funds sent to that address would be
+ * lost definitively.
+ *
+ * The keypool was implemented to avoid this scenario (commit: 10384941). The
+ * wallet would generate a set of keys (100 by default). When a new public key
+ * was required, either to give out as an address or to use in a change output,
+ * it would be drawn from the keypool. The keypool would then be topped up to
+ * maintain 100 keys. This ensured that as long as the wallet hadn't used more
+ * than 100 keys since the previous backup, all funds would be safe, since a
+ * restored wallet would be able to scan for all owned addresses.
+ *
+ * A keypool also allowed encrypted wallets to give out addresses without
+ * having to be decrypted to generate a new private key.
+ *
+ * With the introduction of HD wallets (commit: f1902510), the keypool
+ * essentially became an address look-ahead pool. Restoring old backups can no
+ * longer definitively lose funds as long as the addresses used were from the
+ * wallet's HD seed (since all private keys can be rederived from the seed).
+ * However, if many addresses were used since the backup, then the wallet may
+ * not know how far ahead in the HD chain to look for its addresses. The
+ * keypool is used to implement a 'gap limit'. The keypool maintains a set of
+ * keys (by default 1000) ahead of the last used key and scans for the
+ * addresses of those keys.  This avoids the risk of not seeing transactions
+ * involving the wallet's addresses, or of re-using the same address.
+ *
+ * The HD-split wallet feature added a second keypool (commit: 02592f4c). There
+ * is an external keypool (for addresses to hand out) and an internal keypool
+ * (for change addresses).
+ *
+ * Keypool keys are stored in the wallet/keystore's keymap. The keypool data is
+ * stored as sets of indexes in the wallet (setInternalKeyPool,
+ * setExternalKeyPool and set_pre_split_keypool), and a map from the key to the
+ * index (m_pool_key_to_index). The CKeyPool object is used to
+ * serialize/deserialize the pool data to/from the database.
+ */
 class CKeyPool
 {
 public:
+    //! The time at which the key was generated. Set in AddKeypoolPubKeyWithDB
     int64_t nTime;
+    //! The public key
     CPubKey vchPubKey;
-    bool fInternal; // for change outputs
+    //! Whether this keypool entry is in the internal keypool (for change outputs)
+    bool fInternal;
+    //! Whether this key was generated for a keypool before the wallet was upgraded to HD-split
+    bool m_pre_split;
 
     CKeyPool();
     CKeyPool(const CPubKey& vchPubKeyIn, bool fInternalIn);
@@ -160,9 +260,18 @@ public:
                    (this will be the case for any wallet before the HD chain split version) */
                 fInternal = false;
             }
+            try {
+                READWRITE(m_pre_split);
+            }
+            catch (std::ios_base::failure&) {
+                /* flag as postsplit address if we can't read the m_pre_split boolean
+                   (this will be the case for any wallet that upgrades to HD chain split)*/
+                m_pre_split = false;
+            }
         }
         else {
             READWRITE(fInternal);
+            READWRITE(m_pre_split);
         }
     }
 };
@@ -786,13 +895,18 @@ private:
      * Should be called with pindexBlock and posInBlock if this is for a transaction that is included in a block. */
     void SyncTransaction(const CTransactionRef& tx, const CBlockIndex *pindex = nullptr, int posInBlock = 0);
 
+    /* the HD chain data model (external chain counters) */
+    CHDChain hdChain;
+
     /* HD derive new child key (on internal or external chain) */
-    void DeriveNewChildKey(WalletBatch &batch, const CKeyMetadata& metadata, CKey& secretRet, uint32_t nAccountIndex, bool fInternal /*= false*/);
+    void DeriveNewChildKey(WalletBatch& batch, CKeyMetadata& metadata, CKey& secret, bool internal = false);
 
     std::set<int64_t> setInternalKeyPool;
     std::set<int64_t> setExternalKeyPool;
+    std::set<int64_t> set_pre_split_keypool;
     int64_t m_max_keypool_index;
     std::map<CKeyID, int64_t> m_pool_key_to_index;
+    std::atomic<uint64_t> m_wallet_flags{0};
 
     int64_t nTimeFirstKey;
 
@@ -806,6 +920,9 @@ private:
      * nTimeFirstKey more intelligently for more efficient rescans.
      */
     bool AddWatchOnly(const CScript& dest) override;
+
+    //! Unsets a wallet flag and saves it to disk
+    void UnsetWalletFlagWithDB(WalletBatch& batch, uint64_t flag);
 
     /**
      * Wallet filename from wallet=<path> command line or config option.
@@ -867,6 +984,7 @@ public:
     const std::string& GetName() const { return m_name; }
 
     void LoadKeyPool(int64_t nIndex, const CKeyPool &keypool);
+    void MarkPreSplitKeys();
 
     // Map from Key ID to key metadata.
     std::map<CKeyID, CKeyMetadata> mapKeyMetadata;
@@ -927,8 +1045,6 @@ public:
     std::set<COutPoint> setLockedCoins;
 
     int64_t nKeysLeftSinceAutoBackup;
-
-    std::map<CKeyID, CHDPubKey> mapHdPubKeys; //<! memory map of HD extended pubkeys
 
     const CWalletTx* GetWalletTx(const uint256& hash) const;
 
@@ -1003,17 +1119,13 @@ public:
      * keystore implementation
      * Generate a new key
      */
-    CPubKey GenerateNewKey(WalletBatch& batch, uint32_t nAccountIndex, bool fInternal /*= false*/);
-    //! HaveKey implementation that also checks the mapHdPubKeys
+    CPubKey GenerateNewKey(WalletBatch& batch, bool internal = false);
+    //! HaveKey implementation
     bool HaveKey(const CKeyID &address) const override;
-    //! GetPubKey implementation that also checks the mapHdPubKeys
+    //! GetPubKey implementation
     bool GetPubKey(const CKeyID &address, CPubKey& vchPubKeyOut) const override;
     //! GetKey implementation that can derive a HD private key on the fly
     bool GetKey(const CKeyID &address, CKey& keyOut) const override;
-    //! Adds a HDPubKey into the wallet(database)
-    bool AddHDPubKey(WalletBatch &batch, const CExtPubKey &extPubKey, bool fInternal);
-    //! loads a HDPubKey into the wallets memory
-    bool LoadHDPubKey(const CHDPubKey &hdPubKey);
     //! Adds a key to the store, and saves it to disk.
     bool AddKeyPubKey(const CKey& key, const CPubKey &pubkey) override;
     bool AddKeyPubKeyWithDB(WalletBatch &batch, const CKey& key, const CPubKey &pubkey);
@@ -1022,6 +1134,8 @@ public:
     //! Load metadata (used by LoadWallet)
     bool LoadKeyMetadata(const CKeyID& keyID, const CKeyMetadata &metadata);
     bool LoadScriptMetadata(const CScriptID& script_id, const CKeyMetadata &metadata);
+    //! Upgrade stored CKeyMetadata objects to store key origin info as KeyOriginInfo
+    void UpgradeKeyMetadata();
 
     bool LoadMinVersion(int nVersion) { AssertLockHeld(cs_wallet); nWalletVersion = nVersion; nWalletMaxVersion = std::max(nWalletMaxVersion, nVersion); return true; }
     void UpdateTimeFirstKey(int64_t nCreateTime);
@@ -1131,7 +1245,6 @@ public:
 
     bool NewKeyPool();
     size_t KeypoolCountExternalKeys();
-    size_t KeypoolCountInternalKeys();
     bool TopUpKeyPool(unsigned int kpSize = 0);
     void ReserveKeyFromKeyPool(int64_t& nIndex, CKeyPool& keypool, bool fInternal);
     void KeepKey(int64_t nIndex);
@@ -1181,6 +1294,8 @@ public:
     const std::string& GetAccountName(const CScript& scriptPubKey) const;
 
     void GetScriptForMining(std::shared_ptr<CReserveScript> &script);
+    bool SetStakeSplitThreshold(const int value);
+    bool SetStakeCombineThreshold(const int value);
 
     unsigned int GetKeyPoolSize()
     {
@@ -1246,7 +1361,7 @@ public:
     static bool Verify(std::string wallet_file, bool salvage_wallet, std::string& error_string, std::string& warning_string);
 
     /* Initializes the wallet, returns a new CWallet instance or a null pointer in case of an error */
-    static CWallet* CreateWalletFromFile(const std::string& name, const fs::path& path);
+    static CWallet* CreateWalletFromFile(const std::string& name, const fs::path& path, uint64_t wallet_creation_flags = 0);
 
     /**
      * Wallet post-init setup
@@ -1260,25 +1375,30 @@ public:
 
     bool BackupWallet(const std::string& strDest);
 
-    /**
-     * HD Wallet Functions
-     */
+    /* Set the HD chain model (chain child index counters) */
+    void SetHDChain(const CHDChain& chain, bool memonly);
+    const CHDChain& GetHDChain() const { return hdChain; }
 
     /* Returns true if HD is enabled */
     bool IsHDEnabled() const;
-    /* Generates a new HD chain */
-    void GenerateNewHDChain();
-    /* Set the HD chain model (chain child index counters) */
-    bool SetHDChain(WalletBatch &batch, const CHDChain& chain, bool memonly);
-    bool SetCryptedHDChain(WalletBatch &batch, const CHDChain& chain, bool memonly);
-    /**
-     * Set the HD chain model (chain child index counters) using temporary wallet db object
-     * which causes db flush every time these methods are used
-     */
-    bool SetHDChainSingle(const CHDChain& chain, bool memonly);
-    bool SetCryptedHDChainSingle(const CHDChain& chain, bool memonly);
 
-    bool GetDecryptedHDChain(CHDChain& hdChainRet);
+    /* Returns true if the wallet can generate new keys */
+    bool CanGenerateKeys();
+
+    /* Returns true if the wallet can give out new addresses. This means it has keys in the keypool or can generate new keys */
+    bool CanGetAddresses(bool internal = false);
+
+    /* Generates a new HD seed (will not be activated) */
+    CPubKey GenerateNewSeed();
+
+    /* Derives a new HD seed (will not be activated) */
+    CPubKey DeriveNewSeed(const CKey& key);
+
+    /* Set the current HD seed (will reset the chain child index counters)
+       Sets the seed's version based on the current wallet version (so the
+       caller must ensure the current wallet version is correct before calling
+       this function). */
+    void SetHDSeed(const CPubKey& key);
 
     /** proof-of-stake */
     bool fWalletUnlockStakingOnly = false;
@@ -1314,6 +1434,19 @@ public:
      * be anything).
      */
     void LearnAllRelatedScripts(const CPubKey& key);
+
+    /** set a single wallet flag */
+    void SetWalletFlag(uint64_t flags);
+
+    /** Unsets a single wallet flag */
+    void UnsetWalletFlag(uint64_t flag);
+
+    /** check if a certain wallet flag is set */
+    bool IsWalletFlagSet(uint64_t flag) const;
+
+    /** overwrite all flags by the given uint64_t
+       returns false if unknown, non-tolerable flags are present */
+    bool SetWalletFlags(uint64_t overwriteFlags, bool memOnly);
 
     /**
      * Get a destination of the requested type (if possible) to the specified script.

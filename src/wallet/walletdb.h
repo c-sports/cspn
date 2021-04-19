@@ -8,7 +8,7 @@
 
 #include <amount.h>
 #include <wallet/db.h>
-#include <hdchain.h>
+#include <script/keyorigin.h>
 #include <key.h>
 
 #include <list>
@@ -56,12 +56,53 @@ enum DBErrors
     DB_NEED_REWRITE
 };
 
+/* simple HD chain data model */
+class CHDChain
+{
+public:
+    uint32_t nExternalChainCounter;
+    uint32_t nInternalChainCounter;
+    CKeyID seed_id; //!< seed hash160
+
+    static const int VERSION_HD_BASE        = 1;
+    static const int VERSION_HD_CHAIN_SPLIT = 2;
+    static const int CURRENT_VERSION        = VERSION_HD_CHAIN_SPLIT;
+    int nVersion;
+
+    CHDChain() { SetNull(); }
+    ADD_SERIALIZE_METHODS;
+    template <typename Stream, typename Operation>
+    inline void SerializationOp(Stream& s, Operation ser_action)
+    {
+        READWRITE(this->nVersion);
+        READWRITE(nExternalChainCounter);
+        READWRITE(seed_id);
+        if (this->nVersion >= VERSION_HD_CHAIN_SPLIT)
+            READWRITE(nInternalChainCounter);
+    }
+
+    void SetNull()
+    {
+        nVersion = CHDChain::CURRENT_VERSION;
+        nExternalChainCounter = 0;
+        nInternalChainCounter = 0;
+        seed_id.SetNull();
+    }
+};
+
 class CKeyMetadata
 {
 public:
-    static const int CURRENT_VERSION=1;
+    static const int VERSION_BASIC=1;
+    static const int VERSION_WITH_HDDATA=10;
+    static const int VERSION_WITH_KEY_ORIGIN = 12;
+    static const int CURRENT_VERSION=VERSION_WITH_KEY_ORIGIN;
     int nVersion;
     int64_t nCreateTime; // 0 means unknown
+    std::string hdKeypath; //optional HD/bip32 keypath. Still used to determine whether a key is a seed. Also kept for backwards compatibility
+    CKeyID hd_seed_id; //id of the HD seed used to derive this key
+    KeyOriginInfo key_origin; // Key origin info with path and fingerprint
+    bool has_key_origin = false; //< Whether the key_origin is useful
 
     CKeyMetadata()
     {
@@ -79,12 +120,26 @@ public:
     inline void SerializationOp(Stream& s, Operation ser_action) {
         READWRITE(this->nVersion);
         READWRITE(nCreateTime);
+        if (this->nVersion >= VERSION_WITH_HDDATA)
+        {
+            READWRITE(hdKeypath);
+            READWRITE(hd_seed_id);
+        }
+        if (this->nVersion >= VERSION_WITH_KEY_ORIGIN)
+        {
+            READWRITE(key_origin);
+            READWRITE(has_key_origin);
+        }
     }
 
     void SetNull()
     {
         nVersion = CKeyMetadata::CURRENT_VERSION;
         nCreateTime = 0;
+        hdKeypath.clear();
+        hd_seed_id.SetNull();
+        key_origin.clear();
+        has_key_origin = false;
     }
 };
 
@@ -134,6 +189,7 @@ public:
     bool WriteTx(const CWalletTx& wtx);
     bool EraseTx(uint256 hash);
 
+    bool WriteKeyMetadata(const CKeyMetadata& meta, const CPubKey& pubkey, const bool overwrite);
     bool WriteKey(const CPubKey& vchPubKey, const CPrivKey& vchPrivKey, const CKeyMetadata &keyMeta);
     bool WriteCryptedKey(const CPubKey& vchPubKey, const std::vector<unsigned char>& vchCryptedSecret, const CKeyMetadata &keyMeta);
     bool WriteMasterKey(unsigned int nID, const CMasterKey& kMasterKey);
@@ -188,11 +244,14 @@ public:
     /* verifies the database file */
     static bool VerifyDatabaseFile(const fs::path& wallet_path, std::string& warningStr, std::string& errorStr);
 
+    // Stake Split/Combine Thresholds
+    bool WriteStakeSplitThreshold(const int nStakeSplitThreshold);
+    bool WriteStakeCombineThreshold(const int nStakeCombineThreshold);
+
     //! write the hdchain model (external chain child index counter)
     bool WriteHDChain(const CHDChain& chain);
-    bool WriteCryptedHDChain(const CHDChain& chain);
-    bool WriteHDPubKey(const CHDPubKey& hdPubKey, const CKeyMetadata& keyMeta);
 
+    bool WriteWalletFlags(const uint64_t flags);
     //! Begin a new transaction
     bool TxnBegin();
     //! Commit current transaction

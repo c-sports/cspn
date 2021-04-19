@@ -6,7 +6,6 @@
 #ifndef BITCOIN_KEYSTORE_H
 #define BITCOIN_KEYSTORE_H
 
-#include <hdchain.h>
 #include <key.h>
 #include <pubkey.h>
 #include <script/script.h>
@@ -60,8 +59,6 @@ protected:
     WatchKeyMap mapWatchKeys;
     ScriptMap mapScripts;
     WatchOnlySet setWatchOnly;
-    /* the HD chain data model*/
-    CHDChain hdChain;
 
     void ImplicitlyLearnRelatedKeyScripts(const CPubKey& pubkey);
 
@@ -80,8 +77,6 @@ public:
     bool RemoveWatchOnly(const CScript &dest) override;
     bool HaveWatchOnly(const CScript &dest) const override;
     bool HaveWatchOnly() const override;
-
-    virtual bool GetHDChain(CHDChain& hdChainRet) const;
 };
 
 typedef std::vector<unsigned char, secure_allocator<unsigned char> > CKeyingMaterial;

@@ -87,4 +87,4 @@ file(GLOB SOURCE_FILES
         src/zmq/*.h
         )
 
-add_executable(cspn ${SOURCE_FILES})
+add_executable(cspn ${SOURCE_FILES} src/span.h)

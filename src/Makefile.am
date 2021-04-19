@@ -111,14 +111,13 @@ endif
 # cspn core #
 BITCOIN_CORE_H = \
   addrdb.h \
+  attributes.h \
   addressindex.h \
   spentindex.h \
   addrman.h \
   base58.h \
   bech32.h \
   batchedlogger.h \
-  bip39.h \
-  bip39_english.h \
   blockencodings.h \
   bloom.h \
   cachemap.h \
@@ -163,7 +162,6 @@ BITCOIN_CORE_H = \
   governance/governance-vote.h \
   governance/governance-votedb.h \
   flat-database.h \
-  hdchain.h \
   fs.h \
   httprpc.h \
   httpserver.h \
@@ -223,6 +221,7 @@ BITCOIN_CORE_H = \
   rpc/util.h \
   saltedhasher.h \
   scheduler.h \
+  script/keyorigin.h \
   script/sigcache.h \
   script/sign.h \
   script/standard.h \
@@ -499,6 +498,7 @@ libcspn_consensus_a_SOURCES = \
   script/script_error.cpp \
   script/script_error.h \
   serialize.h \
+  span.h \
   streams.h \
   tinyformat.h \
   uint256.cpp \
@@ -513,13 +513,11 @@ libcspn_common_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libcspn_common_a_SOURCES = \
   base58.cpp \
   bech32.cpp \
-  bip39.cpp \
   chainparams.cpp \
   coins.cpp \
   compressor.cpp \
   core_read.cpp \
   core_write.cpp \
-  hdchain.cpp \
   key.cpp \
   keystore.cpp \
   netaddress.cpp \
