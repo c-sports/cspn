@@ -899,13 +899,13 @@ void PrintExceptionContinue(const std::exception_ptr pex, const char* pszExcepti
 
 fs::path GetDefaultDataDir()
 {
-    // Windows < Vista: C:\Documents and Settings\Username\Application Data\CSPNCore
-    // Windows >= Vista: C:\Users\Username\AppData\Roaming\CSPNCore
-    // Mac: ~/Library/Application Support/CSPNCore
-    // Unix: ~/.cspncore
+    // Windows < Vista: C:\Documents and Settings\Username\Application Data\CSPN
+    // Windows >= Vista: C:\Users\Username\AppData\Roaming\CSPN
+    // Mac: ~/Library/Application Support/CSPN
+    // Unix: ~/.cspn
 #ifdef WIN32
     // Windows
-    return GetSpecialFolderPath(CSIDL_APPDATA) / "CSPNCore";
+    return GetSpecialFolderPath(CSIDL_APPDATA) / "CSPN";
 #else
     fs::path pathRet;
     char* pszHome = getenv("HOME");
@@ -915,10 +915,10 @@ fs::path GetDefaultDataDir()
         pathRet = fs::path(pszHome);
 #ifdef MAC_OSX
     // Mac
-    return pathRet / "Library/Application Support/CSPNCore";
+    return pathRet / "Library/Application Support/CSPN";
 #else
     // Unix
-    return pathRet / ".cspncore";
+    return pathRet / ".cspn";
 #endif
 #endif
 }
