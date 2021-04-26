@@ -222,10 +222,11 @@ BitcoinGUI::BitcoinGUI(const NetworkStyle *networkStyle, QWidget *parent) :
         frameBlocksLayout->addWidget(labelWalletEncryptionIcon);
     }
     frameBlocksLayout->addStretch();
+    frameBlocksLayout->addWidget(labelStakingIcon);
+    frameBlocksLayout->addStretch();
     frameBlocksLayout->addWidget(labelConnectionsIcon);
     frameBlocksLayout->addStretch();
     frameBlocksLayout->addWidget(labelBlocksIcon);
-    frameBlocksLayout->addWidget(labelStakingIcon);
     frameBlocksLayout->addStretch();
 
     // Hide the spinner/synced icon by default to avoid
@@ -1680,6 +1681,7 @@ void BitcoinGUI::setStakingStatus()
         labelStakingIcon->setPixmap(QIcon(":/icons/staking_inactive").pixmap(STATUSBAR_ICONSIZE, STATUSBAR_ICONSIZE));
         labelStakingIcon->setToolTip(tr("Staking is inactive\n"));
     }
+    labelStakingIcon->setVisible(true);
 }
 
 void BitcoinGUI::setEncryptionStatus(int status)
