@@ -194,6 +194,13 @@ void WalletFrame::unlockWallet()
         walletView->unlockWallet();
 }
 
+void WalletFrame::sunlockWallet()
+{
+    WalletView *walletView = currentWalletView();
+    if (walletView)
+        walletView->sunlockWallet();
+}
+
 void WalletFrame::lockWallet()
 {
     WalletView *walletView = currentWalletView();

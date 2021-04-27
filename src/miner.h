@@ -165,7 +165,7 @@ public:
     BlockAssembler(const CChainParams& params, const Options& options);
 
     /** Construct a new block template with coinbase to scriptPubKeyIn */
-    std::unique_ptr<CBlockTemplate> CreateNewBlock(const CScript& scriptPubKeyIn, std::shared_ptr<CWallet> pwallet=nullptr, bool fProofOfStake=false, bool* pfPoSCancel=nullptr);
+    std::unique_ptr<CBlockTemplate> CreateNewBlock(const CScript& scriptPubKeyIn, CWallet *pwallet=nullptr, bool fProofOfStake=false, bool* pfPoSCancel=nullptr);
 
 private:
     // utility functions
@@ -207,6 +207,8 @@ int64_t UpdateTime(CBlockHeader* pblock, const Consensus::Params& consensusParam
 
 /** proof-of-stake: miner threads */
 // void ThreadStakeMinter(CWallet *pwallet);
-void PoSMiner(std::shared_ptr<CWallet> pwallet);
+void PoSMiner(CWallet *pwallet);
+void ThreadStakeMinter(CWallet *pwallet);
+
 
 #endif // BITCOIN_MINER_H

@@ -50,6 +50,14 @@
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/thread.hpp>
 
+const std::map<uint64_t,std::string> WALLET_FLAG_CAVEATS{
+        {WALLET_FLAG_AVOID_REUSE,
+                "You need to rescan the blockchain in order to correctly mark used "
+                "destinations in the past. Until this is done, some destinations may "
+                "be considered unused, even if the opposite is the case."
+        },
+};
+
 static CCriticalSection cs_wallets;
 static std::vector<CWallet*> vpwallets GUARDED_BY(cs_wallets);
 
@@ -4475,33 +4483,34 @@ void CWallet::LoadKeyPool(int64_t nIndex, const CKeyPool &keypool)
 
 bool CWallet::TopUpKeyPool(unsigned int kpSize)
 {
+    if (!CanGenerateKeys()) {
+        return false;
+    }
     {
+        LogPrintf("test 503\n");
         LOCK(cs_wallet);
-
+        LogPrintf("test 103\n");
         if (IsLocked(true))
             return false;
-
+        LogPrintf("test 104\n");
         // Top up key pool
         unsigned int nTargetSize;
         if (kpSize > 0)
             nTargetSize = kpSize;
         else
             nTargetSize = std::max(gArgs.GetArg("-keypool", DEFAULT_KEYPOOL_SIZE), (int64_t) 0);
-
+        LogPrintf("test 105\n");
         // count amount of available keys (internal, external)
         // make sure the keypool of external and internal keys fits the user selected target (-keypool)
-        int64_t amountExternal = setExternalKeyPool.size();
-        int64_t amountInternal = setInternalKeyPool.size();
-        int64_t missingExternal = std::max(std::max((int64_t) nTargetSize, (int64_t) 1) - amountExternal, (int64_t) 0);
-        int64_t missingInternal = std::max(std::max((int64_t) nTargetSize, (int64_t) 1) - amountInternal, (int64_t) 0);
-
-        if (!IsHDEnabled())
+        int64_t missingExternal = std::max(std::max((int64_t) nTargetSize, (int64_t) 1) - (int64_t)setExternalKeyPool.size(), (int64_t) 0);
+        int64_t missingInternal = std::max(std::max((int64_t) nTargetSize, (int64_t) 1) - (int64_t)setInternalKeyPool.size(), (int64_t) 0);
+        LogPrintf("test 106\n");
+        if (!IsHDEnabled() || !CanSupportFeature(FEATURE_HD_SPLIT))
         {
             // don't create extra internal keys
             missingInternal = 0;
-        } else {
-            nTargetSize *= 2;
         }
+        LogPrintf("test 107\n");
         bool fInternal = false;
         WalletBatch batch(*database);
         for (int64_t i = missingInternal + missingExternal; i--;)
@@ -4509,10 +4518,10 @@ bool CWallet::TopUpKeyPool(unsigned int kpSize)
             if (i < missingInternal) {
                 fInternal = true;
             }
-
+            LogPrintf("test 108\n");
             assert(m_max_keypool_index < std::numeric_limits<int64_t>::max()); // How in the hell did you use so many keys?
             int64_t index = ++m_max_keypool_index;
-
+            LogPrintf("test 109\n");
             // TODO: implement keypools for all accounts?
             CPubKey pubkey(GenerateNewKey(batch, fInternal));
             if (!batch.WritePool(index, CKeyPool(pubkey, fInternal))) {
@@ -4531,7 +4540,7 @@ bool CWallet::TopUpKeyPool(unsigned int kpSize)
                           missingInternal + missingExternal, missingInternal,
                           setInternalKeyPool.size() + setExternalKeyPool.size() + set_pre_split_keypool.size(), setInternalKeyPool.size());
             }
-
+            LogPrintf("test 110\n");
             double dProgress = 100.f * index / (nTargetSize + 1);
             std::string strMsg = strprintf(_("Loading wallet... (%3.2f %%)"), dProgress);
             uiInterface.InitMessage(strMsg);
@@ -4542,13 +4551,16 @@ bool CWallet::TopUpKeyPool(unsigned int kpSize)
 
 void CWallet::ReserveKeyFromKeyPool(int64_t& nIndex, CKeyPool& keypool, bool fRequestedInternal)
 {
+    LogPrintf("test 95\n");
     nIndex = -1;
     keypool.vchPubKey = CPubKey();
+    LogPrintf("test 96\n");
     {
+        LogPrintf("test 97\n");
         LOCK(cs_wallet);
-
+        LogPrintf("test 100\n");
         TopUpKeyPool();
-
+        LogPrintf("test 101\n");
         bool fReturningInternal = fRequestedInternal;
         fReturningInternal &= (IsHDEnabled() && CanSupportFeature(FEATURE_HD_SPLIT)) || IsWalletFlagSet(WALLET_FLAG_DISABLE_PRIVATE_KEYS);
         bool use_split_keypool = set_pre_split_keypool.empty();

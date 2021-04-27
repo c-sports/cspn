@@ -2363,8 +2363,8 @@ bool AppInitMain()
     g_wallet_init_interface->Start(scheduler);
 
 #ifdef ENABLE_WALLET
-    //if (gArgs.GetBoolArg("-staking", true))
-    //   threadGroup.create_thread(std::bind(&PoSMiner, nullptr));
+    if (!fMasternodeMode && gArgs.GetBoolArg("-staking", true))
+       threadGroup.create_thread(std::bind(&ThreadStakeMinter, GetWallets().front()));
 #endif
 
     return true;

@@ -350,6 +350,20 @@ void WalletView::unlockWallet(bool fForMixingOnly)
     }
 }
 
+void WalletView::sunlockWallet()
+{
+    if(!walletModel)
+        return;
+    // Unlock wallet when requested by wallet model
+
+    if (walletModel->getEncryptionStatus() == WalletModel::Locked || walletModel->getEncryptionStatus() == WalletModel::UnlockedForStakingOnly)
+    {
+        AskPassphraseDialog dlg(AskPassphraseDialog::UnlockMixing, this);
+        dlg.setModel(walletModel);
+        dlg.exec();
+    }
+}
+
 void WalletView::lockWallet()
 {
     if(!walletModel)

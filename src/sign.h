@@ -14,10 +14,10 @@ class CWallet;
 class CBlockSigner {
 private:
     CBlock& block;
-    std::shared_ptr<CWallet> wallet;
+    CWallet *wallet;
 
 public:
-    CBlockSigner(CBlock& blockIn, std::shared_ptr<CWallet> walletIn) : block(blockIn), wallet(walletIn) {}
+    CBlockSigner(CBlock& blockIn, CWallet *walletIn) : block(blockIn), wallet(walletIn) {}
     bool SignBlock();
     bool CheckBlockSignature();
 };

@@ -120,6 +120,7 @@ private:
     QAction *backupWalletAction;
     QAction *changePassphraseAction;
     QAction *unlockWalletAction;
+    QAction *decryptForStakingAction;
     QAction *lockWalletAction;
     QAction *aboutQtAction;
     QAction *openInfoAction;
