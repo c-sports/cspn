@@ -581,12 +581,12 @@ static bool ProcessBlockFound(const CBlock* pblock)
 void PoSMiner(CWallet *pwallet)
 {
     LogPrintf("%s: started for proof-of-stake\n", __func__);
-    LogPrintf("test 200\n");
+
     unsigned int nExtraNonce = 0;
-    LogPrintf("test 201\n");
+
     std::shared_ptr<CReserveScript> coinbase_script;
     pwallet->GetScriptForMining(coinbase_script);
-    LogPrintf("test 202\n");
+
     // Compute timeout for pos as sqrt(numUTXO)
     unsigned int pos_timio = 5000;
     {
@@ -596,20 +596,20 @@ void PoSMiner(CWallet *pwallet)
         // pos_timio = gArgs.GetArg("-staketimio", 500) + 30 * sqrt(vCoins.size());
         // LogPrintf("set proof-of-stake timeout: %ums for %u UTXOs\n", pos_timio, vCoins.size());
     }
-    LogPrintf("test 203\n");
+
     std::string strMintMessage = _("Info: Minting suspended due to locked wallet.");
     std::string strMintSyncMessage = _("Info: Minting suspended while synchronizing wallet.");
     std::string strMintBlockMessage = _("Info: Minting suspended due to block creation failure.");
     std::string strMintEmpty = "";
     int64_t nSleepTime = (Params().GetConsensus().nPosTargetSpacing / 2) * 1000;
-    LogPrintf("test 204\n");
+
     try {
         // Throw an error if no script was provided.  This can happen
         // due to some internal error but also if the keypool is empty.
         // In the latter case, already the pointer is NULL.
         if (!coinbase_script || coinbase_script->reserveScript.empty())
             throw std::runtime_error("No coinbase script available (mining requires a wallet)");
-        LogPrintf("test 205\n");
+
         while (true) {
             while (pwallet->IsLocked()) {
                 SetMiscWarning(strMintMessage);
