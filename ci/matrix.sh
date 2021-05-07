@@ -52,7 +52,7 @@ elif [ "$BUILD_TARGET" = "win64" ]; then
   export RUN_UNITTESTS=true
 elif [ "$BUILD_TARGET" = "linux32" ]; then
   export HOST=i686-pc-linux-gnu
-  export BITCOIN_CONFIG="--enable-zmq --enable-glibc-back-compat --enable-reduce-exports --enable-stacktraces LDFLAGS=-static-libstdc++"
+  export BITCOIN_CONFIG="--enable-zmq --enable-glibc-back-compat --enable-reduce-exports LDFLAGS=-static-libstdc++"
   export USE_SHELL="/bin/cspn"
   export PYZMQ=true
   export RUN_UNITTESTS=true
@@ -60,7 +60,7 @@ elif [ "$BUILD_TARGET" = "linux32" ]; then
 elif [ "$BUILD_TARGET" = "linux64" ]; then
   export HOST=x86_64-unknown-linux-gnu
   export DEP_OPTS="NO_UPNP=1 DEBUG=1"
-  export BITCOIN_CONFIG="--enable-zmq --enable-glibc-back-compat --enable-reduce-exports --enable-stacktraces"
+  export BITCOIN_CONFIG="--enable-zmq --enable-glibc-back-compat --enable-reduce-exports"
   export CPPFLAGS="-DDEBUG_LOCKORDER -DENABLE_CSPN_DEBUG"
   export PYZMQ=true
   export RUN_UNITTESTS=true

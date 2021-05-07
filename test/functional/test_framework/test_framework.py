@@ -159,12 +159,6 @@ class BitcoinTestFramework():
 
         if not self.options.noshutdown:
             self.log.info("Stopping nodes")
-            try:
-                if self.nodes:
-                    self.stop_nodes()
-            except BaseException as e:
-                success = False
-                self.log.exception("Unexpected exception caught during shutdown")
         else:
             for node in self.nodes:
                 node.cleanup_on_exit = False

@@ -10,24 +10,6 @@ AM_CXXFLAGS = $(HARDENED_CXXFLAGS) $(ERROR_CXXFLAGS)
 AM_CPPFLAGS = $(HARDENED_CPPFLAGS)
 EXTRA_LIBRARIES =
 
-if ENABLE_CRASH_HOOKS
-if CRASH_HOOKS_WRAPPED_CXX_ABI
-# Wrap internal C++ ABI's so that we can attach stacktraces to exceptions
-LDFLAGS_WRAP_EXCEPTIONS = -Wl,-wrap,__cxa_allocate_exception -Wl,-wrap,__cxa_free_exception
-if TARGET_WINDOWS
-LDFLAGS_WRAP_EXCEPTIONS += -Wl,-wrap,_assert -Wl,-wrap,_wassert
-else
-LDFLAGS_WRAP_EXCEPTIONS += -Wl,-wrap,__assert_fail
-endif
-endif
-endif
-
-if TARGET_WINDOWS
-BACKTRACE_LIB = -ldbghelp -lbacktrace
-else
-BACKTRACE_LIB = -lbacktrace
-endif
-
 if EMBEDDED_UNIVALUE
 LIBUNIVALUE = univalue/libunivalue.la
 
@@ -227,7 +209,6 @@ BITCOIN_CORE_H = \
   script/standard.h \
   script/ismine.h \
   spork.h \
-  stacktraces.h \
   streams.h \
   support/allocators/mt_pooled_secure.h \
   support/allocators/pooled_secure.h \
@@ -552,7 +533,6 @@ libcspn_util_a_SOURCES = \
   random.cpp \
   rpc/protocol.cpp \
   rpc/util.cpp \
-  stacktraces.cpp \
   support/cleanse.cpp \
   sync.cpp \
   threadinterrupt.cpp \
@@ -581,7 +561,7 @@ nodist_libcspn_util_a_SOURCES = $(srcdir)/obj/build.h
 cspnd_SOURCES = cspnd.cpp
 cspnd_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 cspnd_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-cspnd_LDFLAGS = $(LDFLAGS_WRAP_EXCEPTIONS) $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+cspnd_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
 cspnd_SOURCES += cspnd-res.rc
@@ -601,13 +581,13 @@ cspnd_LDADD = \
   $(LIBMEMENV) \
   $(LIBSECP256K1)
 
-cspnd_LDADD += $(BACKTRACE_LIB) $(BOOST_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS) $(BLS_LIBS)
+cspnd_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS) $(BLS_LIBS)
 
 # cspn-cli binary #
 cspn_cli_SOURCES = cspn-cli.cpp
 cspn_cli_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(EVENT_CFLAGS)
 cspn_cli_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-cspn_cli_LDFLAGS = $(LDFLAGS_WRAP_EXCEPTIONS) $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+cspn_cli_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
 cspn_cli_SOURCES += cspn-cli-res.rc
@@ -618,14 +598,14 @@ cspn_cli_LDADD = \
   $(LIBUNIVALUE) \
   $(LIBBITCOIN_UTIL) \
   $(LIBBITCOIN_CRYPTO)
-cspn_cli_LDADD += $(BACKTRACE_LIB) $(BOOST_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(EVENT_LIBS) $(BLS_LIBS)
+cspn_cli_LDADD += $(BOOST_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(EVENT_LIBS) $(BLS_LIBS)
 #
 
 # cspn-tx binary #
 cspn_tx_SOURCES = cspn-tx.cpp
 cspn_tx_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 cspn_tx_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-cspn_tx_LDFLAGS = $(LDFLAGS_WRAP_EXCEPTIONS) $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+cspn_tx_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
 cspn_tx_SOURCES += cspn-tx-res.rc
@@ -639,7 +619,7 @@ cspn_tx_LDADD = \
   $(LIBBITCOIN_CRYPTO) \
   $(LIBSECP256K1)
 
-cspn_tx_LDADD += $(BACKTRACE_LIB) $(BOOST_LIBS) $(CRYPTO_LIBS) $(BLS_LIBS)
+cspn_tx_LDADD += $(BOOST_LIBS) $(CRYPTO_LIBS) $(BLS_LIBS)
 #
 
 # cspnconsensus library #
@@ -701,7 +681,6 @@ clean-local:
 	-rm -f leveldb/*/*.gcda leveldb/*/*.gcno leveldb/helpers/memenv/*.gcda leveldb/helpers/memenv/*.gcno
 	-rm -f config.h
 	-rm -rf test/__pycache__
-	-rm -rf *.dSYM test/*.dSYM bench/*.dSYM qt/*.dSYM qt/test/*.dSYM
 
 .rc.o:
 	@test -f $(WINDRES)
@@ -719,10 +698,6 @@ if HARDEN
 	@echo "Checking binary security..."
 	$(AM_V_at) READELF=$(READELF) OBJDUMP=$(OBJDUMP) $(top_srcdir)/contrib/devtools/security-check.py < $(bin_PROGRAMS)
 endif
-
-
-osx_debug: $(bin_PROGRAMS)
-	for i in $(bin_PROGRAMS); do mkdir -p $$i.dSYM/Contents/Resources/DWARF && $(DSYMUTIL_FLAT) -o $$i.dSYM/Contents/Resources/DWARF/$$(basename $$i) $$i &> /dev/null ; done
 
 %.pb.cc %.pb.h: %.proto
 	@test -f $(PROTOC)

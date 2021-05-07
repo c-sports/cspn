@@ -21,7 +21,6 @@
 #include <httprpc.h>
 #include <utilstrencodings.h>
 #include <walletinitinterface.h>
-#include <stacktraces.h>
 
 #include <boost/thread.hpp>
 
@@ -65,11 +64,6 @@ bool AppInit(int argc, char* argv[])
     //
     // If Qt is used, parameters/cspn.conf are parsed in qt/cspn.cpp's main()
     gArgs.ParseParameters(argc, argv);
-
-    if (gArgs.IsArgSet("-printcrashinfo")) {
-        std::cout << GetCrashInfoStrFromSerializedStr(gArgs.GetArg("-printcrashinfo", "")) << std::endl;
-        return true;
-    }
 
     // Process help and version before taking care about datadir
     if (gArgs.IsArgSet("-?") || gArgs.IsArgSet("-h") ||  gArgs.IsArgSet("-help") || gArgs.IsArgSet("-version"))
@@ -170,8 +164,11 @@ bool AppInit(int argc, char* argv[])
             return false;
         }
         fRet = AppInitMain();
+    }
+    catch (const std::exception& e) {
+        PrintExceptionContinue(&e, "AppInit()");
     } catch (...) {
-        PrintExceptionContinue(std::current_exception(), "AppInit()");
+        PrintExceptionContinue(NULL, "AppInit()");
     }
 
     if (!fRet)
@@ -187,9 +184,6 @@ bool AppInit(int argc, char* argv[])
 
 int main(int argc, char* argv[])
 {
-    RegisterPrettyTerminateHander();
-    RegisterPrettySignalHandlers();
-
     SetupEnvironment();
 
     // Connect cspnd signal handlers

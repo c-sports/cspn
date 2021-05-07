@@ -227,7 +227,7 @@ bool error(const char* fmt, const Args&... args)
     return false;
 }
 
-void PrintExceptionContinue(const std::exception_ptr pex, const char* pszExceptionOrigin);
+void PrintExceptionContinue(const std::exception *pex, const char* pszThread);
 void FileCommit(FILE *file);
 bool TruncateFile(FILE *file, unsigned int length);
 int RaiseFileDescriptorLimit(int nMinFD);
@@ -450,8 +450,12 @@ template <typename Callable> void TraceThread(const std::string name,  Callable 
         LogPrintf("%s thread interrupt\n", name);
         throw;
     }
+    catch (const std::exception& e) {
+        PrintExceptionContinue(&e, name.c_str());
+        throw;
+    }
     catch (...) {
-        PrintExceptionContinue(std::current_exception(), name.c_str());
+        PrintExceptionContinue(NULL, name.c_str());
         throw;
     }
 }

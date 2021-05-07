@@ -6,7 +6,6 @@
 
 #include <crypto/sha256.h>
 #include <key.h>
-#include <stacktraces.h>
 #include <validation.h>
 #include <util.h>
 #include <random.h>
@@ -21,9 +20,6 @@ int
 main(int argc, char** argv)
 {
     SHA256AutoDetect();
-
-    RegisterPrettySignalHandlers();
-    RegisterPrettyTerminateHander();
 
     RandomInit();
     ECC_Start();

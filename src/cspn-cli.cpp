@@ -14,7 +14,6 @@
 #include <fs.h>
 #include <rpc/client.h>
 #include <rpc/protocol.h>
-#include <stacktraces.h>
 #include <util.h>
 #include <utilstrencodings.h>
 
@@ -86,11 +85,6 @@ static int AppInitRPC(int argc, char* argv[])
     // Parameters
     //
     gArgs.ParseParameters(argc, argv);
-
-    if (gArgs.IsArgSet("-printcrashinfo")) {
-        std::cout << GetCrashInfoStrFromSerializedStr(gArgs.GetArg("-printcrashinfo", "")) << std::endl;
-        return true;
-    }
 
     if (argc<2 || gArgs.IsArgSet("-?") || gArgs.IsArgSet("-h") || gArgs.IsArgSet("-help") || gArgs.IsArgSet("-version")) {
         std::string strUsage = strprintf(_("%s RPC client version"), _(PACKAGE_NAME)) + " " + FormatFullVersion() + "\n";
@@ -490,7 +484,7 @@ int CommandLineRPC(int argc, char *argv[])
         nRet = EXIT_FAILURE;
     }
     catch (...) {
-        PrintExceptionContinue(std::current_exception(), "CommandLineRPC()");
+        PrintExceptionContinue(NULL, "CommandLineRPC()");
         throw;
     }
 
@@ -502,9 +496,6 @@ int CommandLineRPC(int argc, char *argv[])
 
 int main(int argc, char* argv[])
 {
-    RegisterPrettyTerminateHander();
-    RegisterPrettySignalHandlers();
-
     SetupEnvironment();
     if (!SetupNetworking()) {
         fprintf(stderr, "Error: Initializing networking failed\n");
@@ -515,16 +506,23 @@ int main(int argc, char* argv[])
         int ret = AppInitRPC(argc, argv);
         if (ret != CONTINUE_EXECUTION)
             return ret;
+    }
+    catch (const std::exception& e) {
+        PrintExceptionContinue(&e, "AppInitRPC()");
+        return EXIT_FAILURE;
     } catch (...) {
-        PrintExceptionContinue(std::current_exception(), "AppInitRPC()");
+        PrintExceptionContinue(NULL, "AppInitRPC()");
         return EXIT_FAILURE;
     }
 
     int ret = EXIT_FAILURE;
     try {
         ret = CommandLineRPC(argc, argv);
+    }
+    catch (const std::exception& e) {
+        PrintExceptionContinue(&e, "CommandLineRPC()");
     } catch (...) {
-        PrintExceptionContinue(std::current_exception(), "CommandLineRPC()");
+        PrintExceptionContinue(NULL, "CommandLineRPC()");
     }
     return ret;
 }

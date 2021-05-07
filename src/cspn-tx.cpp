@@ -26,8 +26,6 @@
 
 #include <boost/algorithm/string.hpp>
 
-#include <stacktraces.h>
-
 static bool fCreateBlank;
 static std::map<std::string,UniValue> registers;
 static const int CONTINUE_EXECUTION=-1;
@@ -42,11 +40,6 @@ static int AppInitRawTx(int argc, char* argv[])
     // Parameters
     //
     gArgs.ParseParameters(argc, argv);
-
-    if (gArgs.IsArgSet("-printcrashinfo")) {
-        std::cout << GetCrashInfoStrFromSerializedStr(gArgs.GetArg("-printcrashinfo", "")) << std::endl;
-        return true;
-    }
 
     // Check for -testnet or -regtest parameter (Params() calls are only valid after this clause)
     try {
@@ -792,7 +785,7 @@ static int CommandLineRawTx(int argc, char* argv[])
         nRet = EXIT_FAILURE;
     }
     catch (...) {
-        PrintExceptionContinue(std::current_exception(), "CommandLineRawTx()");
+        PrintExceptionContinue(NULL, "CommandLineRawTx()");
         throw;
     }
 
@@ -804,9 +797,6 @@ static int CommandLineRawTx(int argc, char* argv[])
 
 int main(int argc, char* argv[])
 {
-    RegisterPrettyTerminateHander();
-    RegisterPrettySignalHandlers();
-
     SetupEnvironment();
 
     try {
@@ -815,15 +805,21 @@ int main(int argc, char* argv[])
             return ret;
     }
     catch (const std::exception& e) {
-        PrintExceptionContinue(std::current_exception(), "AppInitRawTx()");
+        PrintExceptionContinue(&e, "AppInitRawTx()");
+        return EXIT_FAILURE;
+    } catch (...) {
+        PrintExceptionContinue(NULL, "AppInitRawTx()");
         return EXIT_FAILURE;
     }
 
     int ret = EXIT_FAILURE;
     try {
         ret = CommandLineRawTx(argc, argv);
+    }
+    catch (const std::exception& e) {
+        PrintExceptionContinue(&e, "CommandLineRawTx()");
     } catch (...) {
-        PrintExceptionContinue(std::current_exception(), "CommandLineRawTx()");
+        PrintExceptionContinue(NULL, "CommandLineRawTx()");
     }
     return ret;
 }
