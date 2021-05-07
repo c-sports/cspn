@@ -5822,12 +5822,12 @@ bool CWallet::CreateCoinStake(unsigned int nBits,
                 scriptPubKeyKernel = out.tx->tx->vout[out.i].scriptPubKey;
                 Solver(scriptPubKeyKernel, whichType, vSolutions);
                 LogPrint(BCLog::KERNEL, "%s: parsed kernel type=%d\n", __func__, whichType);
-                if (whichType != TX_PUBKEY && whichType != TX_PUBKEYHASH)
+                if (whichType != TX_PUBKEY && whichType != TX_PUBKEYHASH && whichType != TX_WITNESS_V0_KEYHASH)
                 {
                     LogPrint(BCLog::KERNEL, "%s: no support for kernel type=%d\n", __func__, whichType);
                     break;  // only support pay to public key and pay to address and pay to witness keyhash
                 }
-                if (whichType == TX_PUBKEYHASH) // pay to address type or witness keyhash
+                if (whichType == TX_PUBKEYHASH || whichType == TX_WITNESS_V0_KEYHASH) // pay to address type or witness keyhash
                 {
                     // convert to pay to public key type
                     CKey key;
