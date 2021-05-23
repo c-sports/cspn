@@ -649,16 +649,16 @@ void CDeterministicMNManager::UpdatedBlockTip(const CBlockIndex* pindex)
 bool CDeterministicMNManager::BuildNewListFromBlock(const CBlock& block, const CBlockIndex* pindexPrev, CValidationState& _state, CDeterministicMNList& mnListRet, bool debugLogs)
 {
     AssertLockHeld(cs);
-
+    LogPrintf("test 1\n");
     int nHeight = pindexPrev->nHeight + 1;
 
     CDeterministicMNList oldList = GetListForBlock(pindexPrev);
     CDeterministicMNList newList = oldList;
     newList.SetBlockHash(uint256()); // we can't know the final block hash, so better not return a (invalid) block hash
     newList.SetHeight(nHeight);
-
+    LogPrintf("test 2\n");
     auto payee = oldList.GetMNPayee();
-
+    LogPrintf("test 3\n");
     // we iterate the oldList here and update the newList
     // this is only valid as long these have not diverged at this point, which is the case as long as we don't add
     // code above this loop that modifies newList
@@ -676,41 +676,43 @@ bool CDeterministicMNManager::BuildNewListFromBlock(const CBlock& block, const C
             newList.UpdateMN(dmn->proTxHash, newState);
         }
     });
-
+    LogPrintf("test 4\n");
     DecreasePoSePenalties(newList);
-
+    LogPrintf("test 5\n");
     // we skip the coinbase
     for (int i = 1; i < (int)block.vtx.size(); i++) {
+        LogPrintf("test 7\n");
         const CTransaction& tx = *block.vtx[i];
-
+        LogPrintf("test 6\n");
         if (tx.nVersion != 2) {
+            LogPrintf("test 8\n");
             // only interested in special TXs
             continue;
         }
-
+        LogPrintf("test 9\n");
         if (tx.nType == TRANSACTION_PROVIDER_REGISTER) {
             CProRegTx proTx;
             if (!GetTxPayload(tx, proTx)) {
                 return _state.DoS(100, false, REJECT_INVALID, "bad-protx-payload");
             }
-
+            LogPrintf("test 10\n");
             auto dmn = std::make_shared<CDeterministicMN>(newList.GetTotalRegisteredCount());
             dmn->proTxHash = tx.GetHash();
-
+            LogPrintf("test 11\n");
             // collateralOutpoint is either pointing to an external collateral or to the ProRegTx itself
             if (proTx.collateralOutpoint.hash.IsNull()) {
                 dmn->collateralOutpoint = COutPoint(tx.GetHash(), proTx.collateralOutpoint.n);
             } else {
                 dmn->collateralOutpoint = proTx.collateralOutpoint;
             }
-
+            LogPrintf("test 12\n");
             Coin coin;
             if (!proTx.collateralOutpoint.hash.IsNull() && (!GetUTXOCoin(dmn->collateralOutpoint, coin) || coin.out.nValue != 1337 * COIN)) {
                 // should actually never get to this point as CheckProRegTx should have handled this case.
                 // We do this additional check nevertheless to be 100% sure
                 return _state.DoS(100, false, REJECT_INVALID, "bad-protx-collateral");
             }
-
+            LogPrintf("test 13\n");
             auto replacedDmn = newList.GetMNByCollateral(dmn->collateralOutpoint);
             if (replacedDmn != nullptr) {
                 // This might only happen with a ProRegTx that refers an external collateral
@@ -722,16 +724,16 @@ bool CDeterministicMNManager::BuildNewListFromBlock(const CBlock& block, const C
                               __func__, replacedDmn->proTxHash.ToString(), dmn->collateralOutpoint.ToStringShort(), nHeight, newList.GetAllMNsCount());
                 }
             }
-
+            LogPrintf("test 14\n");
             if (newList.HasUniqueProperty(proTx.addr)) {
                 return _state.DoS(100, false, REJECT_DUPLICATE, "bad-protx-dup-addr");
             }
             if (newList.HasUniqueProperty(proTx.keyIDOwner) || newList.HasUniqueProperty(proTx.pubKeyOperator)) {
                 return _state.DoS(100, false, REJECT_DUPLICATE, "bad-protx-dup-key");
             }
-
+            LogPrintf("test 15\n");
             dmn->nOperatorReward = proTx.nOperatorReward;
-
+            LogPrintf("test 16\n");
             auto dmnState = std::make_shared<CDeterministicMNState>(proTx);
             dmnState->nRegisteredHeight = nHeight;
             if (proTx.addr == CService()) {
@@ -739,7 +741,7 @@ bool CDeterministicMNManager::BuildNewListFromBlock(const CBlock& block, const C
                 dmnState->nPoSeBanHeight = nHeight;
             }
             dmn->pdmnState = dmnState;
-
+            LogPrintf("test 17\n");
             newList.AddMN(dmn);
 
             if (debugLogs) {
@@ -751,11 +753,11 @@ bool CDeterministicMNManager::BuildNewListFromBlock(const CBlock& block, const C
             if (!GetTxPayload(tx, proTx)) {
                 return _state.DoS(100, false, REJECT_INVALID, "bad-protx-payload");
             }
-
+            LogPrintf("test 18\n");
             if (newList.HasUniqueProperty(proTx.addr) && newList.GetUniquePropertyMN(proTx.addr)->proTxHash != proTx.proTxHash) {
                 return _state.DoS(100, false, REJECT_DUPLICATE, "bad-protx-dup-addr");
             }
-
+            LogPrintf("test 19\n");
             CDeterministicMNCPtr dmn = newList.GetMN(proTx.proTxHash);
             if (!dmn) {
                 return _state.DoS(100, false, REJECT_INVALID, "bad-protx-hash");
@@ -777,7 +779,7 @@ bool CDeterministicMNManager::BuildNewListFromBlock(const CBlock& block, const C
                     }
                 }
             }
-
+            LogPrintf("test 20\n");
             newList.UpdateMN(proTx.proTxHash, newState);
             if (debugLogs) {
                 LogPrintf("CDeterministicMNManager::%s -- MN %s updated at height %d: %s\n",
@@ -788,7 +790,7 @@ bool CDeterministicMNManager::BuildNewListFromBlock(const CBlock& block, const C
             if (!GetTxPayload(tx, proTx)) {
                 return _state.DoS(100, false, REJECT_INVALID, "bad-protx-payload");
             }
-
+            LogPrintf("test 21\n");
             CDeterministicMNCPtr dmn = newList.GetMN(proTx.proTxHash);
             if (!dmn) {
                 return _state.DoS(100, false, REJECT_INVALID, "bad-protx-hash");
@@ -802,9 +804,9 @@ bool CDeterministicMNManager::BuildNewListFromBlock(const CBlock& block, const C
             newState->pubKeyOperator.Set(proTx.pubKeyOperator);
             newState->keyIDVoting = proTx.keyIDVoting;
             newState->scriptPayout = proTx.scriptPayout;
-
+            LogPrintf("test 22\n");
             newList.UpdateMN(proTx.proTxHash, newState);
-
+            LogPrintf("test 23\n");
             if (debugLogs) {
                 LogPrintf("CDeterministicMNManager::%s -- MN %s updated at height %d: %s\n",
                     __func__, proTx.proTxHash.ToString(), nHeight, proTx.ToString());
@@ -814,7 +816,7 @@ bool CDeterministicMNManager::BuildNewListFromBlock(const CBlock& block, const C
             if (!GetTxPayload(tx, proTx)) {
                 return _state.DoS(100, false, REJECT_INVALID, "bad-protx-payload");
             }
-
+            LogPrintf("test 24\n");
             CDeterministicMNCPtr dmn = newList.GetMN(proTx.proTxHash);
             if (!dmn) {
                 return _state.DoS(100, false, REJECT_INVALID, "bad-protx-hash");
@@ -843,16 +845,16 @@ bool CDeterministicMNManager::BuildNewListFromBlock(const CBlock& block, const C
                     // we should actually never get into this case as validation should have catched it...but lets be sure
                     return _state.DoS(100, false, REJECT_INVALID, "bad-qc-quorum-hash");
                 }
-
+                LogPrintf("test 25\n");
                 HandleQuorumCommitment(qc.commitment, quorumIndex, newList, debugLogs);
             }
         }
     }
-
+    LogPrintf("test 26\n");
     // we skip the coinbase
     for (int i = 1; i < (int)block.vtx.size(); i++) {
         const CTransaction& tx = *block.vtx[i];
-
+        LogPrintf("test 27\n");
         // check if any existing MN collateral is spent by this transaction
         for (const auto& in : tx.vin) {
             auto dmn = newList.GetMNByCollateral(in.prevout);
@@ -876,7 +878,7 @@ bool CDeterministicMNManager::BuildNewListFromBlock(const CBlock& block, const C
             }
         }
     }
-
+    LogPrintf("test 28\n");
     // The payee for the current block was determined by the previous block's list but it might have disappeared in the
     // current block. We still pay that MN one last time however.
     if (payee && newList.HasMN(payee->proTxHash)) {
@@ -884,7 +886,7 @@ bool CDeterministicMNManager::BuildNewListFromBlock(const CBlock& block, const C
         newState->nLastPaidHeight = nHeight;
         newList.UpdateMN(payee->proTxHash, newState);
     }
-
+    LogPrintf("test 29\n");
     mnListRet = std::move(newList);
 
     return true;
