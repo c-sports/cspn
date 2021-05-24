@@ -681,9 +681,10 @@ bool CDeterministicMNManager::BuildNewListFromBlock(const CBlock& block, const C
     LogPrintf("test 5\n");
     // we skip the coinbase
     for (int i = 1; i < (int)block.vtx.size(); i++) {
-        LogPrintf("test 7\n");
+        LogPrintf("test 7 which interval we are at == %s\n", i);
         const CTransaction& tx = *block.vtx[i];
-        LogPrintf("test 6\n");
+        LogPrintf("test 62\n");
+        LogPrintf("test 6 the transaction == %s\n", tx.ToString());
         if (tx.nVersion != 2) {
             LogPrintf("test 8\n");
             // only interested in special TXs
