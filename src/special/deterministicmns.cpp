@@ -629,6 +629,7 @@ bool CDeterministicMNManager::BuildNewListFromBlock(const CBlock& block, const C
     for (int i = 1; i < (int)block.vtx.size(); i++) {
         const CTransaction& tx = *block.vtx[i];
 
+        LogPrintf("test 6 the transaction STAKE CHECK HERE== %s\n", tx.ToString());
         if (tx.nVersion != 2) {
             // only interested in special TXs
             continue;
