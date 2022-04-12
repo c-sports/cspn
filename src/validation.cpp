@@ -5297,6 +5297,9 @@ bool GetBlockHash(uint256& hashRet, int nBlockHeight)
 
 int ActiveProtocol()
 {
+    if (ChainActive().Tip()->nHeight >= BLOCKHEIGHT_TOKEN_UPDATE)
+        return MIN_PEER_TOKEN_UPDATE;
+
     if (ChainActive().Tip()->nHeight >= BLOCKHEIGHT_PROTO_VERSION_V15)
         return MIN_PEER_PROTO_VERSION_V15;
 

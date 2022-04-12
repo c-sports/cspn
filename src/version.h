@@ -9,7 +9,7 @@
  * network protocol versioning
  */
 
-static const int PROTOCOL_VERSION = 71001;
+static const int PROTOCOL_VERSION = 71002;
 
 //! initial proto version, to be increased after version/verack negotiation
 static const int INIT_PROTO_VERSION = 209;
@@ -44,6 +44,10 @@ static const int INVALID_CB_NO_BAN_VERSION = 71000;
 
 //! introduction of LLMQs
 static const int LLMQS_PROTO_VERSION = 71000;
+
+//! min peer for token update
+static const int MIN_PEER_TOKEN_UPDATE = 71002;
+static const int BLOCKHEIGHT_TOKEN_UPDATE = 99999999;
 
 //! minimal proto version after fork block
 static const int MIN_PEER_PROTO_VERSION_V15 = 71001;
