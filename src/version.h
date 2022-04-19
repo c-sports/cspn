@@ -47,7 +47,7 @@ static const int LLMQS_PROTO_VERSION = 71000;
 
 //! min peer for token update
 static const int MIN_PEER_TOKEN_UPDATE = 71002;
-static const int BLOCKHEIGHT_TOKEN_UPDATE = 99999999;
+static const int BLOCKHEIGHT_TOKEN_UPDATE = 990000;
 
 //! minimal proto version after fork block
 static const int MIN_PEER_PROTO_VERSION_V15 = 71001;
